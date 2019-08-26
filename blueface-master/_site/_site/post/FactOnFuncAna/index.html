@@ -1,0 +1,222 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="icon" type="image/icon" href="favicon.ico">
+
+<title>LMI Formulation</title>
+
+<link rel="stylesheet" href="https://maverickap.github.io//css/syntax.css">
+<link rel="stylesheet" href="https://maverickap.github.io//css/main.css">
+</head>
+<body>
+
+
+<header>
+<div id="nav_container">
+<nav>
+
+  <ul>
+  <h1><a href="">Research Notes</a></h1>
+    
+      
+      
+
+      <li class="">
+        <a class="" href="https://maverickap.github.io//about/">About</a>
+      </li>
+    
+      
+      
+
+      <li class="">
+        <a class="" href="https://maverickap.github.io//tutorials/">Tutorials</a>
+      </li>
+    
+      
+      
+
+      <li class="">
+        <a class="" href="https://maverickap.github.io//paper_summary/">Paper Summaries</a>
+      </li>
+    
+      
+      
+
+      <li class="">
+        <a class="" href="https://maverickap.github.io//archives/">Archives</a>
+      </li>
+    
+      
+      
+
+      <li class="">
+        <a class="" href="https://maverickap.github.io//tags/">Tags</a>
+      </li>
+    
+  </ul>
+
+</nav>
+</div>
+</header>
+
+<section id="main">
+	<article>
+<div class="heading">LMI Formulation</div>
+<p class="meta"><a class="permalink" href="">&#9679;</a> 01 May 2019</p>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Arun Pandey" />
+  <title>LMI formulation for Deep Learning</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+</div>
+<h1 id="introduction">Introduction</h1>
+<p>Representing the objective function in energy form: <span class="math display">\[\begin{aligned}
+        \underset{w_1, w_2}{min} &amp; J = &amp; -x^\top  w_1 h_1 - \sigma(h_1)^\top  w_2 h_2.
+    \end{aligned}\]</span> <span class="math inline">\( J \)</span> could be written in quadratic form as:</p>
+<p><span class="math display">\[J=
+    -\dfrac{1}{2}\begin{bmatrix}
+        x^\top &amp; h_{1}^\top &amp; \sigma(h_1)^\top &amp; h_{2}^\top
+    \end{bmatrix}
+    \begin{bmatrix}
+        \ast       &amp; w_{1} &amp; \ast       &amp; \ast \\
+        w_{1}^\top &amp; \ast  &amp; \ast       &amp; \ast \\
+        \ast       &amp; \ast  &amp; \ast       &amp; w_2  \\
+        \ast       &amp; \ast  &amp; w_{2}^\top &amp; \ast \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        x \\ h_{1} \\ \sigma\left(h_1\right) \\ h_{2}
+    \end{bmatrix}\]</span></p>
+<p>Now, we characterizing the objective <span class="math inline">\( J \)</span> in terms of <span class="math inline">\( 1^{st}\)</span> layer using parameter <span class="math inline">\( \gamma \)</span>, the augmented objective is given by: <span class="math display">\[J \leq -\gamma x^\top w_1 h_1,\]</span></p>
+<p>for some <span class="math inline">\( \gamma \gt 0 \)</span>. Using the sector <span class="math inline">\( \left[0,1\right] \)</span> non-linearity <span class="math display">\[\sigma\left(h_1 \right)^\top  \left( \sigma(h_1) - h_1 \right) \leq 0,~~~\forall h_1\]</span> and s-procedure trick, we obtain the following:</p>
+<p><span class="math display">\[-(1-\gamma)x^\top w_1 h_1 - \sigma(h_1)^\top w_{2}h_{2}- \sigma\left(h_1 \right)^\top  \left( \sigma(h_1) - h_1 \right) \leq 0. ~~~\forall x, h_{1}, h_{2}\]</span> Hence, we solve the following optimization problem: <span class="math display">\[\begin{aligned}
+        \underset{\gamma, w_{1}, w_{2}, h_{1_{i}}}{min} &amp; \quad -\gamma - \sum_{i}^{}x_{i}^T w_{1}h_{1_{i}} \\
+        s.t.                                            &amp; -\dfrac{1}{2}\begin{bmatrix}
+            x^\top &amp; h_{1}^\top &amp; \sigma(h_1)^\top &amp; h_{2}^\top
+        \end{bmatrix}
+        \begin{bmatrix}
+            \ast                 &amp; (1-\gamma)w_{1} &amp; \ast       &amp; \ast \\
+            (1-\gamma)w_{1}^\top &amp; \ast            &amp; -\mathbb{I}    &amp; \ast \\
+            \ast                 &amp; -\mathbb{I}         &amp; 2\mathbb{I}    &amp; w_2  \\
+            \ast                 &amp; \ast            &amp; w_{2}^\top &amp; \ast \\
+        \end{bmatrix}
+        \begin{bmatrix}
+            x \\ h_{1} \\ \sigma\left(h_1\right) \\ h_{2}
+        \end{bmatrix} \leq 0,                                                                   \\
+                                                        &amp; \quad \gamma \gt 0.
+    \end{aligned}\]</span> Since the first constraint is true <span class="math inline">\(\forall~ x,~ h_{1}, ~\sigma(h_{1}) ~\&amp; ~h_{2} \)</span>, we only need the matrix to be positive semi-definite. Hence, restating the above problem: <span class="math display">\[\begin{aligned}
+        \underset{\gamma, w_{1}, w_{2}, h_{1_{i}}}{min} &amp; \quad -\gamma - \sum_{i}^{}x_{i}^\top w_{1}h_{1_{i}} \\
+        s.t.                                            &amp; \qquad
+        P \succeq 0                                                                                            \\
+                                                        &amp; \qquad \gamma \gt 0
+    \end{aligned}\]</span> where <span class="math inline">\( P:= \begin{bmatrix}
+        \ast                 &amp; (1-\gamma)w_{1} &amp; \ast       &amp; \ast \\
+        (1-\gamma)w_{1}^\top &amp; \ast            &amp; -\mathbb{I}    &amp; \ast \\
+        \ast                 &amp; -\mathbb{I}         &amp; 2\mathbb{I}    &amp; w_2  \\
+        \ast                 &amp; \ast            &amp; w_{2}^\top &amp; \ast \\
+    \end{bmatrix} \)</span>.</p>
+<h1 id="regularization">Regularization</h1>
+<p>Regularizing the above problem to improve the structure of matrix. <span class="math display">\[\begin{aligned}
+        \underset{w_1, w_2}{min} &amp; \tilde{J} = &amp; -x^\top  w_1 h_1 - \sigma(h_1)^\top  w_2 h_2 -\dfrac{\eta_{1}}{2}x^T x -\dfrac{\eta_{2}}{2}h_{1}^T h_{1} -\dfrac{\eta_{4}}{2}h_{2}^T h_{2}, ~~~~ \forall \eta_{1},~\eta_{2},~\eta_{4}\gt0
+    \end{aligned}\]</span> and <span class="math inline">\( \eta_{3}\sigma\left(h_1 \right)^\top  \left( \sigma(h_1) - h_1 \right) \leq 0,~~~\forall h_1 , \eta_{3}\geq 0 \)</span>, we have the following optimization problem</p>
+<p><span class="math display">\[\begin{aligned}
+        \underset{\gamma, w_{1}, w_{2}, h_{1_{i}}}{min} &amp; \quad -\gamma - \sum_{i}^{}x_{i}^\top w_{1}h_{1_{i}} \\
+        s.t.                                            &amp; \qquad
+        \tilde{P} \succeq 0                                                                                    \\
+                                                        &amp; \qquad \gamma \gt 0
+    \end{aligned}\]</span></p>
+<p>where <span class="math inline">\( \tilde{P}:= \begin{bmatrix}
+        \eta_{1}             &amp; (1-\gamma)w_{1} &amp; \ast            &amp; \ast     \\
+        (1-\gamma)w_{1}^\top &amp; \eta_{2}        &amp; -\eta_{3}\mathbb{I} &amp; \ast     \\
+        \ast                 &amp; -\eta_{3}\mathbb{I} &amp; 2\eta_{3}\mathbb{I} &amp; w_2      \\
+        \ast                 &amp; \ast            &amp; w_{2}^\top      &amp; \eta_{4} \\
+    \end{bmatrix} \)</span>.</p>
+<h2 id="from-bmi-to-lmi">From BMI to LMI</h2>
+<p>Due to bilinearity in <span class="math inline">\( \tilde{P} \)</span>, the problem is in general NP-hard to solve. Hence a workaround is to impose a stronger condition on positive definiteness in the following way: <span class="math display">\[\tilde{P} = \tilde{P_{1}} + \tilde{P_{2}},\]</span> where <span class="math inline">\( \tilde{P_{1}} = \begin{bmatrix}
+        \dfrac{\eta_{1}}{2} &amp; w_{1}               &amp; \ast            &amp; \ast     \\
+        w_{1}^\top          &amp; \dfrac{\eta_{2}}{2} &amp; -\eta_{3}\mathbb{I} &amp; \ast     \\
+        \ast                &amp; -\eta_{3}\mathbb{I}     &amp; 2\eta_{3}\mathbb{I} &amp; w_2      \\
+        \ast                &amp; \ast                &amp; w_{2}^\top      &amp; \eta_{4} \\
+    \end{bmatrix} \)</span> and <span class="math inline">\( \tilde{P_{2}} = \begin{bmatrix}
+        \dfrac{\eta_{1}}{2} &amp; -\gamma w_{1}       &amp; \ast &amp; \ast \\
+        -\gamma w_{1}^\top  &amp; \dfrac{\eta_{2}}{2} &amp; \ast &amp; \ast \\
+        \ast                &amp; \ast                &amp; \ast &amp; \ast \\
+        \ast                &amp; \ast                &amp; \ast &amp; \ast \\
+    \end{bmatrix}. \)</span><br />
+<br />
+Left multiplying <span class="math inline">\( \tilde{P_{2}} \)</span> with <span class="math inline">\( \gamma^{-1} \)</span>, we get <span class="math inline">\( \tilde{P_{2}}^{&#39;} := \begin{bmatrix}
+        \gamma^{-1}\dfrac{\eta_{1}}{2} &amp; - w_{1}                        &amp; \ast &amp; \ast \\
+        - w_{1}^\top                   &amp; \gamma^{-1}\dfrac{\eta_{2}}{2} &amp; \ast &amp; \ast \\
+        \ast                           &amp; \ast                           &amp; \ast &amp; \ast \\
+        \ast                           &amp; \ast                           &amp; \ast &amp; \ast \\
+    \end{bmatrix}.\)</span><br />
+<br />
+Hence, given <span class="math inline">\( \tilde{P_{1}} \succeq 0 \)</span> and <span class="math inline">\( \tilde{P_{2}} \succeq 0, \)</span> implies <span class="math inline">\( \tilde{P} \succeq 0\)</span>. Doing the change of variables <span class="math inline">\( L=w_{1}h_{1} \)</span>, to remove the bi-linearity from objective function and noting that <span class="math inline">\( {\left\lVertL\right\rVert}\leq{\left\lVertw_{1}\right\rVert} {\left\lVerth_{1}\right\rVert} \)</span> <span class="math inline">\( \leq {\left\lVertw_{1}\right\rVert} {\left\lVertx\right\rVert} \)</span>, since <span class="math inline">\( h_{1} \)</span> are just the latent variables of <span class="math inline">\( x \)</span>, we have the following reformulated problem</p>
+<p><span class="math display">\[\label{eq: 2}
+    \boxed{\begin{aligned}
+            \underset{\gamma, w_{1}, w_{2}, L}{min} &amp; \quad -\gamma - Tr\left( x^\top L \right) \\
+            s.t.                                    &amp; \qquad
+            \tilde{P_{1}} \succeq 0                                                             \\
+                                                    &amp; \qquad
+            \tilde{P_{2}}^{&#39;} \succeq 0                                                         \\
+                                                    &amp; \qquad \gamma \gt 0              \\
+                                                    &amp; {\left\lVertL\right\rVert}\leq {\left\lVertw_{1}\right\rVert} {\left\lVertx\right\rVert}
+        \end{aligned} }\]</span></p>
+<p>Solving equation would yield <span class="math inline">\( \gamma,~  w_{1},~  w_{2}~ \&amp; ~ L \)</span>. Since <span class="math inline">\( w_{1} \in \mathbb{R}^{d\times s_{1}} \)</span> and <span class="math inline">\( h_{1} \in \mathbb{R}^{s_{1} \times N} \)</span>, we solve:</p>
+<p><span class="math display">\[\begin{cases}
+        Underdetermined ~system ~({\tiny no~ sol^{n}/infinitely~ many~ sol^{n}_{s}}),           &amp; \text{if } d\textless s_{1}    \\
+        Overdetermined ~system~({\tiny mostly~ no ~sol^{n} ~except~ when~ lin.~ dep.~ exists}), &amp; \text{if } d\gt s_{1} \\
+        Consistent ~system~(\tiny unique~ sol^{n} ~exists),                                     &amp; \text{if } d=s_{1}
+    \end{cases}\]</span></p>
+<p>Other than the consistent case, by choosing <span class="math inline">\( d\leq s_{1}  \)</span>, we prefer to solve the underdetermined system in the following way: <span class="math display">\[\begin{aligned}
+        \underset{h_{1}}{min} &amp; \quad {\left\lVerth_{1}\right\rVert}^{2}_{2} \\
+        s.t.                  &amp; \quad
+        w_{1}h_{1}=L
+    \end{aligned}\]</span> Solving the Lagrangian formulation and using KKT conditions we obtain</p>
+<p><span class="math display">\[\label{}
+    \boxed{h_{1}= w_{1}^{\top}\left( w_{1}w_{1}^{\top} \right)^{-1}L}\]</span></p>
+<p>Now differentiating <span class="math inline">\( \tilde{J} \)</span> w.r.t <span class="math inline">\( h_{2} \)</span>, we obtain the solution for <span class="math inline">\( h_{2} \)</span> <span class="math display">\[\label{}
+    \boxed{h_{2}=-\dfrac{1}{\eta_{4}}w_{2}^{\top}\sigma(h_{1})}\]</span></p>
+</body>
+</html>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script
+  type="text/javascript"
+  charset="utf-8"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+>
+</script>
+<script
+  type="text/javascript"
+  charset="utf-8"
+  src="https://vincenttam.github.io/javascripts/MathJaxLocal.js"
+>
+</script>
+
+
+
+	
+    	<span class="label label-default"><a href="/tags#distill-ref" title="View posts tagged with &quot;distill&quot;">distill</a></span>
+    
+
+</article>
+</section>
+
+</body>
+</html>
