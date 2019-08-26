@@ -1,0 +1,22 @@
+I"G<p>So basically to make heavy math websites faster, use the workflow as below:</p>
+
+<ol>
+  <li>Have the pre-requisites installed first i.e. latex using miktex and Sublime text 3.</li>
+  <li>Make sure you have Perl also on your system.</li>
+  <li>Add “latexindent.pl” package from miktex.</li>
+  <li>Now set-up your sublime text as follows:
+    <ul>
+      <li>First things first: install ‘package control’</li>
+      <li>Then add the following packages: LaTexTools, LateXYZ, Jekyll, BeautifyLatex</li>
+      <li>Optionally add these packages just to make your experience better: materialtheme, side bar, advanced new file, file icon and GitGutter.</li>
+    </ul>
+  </li>
+  <li>If needed, use Pandoc to convert tex file to html</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">pandoc</span> <span class="o">-</span><span class="n">s</span> <span class="n">name_of_tex_file</span><span class="o">.</span><span class="n">tex</span> <span class="o">--</span><span class="n">mathjax</span> <span class="o">-</span><span class="n">o</span> <span class="n">name_of_ex_file</span><span class="o">.</span><span class="n">html</span> </code></pre></figure>
+
+<p>That’s it. Your set-up is done!</p>
+
+<p>To work faster with Sublime, learning keybindings (a.k.a keyboard shortcuts) is a must.</p>
+:ET
