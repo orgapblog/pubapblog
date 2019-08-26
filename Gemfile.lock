@@ -110,6 +110,10 @@ PLATFORMS
 
 DEPENDENCIES
   jekyll-auth
+  rake
+
+RUBY VERSION
+   ruby 2.5.3p105
 
 BUNDLED WITH
    2.0.1
