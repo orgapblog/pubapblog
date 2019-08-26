@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title></title>
+		<description>A small and simple site I made to test out Jekyll.</description>		
+		<link>http://localhost:4000</link>
+		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+		
+			<item>
+				<title>Optimal Stopping Problem</title>
+				<description>&lt;p&gt;There are a lot of everyday situations where people make decisions one after the other, and what is decided earlier affects the choices later on. Most people probably go by some gut feeling about when it’s time to stop and select the next best option and settle down.&lt;/p&gt;
+
+&lt;p&gt;In this article we will examine the “Optimal Stopping Problem,” a mathematical puzzle that can manifest in many different real world examples. For instance:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;When should a hiring manager stop interviewing people for a new job position? &lt;br /&gt;
+This is the classical “secretary problem” within the field of study of mathematics: probability-optimization. This problem in it’s simplest form has following features:
+    &lt;ul&gt;
+      &lt;li&gt;There is one secretarial position available.&lt;/li&gt;
+      &lt;li&gt;The number of applicants is $n$.&lt;/li&gt;
+      &lt;li&gt;The applicants are interviewed sequentially in random order, each order being equally likely.&lt;/li&gt;
+      &lt;li&gt;After each interview the hiring manager must decide to reject or hire the applicant.&lt;/li&gt;
+      &lt;li&gt;An applicant once rejected cannot later be recalled.&lt;/li&gt;
+      &lt;li&gt;Once the hiring manager decides to hire an applicant his/her search is over and there is no need to interview any more candidates.&lt;br /&gt;
+This basic problem has a remarkably simple solution and was outlined in the basic paper by  Gilbert and Mosteller ( 1966 ), with elegant derivations and extensions in a number of important directions.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;We have a house and we wish to sell it. Each day we get a new offer for the house, which could be higher or lower than the previous offer; however, each day the house is on the market we must pay for advertising. We wish to maximise the amount you earn by choosing a stopping rule. When should we stop looking at potential buyers and finally settle the deal?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;At some point in a lot of peoples lives, we wonder when we should stop dating and finally settle down with the right partner. Most people probably go by some gut feeling about when it’s time to stop. Editor’s Note: Of course, for mathematicians this is a purely theoretical example.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Suppose we are a doctor and patients arrive sequentially at our clinic and must be treated immediately by one of the treatments. It is assumed that response from treatment is immediate so that the effectiveness of the treatment that the present patient receives is known before the next patient is treated. It is not known precisely which one of the treatments is best, but we must decide which treatment to give each patient, keeping in mind that our goal is to cure as many patients as possible. This may require us to give a patient a treatment which is not the one that looks best at the present time in order to gain information that may be of use to future patients. When should we &lt;strong&gt;stop evaluating&lt;/strong&gt; more treatments and finally select the best one?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There are many different solutions to the problems listed above, as the strategy we choose will depend on our objective. Do we want to ensure that the option we select is better than average? What if we just want to be sure that we do not pick the worst option? In this article our goal will be to “&lt;strong&gt;minimize the risk&lt;/strong&gt;” of missing the best option. In other words, we want to “maximize the chances” (i.e. probability) of selecting the best option.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-prelude&quot;&gt;The Prelude&lt;/h3&gt;
+
+&lt;p&gt;The general form of our strategy will be to “gather information” when we are presented with our first options. We know that we will not choose any of these; however, we will examine them in order to know “how good” we should expect our options to be. After a certain point, once we are done gathering information, we will choose the first option that was better than all the ones we have seen before. After some thought, we can see that this strategy makes some intuitive sense. We don’t want to choose an option too early since there would be a high likelihood a better option would come later. But when should we stop gathering information? While we don’t want to choose an option too early, we certainly don’t want to gather information for too long and risk the best option passing us by.&lt;/p&gt;
+
+&lt;p&gt;This type of problem is called the “&lt;strong&gt;Optimal Stopping Problem&lt;/strong&gt;”, which mathematicians and computer scientists have researched for many years.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-real-life-example&quot;&gt;A Real-life Example&lt;/h3&gt;
+
+&lt;p&gt;Suppose we want to sell our house. We have a pool of n potential buyers (we number them from $1$ to $n$), who we meet one after the other. After a potential buyer has made their offer, we must decline or accept their offer. If we decide to accept their offer, we can no longer sell the house to anyone else and if we reject an offer the buyer will take their business elsewhere, and we will not be able to change our minds later on. For simplicity’s sake, we will assume there is no advertising cost (i.e. we do not have to pay to keep our house on the market).&lt;/p&gt;
+
+&lt;p&gt;Among our pool of $n$ people, there’s at least one who gives us the highest value for our property. We will call that person  $m$  (where  $m$  ranges from  $1$  to  $n$) – it’s who we’d ideally want to end up making deal with.&lt;/p&gt;
+
+&lt;p&gt;Our strategy is to discuss the deal with  $m-1$  of the $n$ people and then settle with the next best person who is better. (The reason for doing the calculations with  $m-1$  is that  m is the minimum number of potential buyers that we will encounter; there are  $m-1$  who give us the data we need before we start searching, and the $m^{th}$ is the first one who can be accepted.)&lt;/p&gt;
+
+&lt;p&gt;Given a pool of $n$ potential buyers, let $P(m; n)$ represent the probability that we will choose the best offer if we use the strategy discussed earlier. I.e. If there are $n$ buyers and we “gather information” during the first $m-1$ offers and pick the first offer that is better than the current best, the probability that we will select the best possible offer is $P(m; n)$.&lt;/p&gt;
+
+&lt;p&gt;Notice immediately that $P(1; n) = \dfrac{1}{n}$ and $P(n; n) = \dfrac{1}{n}$. These two cases essentially give no choice, meaning, it is just like the probability of picking one person at random out of total number of people ($n$) and hence the probability is $\dfrac{1}{n}$. But interesting things happen ‘&lt;strong&gt;&lt;em&gt;in between&lt;/em&gt;&lt;/strong&gt;’ these two extremes. As we see more people , we already have a notion of the “best so far,” and the next person we see that beats the current “best so far” is more likely to be the best person in the group for us. Unfortunately, it works the other way around as well. As we continue to see more people, the likelihood of having already passed the best so far increases, thereby decreasing our chances at finding the optimal person.&lt;/p&gt;
+
+&lt;p&gt;We want to find the optimal place to stop – a sort of middle ground that maximizes our chances of choosing the optimal person.&lt;/p&gt;
+
+&lt;p&gt;To do this, we want to maximize $P(m; n)$. In the process of doing this, we want to make sure our solution generalizes. A good way to generalize is to find the right ratio $\dfrac{m}{n}$, the percentage of our population that we should analyze before making a decision.&lt;/p&gt;
+
+&lt;h4 id=&quot;mathematical-formalism&quot;&gt;Mathematical Formalism&lt;/h4&gt;
+&lt;p&gt;Our first step here is to get an equation for $P(m; n)$.&lt;/p&gt;
+
+&lt;p&gt;Let’s say we have collected information about $m - 1$ potential buyers and now are looking at the $k^{th}$ person in the sequence, where  $m-1 \leq k \leq n$.&lt;/p&gt;
+
+&lt;p&gt;Now let’s break down some things that are going on here:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;We know that this  $k^{th}$  person has a $\dfrac{1}{n}$ probability of being the best buyer.&lt;/li&gt;
+  &lt;li&gt;We also know that in order to be considering the $k^{th}$ buyer in this sequence, the highest ranking person thus far must be in the group of $m - 1$ people out of the $k - 1$ people we had previously inspected and rejected (otherwise we would have stopped at someone before the $k^{th}$ person).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And the probability of the highest ranked person thus far being in that group of $m - 1$ people out of the $k - 1$ people inspected is:
+\[ \dfrac{m - 1}{k - 1}. \]&lt;/p&gt;
+
+&lt;p&gt;And therefore, the overall probability of finding the best potential partner this time is:
+\[ (\dfrac{m - 1}{k - 1}).(\dfrac{1}{n}) = \dfrac{m - 1}{n(k - 1)}\]&lt;/p&gt;
+
+&lt;p&gt;Note: In the following section we will use summation notation ($ \sum $ symbol), which works as follows: Suppose we have a sequence of numbers $x_1, x_2, …, x_n$, then, by definition, $\sum_{i=1}^{n} x_i = x_1 + x_2 + x_3 + … + x_n$. Thus $\sum_{i=1}^{n} 1 = n$ and $\sum_{i=1}^{3} x_i = x_1 + x_2 + x_3$. We use this notation because it is shorter than writing out each term in the sum.&lt;/p&gt;
+
+&lt;p&gt;Now to determine $ P(m; n) $, we must remember that $ k $ can take on any value from $ m $ to $ n $. As a consequence, we must sum these probabilities for any value of $ k $ (note the range of $ k $ above). A compact way to express this is as follows:
+\[P(m; n) =\sum_{k=m}^{n} \dfrac{m-1}{n(k - 1)}= \dfrac{m-1}{n}\sum_{k=m}^{n}\dfrac{1}{k-1}. \tag{1} \label{1}\]&lt;/p&gt;
+
+&lt;p&gt;At this point, it is possible to determine the maximum value using methods of optimization one learns in calculus, but this can get nasty pretty quickly. We will lay out a more elegant (albeit more mathematically involved) approach in the following section.&lt;/p&gt;
+
+&lt;h4 id=&quot;to-get-more-technical&quot;&gt;To Get More Technical&lt;/h4&gt;
+&lt;p&gt;Given a number $n$, we want to maximize the value of $P(m;n)$. Hence, the optimal value for $ m $ will be such that:
+       \[P(m - 1; n) &amp;lt; P(m; n) \text{ and } P(m + 1; n) &amp;lt; P(m;n) \tag{2} \label{2}\]&lt;/p&gt;
+
+&lt;p&gt;Author’s Note: If you want to be very pedantic, you could ask what happens if there are two “best” values of $ m $, with one of those strict inequality signs replaced by a partial inequality. It turns out that the only time when equality is possible is when $ n=2 $, which is not very interesting anyway.&lt;/p&gt;
+
+&lt;p&gt;Let’s break this down part by part. From the first inequality in (\ref{2}) and using (\ref{1}):
+\[P(m - 1; n) &amp;lt; P (m; n)\]&lt;/p&gt;
+
+&lt;p&gt;\[\dfrac{m-2}{n}\sum_{k=m-1}^{n} \dfrac{1}{k - 1}&amp;lt;\dfrac{m-1}{n} \sum_{k=m}^{n}\dfrac{1}{k-1}\]&lt;/p&gt;
+
+&lt;p&gt;\[(m-2)\sum_{k=m-1}^{n} \dfrac{1}{k - 1}&amp;lt;(m-1) \sum_{k=m}^{n}\dfrac{1}{k-1}.\]&lt;/p&gt;
+
+&lt;p&gt;Rewriting the left hand side:&lt;/p&gt;
+
+&lt;p&gt;\[(m-2)(\dfrac{1}{m-2})+\sum_{k=m}^{n} \dfrac{1}{k - 1}&amp;lt;(m-1) \sum_{k=m}^{n}\dfrac{1}{k-1}.\]&lt;/p&gt;
+
+&lt;p&gt;After algebraic simplification, we get:
+    \[1&amp;lt;\sum_{k=m}^{n}\dfrac{1}{k-1}\tag{3} \label{3}\]&lt;/p&gt;
+
+&lt;p&gt;Let’s now do the same thing for the other inequality from (\ref{2}):&lt;/p&gt;
+
+&lt;p&gt;\[P (m; n) &amp;gt; P (m + 1; n)\]&lt;/p&gt;
+
+&lt;p&gt;\[(m-1)\sum_{k=m}^{n}\dfrac{1}{k-1}&amp;gt;m\sum_{k=m+1}^{n}\dfrac{1}{k-1}\]&lt;/p&gt;
+
+&lt;p&gt;Performing a similar calculations to what we did with the last inequality, we get:&lt;/p&gt;
+
+&lt;p&gt;\[(m-1)(\dfrac{1}{m-1}+\sum_{k=m+1}^{n}\dfrac{1}{k-1})&amp;gt;m\sum_{k=m+1}^{n}\dfrac{1}{k-1}\]&lt;/p&gt;
+
+&lt;p&gt;\[(1+(m-1)\sum_{k=m+1}^{n}\dfrac{1}{k-1})&amp;gt;m\sum_{k=m+1}^{n}\dfrac{1}{k-1}\]&lt;/p&gt;
+
+&lt;p&gt;\[1&amp;gt;\sum_{k=m+1}^{n}\dfrac{1}{k-1}\tag{4}\label{4}\]&lt;/p&gt;
+
+&lt;p&gt;Let’s remember that our goal here is to find an appropriate approximation for the ratio $ \dfrac{m}{n} $ for the best $ m  $.&lt;/p&gt;
+
+&lt;p&gt;One fact that is going to help us immensely in this calculation is the approximation of the partial sum of a harmonic series. Mathematically, the approximation is:&lt;/p&gt;
+
+&lt;p&gt;\[\sum_{k=1}^{x}\dfrac{1}{k}\approx\ln(x)+c \]&lt;/p&gt;
+
+&lt;p&gt;where $ c $ is the Euler-Mascheroni constant.&lt;/p&gt;
+
+&lt;p&gt;Now this approximation greatly helps us simplify inequalities (\ref{3}) and (\ref{4}).&lt;/p&gt;
+
+&lt;p&gt;Using this approximation for (\ref{3}), we derive the following:&lt;/p&gt;
+
+&lt;p&gt;\[1&amp;lt;\sum_{k=m}^{n}\dfrac{1}{k-1}=\sum_{k=m-1}^{n-1}\dfrac{1}{k}=\sum_{k=1}^{n-1}\dfrac{1}{k}-\sum_{k=1}^{m-2}\dfrac{1}{k}\approx\ln(\dfrac{n-1}{m-2})\]&lt;/p&gt;
+
+&lt;p&gt;Similarly, for (\ref{4}), we obtain:&lt;/p&gt;
+
+&lt;p&gt;\[1&amp;gt;\sum_{k=m+1}^{n}\dfrac{1}{k-1}=\sum_{k=m}^{n-1}\dfrac{1}{k}=\sum_{k=1}^{n-1}\dfrac{1}{k}-\sum_{k=1}^{m-1}\dfrac{1}{k}\approx\ln(\dfrac{n-1}{m-1})\]&lt;/p&gt;
+
+&lt;p&gt;Alright, almost done! Notice that we can make another approximation of these results for large $ n $.&lt;/p&gt;
+
+&lt;p&gt;For sufficiently large $ n $, the constants in our expressions will make negligible difference in our final result, allowing us to make the following claim:&lt;/p&gt;
+
+&lt;p&gt;\[1\approx\ln(\dfrac{n}{m})\]&lt;/p&gt;
+
+&lt;p&gt;Now, using the properties of natural logarithm, value of $e$ and then taking it’s inverse, we get:&lt;/p&gt;
+
+&lt;p&gt;\[\boxed{(\dfrac{m}{n})\approx(\dfrac{1}{e})\approx 0.37}\]&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Q.E.D.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;This result was proven through a lot of (good) approximations, but other more rigorous methods including those used in optimization come to the same result.&lt;/p&gt;
+
+&lt;p&gt;So here we have it! A proof of why you should keep $37\%$ on your mind when it comes to matters of making choices.&lt;/p&gt;
+</description>
+				<pubDate>Sat, 24 Aug 2019 00:00:00 +0200</pubDate>
+				<link>http://localhost:4000/post/optimal-stopping-problem/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/optimal-stopping-problem/</guid>
+			</item>
+		
+			<item>
+				<title>checksum</title>
+				<description>&lt;p&gt;bla bla&lt;/p&gt;
+</description>
+				<pubDate>Sat, 24 Aug 2019 00:00:00 +0200</pubDate>
+				<link>http://localhost:4000/post/checksum/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/checksum/</guid>
+			</item>
+		
+			<item>
+				<title>Inference in probabilistic models</title>
+				<description>&lt;p&gt;How can we use a model $p(\mathbf{x}, \mathbf{z})$ to analyze some data $\mathbf{x}$? In other words, what hidden structure of $\mathbf{z}$ explains the data? We seek to infer this hidden structure using the model.&lt;/p&gt;
+
+&lt;p&gt;One method of inference leverages Bayes’ rule to define the posterior
+\[p(\mathbf{z} \mid \mathbf{x}) = \frac{p(\mathbf{x}, \mathbf{z})}{\int_{z} p(\mathbf{x}, \mathbf{z}) \text{d}\mathbf{z}}.\]
+​​ 
+The posterior is the distribution of the latent variables $\mathbf{z}$, conditioned on some (observed) data $\mathbf{x}$. Drawing analogy to representation learning, it is a probabilistic description of the data’s hidden representation. Often this distribution is unknown and difficult to compute due to intractable denominator (which has to be computed over all comfiguration of states). Hence, we go for approximations.&lt;/p&gt;
+
+&lt;p&gt;$2$ methods exist: Sampling methods a.k.a. Monte-Carlo methods and Variational inference.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Sampling methods&lt;/strong&gt; involves drawing random samples from an unknown true distribution. Some methods are Importance sampling, Rejection sampling, Metropolis-hastings method and Gibbs sampling. The last two mthods falls under category of MCMC methods.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Variational methods&lt;/strong&gt; involves approximating the unknown true distribution $p(\mathbf{x})$ with a simpler known distribution $q(\mathbf{x};\theta)$ parametrized by $\theta$. Basically we minimize the divergence between these distributions over $\theta$. To appriximate $p(\mathbf{x})$, &lt;em&gt;variational lower bound&lt;/em&gt; is the key. 2 ways to derive it: using Jensen’s inequality and using KL divergence. More on this &lt;a href=&quot;http://users.umiacs.umd.edu/~xyang35/files/understanding-variational-lower.pdf&quot;&gt;here&lt;/a&gt;. We then maximize this VB to approximate $q$ to $p$. Its connections with deeplearning are beautifully established in paper - &lt;em&gt;Auto-encoding Variational Bayes&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;More on these methods could be read in the excellent book by David Mckay - `Information theory, Inference and Learning Algorithms’ and from blogs &lt;a href=&quot;https://medium.com/neuralspace/inference-in-probabilistic-models-monte-carlo-and-deterministic-methods-eae8800ee095&quot;&gt;1&lt;/a&gt;, &lt;a href=&quot;http://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html&quot;&gt;2&lt;/a&gt;.&lt;/p&gt;
+</description>
+				<pubDate>Thu, 08 Aug 2019 00:00:00 +0200</pubDate>
+				<link>http://localhost:4000/post/inf_prob_models/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/inf_prob_models/</guid>
+			</item>
+		
+			<item>
+				<title>Latex+Sublime+MathJax+Jekyll workflow</title>
+				<description>&lt;p&gt;So basically to make heavy math websites faster, use the workflow as below:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Have the pre-requisites installed first i.e. latex using miktex and Sublime text 3.&lt;/li&gt;
+  &lt;li&gt;Make sure you have Perl also on your system.&lt;/li&gt;
+  &lt;li&gt;Add “latexindent.pl” package from miktex.&lt;/li&gt;
+  &lt;li&gt;Now set-up your sublime text as follows:
+    &lt;ul&gt;
+      &lt;li&gt;First things first: install ‘package control’&lt;/li&gt;
+      &lt;li&gt;Then add the following packages: LaTexTools, LateXYZ, Jekyll, BeautifyLatex&lt;/li&gt;
+      &lt;li&gt;Optionally add these packages just to make your experience better: materialtheme, side bar, advanced new file, file icon and GitGutter.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;If needed, use Pandoc to convert tex file to html&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;pandoc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name_of_tex_file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tex&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathjax&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;o&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name_of_ex_file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;html&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;That’s it. Your set-up is done!&lt;/p&gt;
+
+&lt;p&gt;To work faster with Sublime, learning keybindings (a.k.a keyboard shortcuts) is a must.&lt;/p&gt;
+</description>
+				<pubDate>Sat, 11 May 2019 00:00:00 +0200</pubDate>
+				<link>http://localhost:4000/post/latexsublime-workflow/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/latexsublime-workflow/</guid>
+			</item>
+		
+			<item>
+				<title>LMI Formulation</title>
+				<description>&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+  &lt;meta http-equiv=&quot;Content-Style-Type&quot; content=&quot;text/css&quot; /&gt;
+  &lt;meta name=&quot;generator&quot; content=&quot;pandoc&quot; /&gt;
+  &lt;meta name=&quot;author&quot; content=&quot;Arun Pandey&quot; /&gt;
+  &lt;title&gt;LMI formulation for Deep Learning&lt;/title&gt;
+  &lt;style type=&quot;text/css&quot;&gt;code{white-space: pre;}&lt;/style&gt;
+  &lt;script src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;header&quot;&gt;
+&lt;/div&gt;
+&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;Representing the objective function in energy form: &lt;span class=&quot;math display&quot;&gt;\[\begin{aligned}
+        \underset{w_1, w_2}{min} &amp;amp; J = &amp;amp; -x^\top  w_1 h_1 - \sigma(h_1)^\top  w_2 h_2.
+    \end{aligned}\]&lt;/span&gt; &lt;span class=&quot;math inline&quot;&gt;\( J \)&lt;/span&gt; could be written in quadratic form as:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[J=
+    -\dfrac{1}{2}\begin{bmatrix}
+        x^\top &amp;amp; h_{1}^\top &amp;amp; \sigma(h_1)^\top &amp;amp; h_{2}^\top
+    \end{bmatrix}
+    \begin{bmatrix}
+        \ast       &amp;amp; w_{1} &amp;amp; \ast       &amp;amp; \ast \\
+        w_{1}^\top &amp;amp; \ast  &amp;amp; \ast       &amp;amp; \ast \\
+        \ast       &amp;amp; \ast  &amp;amp; \ast       &amp;amp; w_2  \\
+        \ast       &amp;amp; \ast  &amp;amp; w_{2}^\top &amp;amp; \ast \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        x \\ h_{1} \\ \sigma\left(h_1\right) \\ h_{2}
+    \end{bmatrix}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Now, we characterizing the objective &lt;span class=&quot;math inline&quot;&gt;\( J \)&lt;/span&gt; in terms of &lt;span class=&quot;math inline&quot;&gt;\( 1^{st}\)&lt;/span&gt; layer using parameter &lt;span class=&quot;math inline&quot;&gt;\( \gamma \)&lt;/span&gt;, the augmented objective is given by: &lt;span class=&quot;math display&quot;&gt;\[J \leq -\gamma x^\top w_1 h_1,\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;for some &lt;span class=&quot;math inline&quot;&gt;\( \gamma \gt 0 \)&lt;/span&gt;. Using the sector &lt;span class=&quot;math inline&quot;&gt;\( \left[0,1\right] \)&lt;/span&gt; non-linearity &lt;span class=&quot;math display&quot;&gt;\[\sigma\left(h_1 \right)^\top  \left( \sigma(h_1) - h_1 \right) \leq 0,~~~\forall h_1\]&lt;/span&gt; and s-procedure trick, we obtain the following:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[-(1-\gamma)x^\top w_1 h_1 - \sigma(h_1)^\top w_{2}h_{2}- \sigma\left(h_1 \right)^\top  \left( \sigma(h_1) - h_1 \right) \leq 0. ~~~\forall x, h_{1}, h_{2}\]&lt;/span&gt; Hence, we solve the following optimization problem: &lt;span class=&quot;math display&quot;&gt;\[\begin{aligned}
+        \underset{\gamma, w_{1}, w_{2}, h_{1_{i}}}{min} &amp;amp; \quad -\gamma - \sum_{i}^{}x_{i}^T w_{1}h_{1_{i}} \\
+        s.t.                                            &amp;amp; -\dfrac{1}{2}\begin{bmatrix}
+            x^\top &amp;amp; h_{1}^\top &amp;amp; \sigma(h_1)^\top &amp;amp; h_{2}^\top
+        \end{bmatrix}
+        \begin{bmatrix}
+            \ast                 &amp;amp; (1-\gamma)w_{1} &amp;amp; \ast       &amp;amp; \ast \\
+            (1-\gamma)w_{1}^\top &amp;amp; \ast            &amp;amp; -\mathbb{I}    &amp;amp; \ast \\
+            \ast                 &amp;amp; -\mathbb{I}         &amp;amp; 2\mathbb{I}    &amp;amp; w_2  \\
+            \ast                 &amp;amp; \ast            &amp;amp; w_{2}^\top &amp;amp; \ast \\
+        \end{bmatrix}
+        \begin{bmatrix}
+            x \\ h_{1} \\ \sigma\left(h_1\right) \\ h_{2}
+        \end{bmatrix} \leq 0,                                                                   \\
+                                                        &amp;amp; \quad \gamma \gt 0.
+    \end{aligned}\]&lt;/span&gt; Since the first constraint is true &lt;span class=&quot;math inline&quot;&gt;\(\forall~ x,~ h_{1}, ~\sigma(h_{1}) ~\&amp;amp; ~h_{2} \)&lt;/span&gt;, we only need the matrix to be positive semi-definite. Hence, restating the above problem: &lt;span class=&quot;math display&quot;&gt;\[\begin{aligned}
+        \underset{\gamma, w_{1}, w_{2}, h_{1_{i}}}{min} &amp;amp; \quad -\gamma - \sum_{i}^{}x_{i}^\top w_{1}h_{1_{i}} \\
+        s.t.                                            &amp;amp; \qquad
+        P \succeq 0                                                                                            \\
+                                                        &amp;amp; \qquad \gamma \gt 0
+    \end{aligned}\]&lt;/span&gt; where &lt;span class=&quot;math inline&quot;&gt;\( P:= \begin{bmatrix}
+        \ast                 &amp;amp; (1-\gamma)w_{1} &amp;amp; \ast       &amp;amp; \ast \\
+        (1-\gamma)w_{1}^\top &amp;amp; \ast            &amp;amp; -\mathbb{I}    &amp;amp; \ast \\
+        \ast                 &amp;amp; -\mathbb{I}         &amp;amp; 2\mathbb{I}    &amp;amp; w_2  \\
+        \ast                 &amp;amp; \ast            &amp;amp; w_{2}^\top &amp;amp; \ast \\
+    \end{bmatrix} \)&lt;/span&gt;.&lt;/p&gt;
+&lt;h1 id=&quot;regularization&quot;&gt;Regularization&lt;/h1&gt;
+&lt;p&gt;Regularizing the above problem to improve the structure of matrix. &lt;span class=&quot;math display&quot;&gt;\[\begin{aligned}
+        \underset{w_1, w_2}{min} &amp;amp; \tilde{J} = &amp;amp; -x^\top  w_1 h_1 - \sigma(h_1)^\top  w_2 h_2 -\dfrac{\eta_{1}}{2}x^T x -\dfrac{\eta_{2}}{2}h_{1}^T h_{1} -\dfrac{\eta_{4}}{2}h_{2}^T h_{2}, ~~~~ \forall \eta_{1},~\eta_{2},~\eta_{4}\gt0
+    \end{aligned}\]&lt;/span&gt; and &lt;span class=&quot;math inline&quot;&gt;\( \eta_{3}\sigma\left(h_1 \right)^\top  \left( \sigma(h_1) - h_1 \right) \leq 0,~~~\forall h_1 , \eta_{3}\geq 0 \)&lt;/span&gt;, we have the following optimization problem&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\begin{aligned}
+        \underset{\gamma, w_{1}, w_{2}, h_{1_{i}}}{min} &amp;amp; \quad -\gamma - \sum_{i}^{}x_{i}^\top w_{1}h_{1_{i}} \\
+        s.t.                                            &amp;amp; \qquad
+        \tilde{P} \succeq 0                                                                                    \\
+                                                        &amp;amp; \qquad \gamma \gt 0
+    \end{aligned}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;where &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P}:= \begin{bmatrix}
+        \eta_{1}             &amp;amp; (1-\gamma)w_{1} &amp;amp; \ast            &amp;amp; \ast     \\
+        (1-\gamma)w_{1}^\top &amp;amp; \eta_{2}        &amp;amp; -\eta_{3}\mathbb{I} &amp;amp; \ast     \\
+        \ast                 &amp;amp; -\eta_{3}\mathbb{I} &amp;amp; 2\eta_{3}\mathbb{I} &amp;amp; w_2      \\
+        \ast                 &amp;amp; \ast            &amp;amp; w_{2}^\top      &amp;amp; \eta_{4} \\
+    \end{bmatrix} \)&lt;/span&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;from-bmi-to-lmi&quot;&gt;From BMI to LMI&lt;/h2&gt;
+&lt;p&gt;Due to bilinearity in &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P} \)&lt;/span&gt;, the problem is in general NP-hard to solve. Hence a workaround is to impose a stronger condition on positive definiteness in the following way: &lt;span class=&quot;math display&quot;&gt;\[\tilde{P} = \tilde{P_{1}} + \tilde{P_{2}},\]&lt;/span&gt; where &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P_{1}} = \begin{bmatrix}
+        \dfrac{\eta_{1}}{2} &amp;amp; w_{1}               &amp;amp; \ast            &amp;amp; \ast     \\
+        w_{1}^\top          &amp;amp; \dfrac{\eta_{2}}{2} &amp;amp; -\eta_{3}\mathbb{I} &amp;amp; \ast     \\
+        \ast                &amp;amp; -\eta_{3}\mathbb{I}     &amp;amp; 2\eta_{3}\mathbb{I} &amp;amp; w_2      \\
+        \ast                &amp;amp; \ast                &amp;amp; w_{2}^\top      &amp;amp; \eta_{4} \\
+    \end{bmatrix} \)&lt;/span&gt; and &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P_{2}} = \begin{bmatrix}
+        \dfrac{\eta_{1}}{2} &amp;amp; -\gamma w_{1}       &amp;amp; \ast &amp;amp; \ast \\
+        -\gamma w_{1}^\top  &amp;amp; \dfrac{\eta_{2}}{2} &amp;amp; \ast &amp;amp; \ast \\
+        \ast                &amp;amp; \ast                &amp;amp; \ast &amp;amp; \ast \\
+        \ast                &amp;amp; \ast                &amp;amp; \ast &amp;amp; \ast \\
+    \end{bmatrix}. \)&lt;/span&gt;&lt;br /&gt;
+&lt;br /&gt;
+Left multiplying &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P_{2}} \)&lt;/span&gt; with &lt;span class=&quot;math inline&quot;&gt;\( \gamma^{-1} \)&lt;/span&gt;, we get &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P_{2}}^{&amp;#39;} := \begin{bmatrix}
+        \gamma^{-1}\dfrac{\eta_{1}}{2} &amp;amp; - w_{1}                        &amp;amp; \ast &amp;amp; \ast \\
+        - w_{1}^\top                   &amp;amp; \gamma^{-1}\dfrac{\eta_{2}}{2} &amp;amp; \ast &amp;amp; \ast \\
+        \ast                           &amp;amp; \ast                           &amp;amp; \ast &amp;amp; \ast \\
+        \ast                           &amp;amp; \ast                           &amp;amp; \ast &amp;amp; \ast \\
+    \end{bmatrix}.\)&lt;/span&gt;&lt;br /&gt;
+&lt;br /&gt;
+Hence, given &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P_{1}} \succeq 0 \)&lt;/span&gt; and &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P_{2}} \succeq 0, \)&lt;/span&gt; implies &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P} \succeq 0\)&lt;/span&gt;. Doing the change of variables &lt;span class=&quot;math inline&quot;&gt;\( L=w_{1}h_{1} \)&lt;/span&gt;, to remove the bi-linearity from objective function and noting that &lt;span class=&quot;math inline&quot;&gt;\( {\left\lVertL\right\rVert}\leq{\left\lVertw_{1}\right\rVert} {\left\lVerth_{1}\right\rVert} \)&lt;/span&gt; &lt;span class=&quot;math inline&quot;&gt;\( \leq {\left\lVertw_{1}\right\rVert} {\left\lVertx\right\rVert} \)&lt;/span&gt;, since &lt;span class=&quot;math inline&quot;&gt;\( h_{1} \)&lt;/span&gt; are just the latent variables of &lt;span class=&quot;math inline&quot;&gt;\( x \)&lt;/span&gt;, we have the following reformulated problem&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\label{eq: 2}
+    \boxed{\begin{aligned}
+            \underset{\gamma, w_{1}, w_{2}, L}{min} &amp;amp; \quad -\gamma - Tr\left( x^\top L \right) \\
+            s.t.                                    &amp;amp; \qquad
+            \tilde{P_{1}} \succeq 0                                                             \\
+                                                    &amp;amp; \qquad
+            \tilde{P_{2}}^{&amp;#39;} \succeq 0                                                         \\
+                                                    &amp;amp; \qquad \gamma \gt 0              \\
+                                                    &amp;amp; {\left\lVertL\right\rVert}\leq {\left\lVertw_{1}\right\rVert} {\left\lVertx\right\rVert}
+        \end{aligned} }\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Solving equation would yield &lt;span class=&quot;math inline&quot;&gt;\( \gamma,~  w_{1},~  w_{2}~ \&amp;amp; ~ L \)&lt;/span&gt;. Since &lt;span class=&quot;math inline&quot;&gt;\( w_{1} \in \mathbb{R}^{d\times s_{1}} \)&lt;/span&gt; and &lt;span class=&quot;math inline&quot;&gt;\( h_{1} \in \mathbb{R}^{s_{1} \times N} \)&lt;/span&gt;, we solve:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\begin{cases}
+        Underdetermined ~system ~({\tiny no~ sol^{n}/infinitely~ many~ sol^{n}_{s}}),           &amp;amp; \text{if } d\textless s_{1}    \\
+        Overdetermined ~system~({\tiny mostly~ no ~sol^{n} ~except~ when~ lin.~ dep.~ exists}), &amp;amp; \text{if } d\gt s_{1} \\
+        Consistent ~system~(\tiny unique~ sol^{n} ~exists),                                     &amp;amp; \text{if } d=s_{1}
+    \end{cases}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Other than the consistent case, by choosing &lt;span class=&quot;math inline&quot;&gt;\( d\leq s_{1}  \)&lt;/span&gt;, we prefer to solve the underdetermined system in the following way: &lt;span class=&quot;math display&quot;&gt;\[\begin{aligned}
+        \underset{h_{1}}{min} &amp;amp; \quad {\left\lVerth_{1}\right\rVert}^{2}_{2} \\
+        s.t.                  &amp;amp; \quad
+        w_{1}h_{1}=L
+    \end{aligned}\]&lt;/span&gt; Solving the Lagrangian formulation and using KKT conditions we obtain&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\label{}
+    \boxed{h_{1}= w_{1}^{\top}\left( w_{1}w_{1}^{\top} \right)^{-1}L}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Now differentiating &lt;span class=&quot;math inline&quot;&gt;\( \tilde{J} \)&lt;/span&gt; w.r.t &lt;span class=&quot;math inline&quot;&gt;\( h_{2} \)&lt;/span&gt;, we obtain the solution for &lt;span class=&quot;math inline&quot;&gt;\( h_{2} \)&lt;/span&gt; &lt;span class=&quot;math display&quot;&gt;\[\label{}
+    \boxed{h_{2}=-\dfrac{1}{\eta_{4}}w_{2}^{\top}\sigma(h_{1})}\]&lt;/span&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</description>
+				<pubDate>Wed, 01 May 2019 00:00:00 +0200</pubDate>
+				<link>http://localhost:4000/post/FactOnFuncAna/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/FactOnFuncAna/</guid>
+			</item>
+		
+			<item>
+				<title>Manifolds learning and diffusion maps</title>
+				<description>&lt;h1 id=&quot;manifold-learning&quot;&gt;Manifold learning&lt;/h1&gt;
+
+&lt;p&gt;Manifold learning is basically using the geometric properties of data to exploit machine learning. It is frequently used in dimensionality reduction (KPCA, LLE, diffusion maps etc), clustering and semi-supervised/supervised learning. It has strong connections with differential geometry and assumes the data lies near a manifold embedded in high-dimensional space.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;diffusion-maps&quot;&gt;Diffusion Maps&lt;/h1&gt;
+&lt;p&gt;Diffusion maps approximate some differential operators on data manifold $\mathcal{M}$. (proofs in the literature show this in the $\lim N\rightarrow \infty, \epsilon \rightarrow 0$). Here, we take the Taylor expansions of the functions to arrive at differential operators.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;why-is-laplacian-special&quot;&gt;Why is Laplacian special??&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The usage of this operator comes up in various daily-life problems: heat equation, wave equation, fuild-flow, quantum mechanics etc &amp;amp; more recently in manifold learning (that’s what this blog summarizes!).&lt;/li&gt;
+  &lt;li&gt;It is invariant to &lt;em&gt;translation  &amp;amp; rotation&lt;/em&gt;. In general if $S$ is an operator which satisfies such properties, then $ S=\sum_{j=1}^{m}a_{j}\Delta^{j} $.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;solving-deltapsilambdapsi-&quot;&gt;Solving $\Delta\psi=\lambda\psi$ !&lt;/h3&gt;
+&lt;p&gt;We want to solve $\Delta\psi=\lambda\psi$. A standard method (inspired by Stone-Weierstrass Theorem) is to look for solutions
+$ u(x; t) $ of the form $u(x; t) = \alpha(t)\phi(x)$. If you do this into heat equation, we get&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\dfrac{\Delta\phi(x)}{\phi(x)}= - \dfrac{\Delta\alpha(x)}{\alpha(x)}&lt;/script&gt;
+</description>
+				<pubDate>Wed, 01 May 2019 00:00:00 +0200</pubDate>
+				<link>http://localhost:4000/post/tes/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/tes/</guid>
+			</item>
+		
+			<item>
+				<title>Kernel Methods and Pre-image problem</title>
+				<description>&lt;p&gt;A link to &lt;a href=&quot;https://1drv.ms/b/s!AgUflGj0J6MbjVxD6OrOCM0LfxRv&quot;&gt;notes on kernel methods&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/mojombo/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+				<pubDate>Tue, 19 Mar 2019 18:40:41 +0100</pubDate>
+				<link>http://localhost:4000/post/jek/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/jek/</guid>
+			</item>
+		
+	</channel>
+</rss>
