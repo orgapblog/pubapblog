@@ -1,0 +1,26 @@
+# Jekyll Defaults
+title: Research Notes
+description: A small and simple site I made to test out Jekyll.
+baseurl: "" # the subpath of your site, e.g. /blog
+
+url: "https://maverickap.github.io/"
+github: http://github.com/maverickap/
+highlighter: rouge
+markdown: kramdown
+permalink: /post/:title/
+paginate: 4
+gems: [jekyll-paginate]
+paginate_path: "/page:num"
+rss_path: /feed.xml
+future: true
+navigation:
+- text: About
+  url: /about/
+- text: Tutorials
+  url: /tutorials/
+- text: Paper Summaries
+  url: /paper_summary/
+- text: Archives
+  url: /archives/
+- text: Tags
+  url: /tags/
