@@ -3,7 +3,7 @@ title: Research Notes
 description: A small and simple site I made to test out Jekyll.
 baseurl: "" # the subpath of your site, e.g. /blog
 
-url: "https://maverickap.github.io/"
+url: "https://arunpblog2019.herokuapp.com"
 github: http://github.com/maverickap/
 highlighter: rouge
 markdown: kramdown
