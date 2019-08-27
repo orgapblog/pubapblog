@@ -1,11 +1,3 @@
-*.mat
-*.docx
-*.pdf
-*.asv
-*.csv
-*.cfg
-*.png
-*.jpeg
-*.avi
+*.espressostorage
+_site/*
 
-*.xlsx

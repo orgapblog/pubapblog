@@ -6,6 +6,8 @@ tags: [distill]
 mathjax: true
 ---
 
+__Inference__: $x\sim p_{X}$, $z=f(x)$.  
+__Generation__: $z\sim p_{Z}$, $x=f^{-1}(z)$
 
 How can we use a model $p(\mathbf{x}, \mathbf{z})$ to analyze some data $\mathbf{x}$? In other words, what hidden structure of $\mathbf{z}$ explains the data? We seek to infer this hidden structure using the model.
 

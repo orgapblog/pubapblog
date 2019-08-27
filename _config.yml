@@ -20,6 +20,8 @@ navigation:
   url: /tutorials/
 - text: Paper Summaries
   url: /paper_summary/
+- text: Distills
+  url: /distill/
 - text: Archives
   url: /archives/
 - text: Tags

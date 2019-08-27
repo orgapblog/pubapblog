@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <link rel="icon" type="image/icon" href="favicon.ico">
 
-<title>checksum</title>
+<title>Variational Inference of Normalizing Flows (Rezende & Shakir, 2015)</title>
 
 <link rel="stylesheet" href="http://localhost:4000/css/syntax.css">
 <link rel="stylesheet" href="http://localhost:4000/css/main.css">
@@ -44,6 +44,13 @@
       
 
       <li class="">
+        <a class="" href="http://localhost:4000/distill/">Distills</a>
+      </li>
+    
+      
+      
+
+      <li class="">
         <a class="" href="http://localhost:4000/archives/">Archives</a>
       </li>
     
@@ -62,9 +69,71 @@
 
 <section id="main">
 	<article>
-<div class="heading">checksum</div>
-<p class="meta"><a class="permalink" href="">&#9679;</a> 24 Aug 2019</p>
-<p>bla bla</p>
+<div class="heading">Variational Inference of Normalizing Flows (Rezende & Shakir, 2015)</div>
+<p class="meta"><a class="permalink" href="">&#9679;</a> 27 Aug 2019</p>
+<p><a href="http://proceedings.mlr.press/v37/rezende15.pdf">Original paper link</a></p>
+
+<h2 id="normalizing-flows">Normalizing Flows</h2>
+
+<p><strong>Key idea</strong>: Assume a simple probability distribution, take a sample from it and then <strong><em>transform</em></strong> that sample. This is equivalent to change of variables in probability distributions and, if the transformation meets some mild conditions, can result in a very complex pdf of the transformed variable. The formalism of normalizing flows now gives us a systematic way of specifying the approximate posterior distributions $q(z\vert x)$ required for variational inference.</p>
+
+<p>Example: If $f$ is monotonically increasing or monotonically decreasing function, such that $y = f(x)$, $x \sim p_{X}$, then we have:
+\[ p_{Y}(y)= \frac{d}{dy}\mathbb{P}(Y\leq y)= \frac{d}{dy}\mathbb{P}(f(X)\leq y)=\frac{d}{dy}\mathbb{P}(X\leq f^{-1}(y))=p_{X}(f^{-1}(y))\frac{df^{-1}(y)}{dy}=p_{X}(x)\frac{df^{-1}(y)}{dy},\]
+\[ p_{Y}(y)= \frac{d}{dy}\mathbb{P}(Y\leq y)= \frac{d}{dy}\mathbb{P}(f(X)\leq y)=\frac{d}{dy}\mathbb{P}(X\geq f^{-1}(y))=-p_{X}(f^{-1}(y))\frac{df^{-1}(y)}{dy}=-p_{X}(x)\frac{df^{-1}(y)}{dy},\]
+respectively.</p>
+
+<p>Similarly for multivariate invertible mappings $f:\mathbb{R}^{m}\mapsto \mathbb{R}^{m}$ and $X\sim p_{X}$, $Y=f(X)$, we get:</p>
+
+<p>\[\boxed{ p_{Y}(y)=p_{X}(x)\left\lvert \operatorname{det}\frac{df^{-1}(y)}{dy}\right\rvert},\qquad complexity \rightarrow O(m^{3})\]</p>
+
+<p>NFs are typically used to parametrise the approximate posterior $q(z\vert x)$ but can also be applied for the likelihood function. We can apply a series of mappings  $f_{k},~ k= [ 1,\dots,K ]$ and obtain a normalizing flow:</p>
+
+<script type="math/tex; mode=display">\mathbf{z}_K = f_K \circ \dots \circ f_1 (\mathbf{z}_0), \quad \mathbf{z}_0 \sim q_0(\mathbf{z}_0),</script>
+
+<script type="math/tex; mode=display">\mathbf{z}_K \sim q_K(\mathbf{z}_K) = q_0(\mathbf{z}_0) \prod_{k=1}^K
+  \left|
+    \mathrm{det} \frac{
+      \partial f_k
+    }{
+      \partial \mathbf{z}_{k-1}\
+    }
+  \right| ^{-1}, \quad or</script>
+
+<script type="math/tex; mode=display">\ln q_K (\mathbf{z}_K) = \ln q_0(\mathbf{z}_0) - \sum_{k=1}^{K} \ln \mathrm{det} \left|
+     \frac{
+      \partial f_k
+    }{
+      \partial \mathbf{z}_{k-1}\
+    }
+  \right|.</script>
+
+<p>This series of transformations can transform a simple probability distribution (e.g. Gaussian) into a complicated multi-modal one. To be of practical use, however, we can consider only transformations whose determinants of Jacobians are easy to compute. The original paper considered two simple family of transformations, named planar and radial flows.</p>
+
+<h3 id="density-estimation-generative-modelling">Density estimation (Generative modelling)</h3>
+<p>$p_X:$ data distribution, $p_Y:$ prior ob latent variable, $p_{f^{-1}(Y)}:$ push-forward density of $f^{-1}(Y)$, i.e the generative model</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+ D_{KL}(p_X \Vert p_{f^{-1}(Y)}) & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{f^{-1}(Y)} (x) \right] \\ 
+                                & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{X} (x) \right] \\
+                                & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x))\left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]\\
+                                & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x)) - \log \left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]
+\end{align} %]]></script>
+
+<h2 id="planar-flow">Planar Flow</h2>
+<p>\[ f(\mathbf{z}) = \mathbf{z} + \mathbf{u} h(\mathbf{w}^T \mathbf{z} + b) \]
+with $\mathbf{U}, \mathbf{W}\in \mathbb{R}^{d}$ and $b\in \mathbb{R}$ and $h$ an elemnet-wise non-linearity. Let $\psi (\mathbf{z}) = h’ (\mathbf{w}^T \mathbf{z} + b) \mathbf{w}$. Then the determinant can be easily computed as</p>
+
+<p>\[ \left| \mathrm{det} \frac{\partial f}{\partial \mathbf{z}} \right| =
+  \left| 1 + \mathbf{u}^T \psi( \mathbf{z} ) \right|.  \]
+We can think of it as slicing the $z$-space with straight lines (or hyperplanes), where each line contracts or expands the space around it, see figure 1 (in paper).</p>
+
+<h2 id="radial-flow">Radial Flow</h2>
+<p>\[  f(\mathbf{z}) = \mathbf{z} + \beta h(\alpha, r)(\mathbf{z} - \mathbf{z}_0),\]</p>
+
+<p>with <script type="math/tex">r = \Vert\mathbf{z} - \mathbf{z}_0 \Vert_2</script>, <script type="math/tex">h(\alpha, r) = \frac{1}{\alpha + r}</script> and parameters <script type="math/tex">\mathbf{z}_0 \in \mathbb{R}^d, \alpha \in \mathbb{R}_+</script> and <script type="math/tex">\beta \in \mathbb{R}</script>.</p>
+
+<p>Similarly to planar flows, radial flows introduce spheres in the $z$-space, which either contract or expand the space inside the sphere, see figure 1 (in paper).</p>
 
 
 <script type="text/x-mathjax-config">
@@ -87,6 +156,12 @@
   src="https://vincenttam.github.io/javascripts/MathJaxLocal.js"
 >
 </script>
+
+
+
+	
+    	<span class="label label-default"><a href="/tags#paper_summary-ref" title="View posts tagged with &quot;paper_summary&quot;">paper_summary</a></span>
+    
 
 </article>
 </section>
