@@ -3,8 +3,8 @@
 	<channel>
 		<title></title>
 		<description>A small and simple site I made to test out Jekyll.</description>		
-		<link>http://localhost:4000</link>
-		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+		<link>https://maverickap.github.io/</link>
+		<atom:link href="https://maverickap.github.io//feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
 				<title>Optimal Stopping Problem</title>
@@ -151,8 +151,8 @@ This basic problem has a remarkably simple solution and was outlined in the basi
 &lt;p&gt;So here we have it! A proof of why you should keep $37\%$ on your mind when it comes to matters of making choices.&lt;/p&gt;
 </description>
 				<pubDate>Sat, 24 Aug 2019 00:00:00 +0200</pubDate>
-				<link>http://localhost:4000/post/optimal-stopping-problem/</link>
-				<guid isPermaLink="true">http://localhost:4000/post/optimal-stopping-problem/</guid>
+				<link>https://maverickap.github.io//post/optimal-stopping-problem/</link>
+				<guid isPermaLink="true">https://maverickap.github.io//post/optimal-stopping-problem/</guid>
 			</item>
 		
 			<item>
@@ -160,8 +160,8 @@ This basic problem has a remarkably simple solution and was outlined in the basi
 				<description>&lt;p&gt;bla bla&lt;/p&gt;
 </description>
 				<pubDate>Sat, 24 Aug 2019 00:00:00 +0200</pubDate>
-				<link>http://localhost:4000/post/checksum/</link>
-				<guid isPermaLink="true">http://localhost:4000/post/checksum/</guid>
+				<link>https://maverickap.github.io//post/checksum/</link>
+				<guid isPermaLink="true">https://maverickap.github.io//post/checksum/</guid>
 			</item>
 		
 			<item>
@@ -182,8 +182,8 @@ The posterior is the distribution of the latent variables $\mathbf{z}$, conditio
 &lt;p&gt;More on these methods could be read in the excellent book by David Mckay - `Information theory, Inference and Learning Algorithms’ and from blogs &lt;a href=&quot;https://medium.com/neuralspace/inference-in-probabilistic-models-monte-carlo-and-deterministic-methods-eae8800ee095&quot;&gt;1&lt;/a&gt;, &lt;a href=&quot;http://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html&quot;&gt;2&lt;/a&gt;.&lt;/p&gt;
 </description>
 				<pubDate>Thu, 08 Aug 2019 00:00:00 +0200</pubDate>
-				<link>http://localhost:4000/post/inf_prob_models/</link>
-				<guid isPermaLink="true">http://localhost:4000/post/inf_prob_models/</guid>
+				<link>https://maverickap.github.io//post/inf_prob_models/</link>
+				<guid isPermaLink="true">https://maverickap.github.io//post/inf_prob_models/</guid>
 			</item>
 		
 			<item>
@@ -211,8 +211,8 @@ The posterior is the distribution of the latent variables $\mathbf{z}$, conditio
 &lt;p&gt;To work faster with Sublime, learning keybindings (a.k.a keyboard shortcuts) is a must.&lt;/p&gt;
 </description>
 				<pubDate>Sat, 11 May 2019 00:00:00 +0200</pubDate>
-				<link>http://localhost:4000/post/latexsublime-workflow/</link>
-				<guid isPermaLink="true">http://localhost:4000/post/latexsublime-workflow/</guid>
+				<link>https://maverickap.github.io//post/latexsublime-workflow/</link>
+				<guid isPermaLink="true">https://maverickap.github.io//post/latexsublime-workflow/</guid>
 			</item>
 		
 			<item>
@@ -341,8 +341,8 @@ Hence, given &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P_{1}} \succeq 
 &lt;/html&gt;
 </description>
 				<pubDate>Wed, 01 May 2019 00:00:00 +0200</pubDate>
-				<link>http://localhost:4000/post/FactOnFuncAna/</link>
-				<guid isPermaLink="true">http://localhost:4000/post/FactOnFuncAna/</guid>
+				<link>https://maverickap.github.io//post/FactOnFuncAna/</link>
+				<guid isPermaLink="true">https://maverickap.github.io//post/FactOnFuncAna/</guid>
 			</item>
 		
 			<item>
@@ -372,8 +372,8 @@ $ u(x; t) $ of the form $u(x; t) = \alpha(t)\phi(x)$. If you do this into heat e
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\dfrac{\Delta\phi(x)}{\phi(x)}= - \dfrac{\Delta\alpha(x)}{\alpha(x)}&lt;/script&gt;
 </description>
 				<pubDate>Wed, 01 May 2019 00:00:00 +0200</pubDate>
-				<link>http://localhost:4000/post/tes/</link>
-				<guid isPermaLink="true">http://localhost:4000/post/tes/</guid>
+				<link>https://maverickap.github.io//post/tes/</link>
+				<guid isPermaLink="true">https://maverickap.github.io//post/tes/</guid>
 			</item>
 		
 			<item>
@@ -384,8 +384,8 @@ $ u(x; t) $ of the form $u(x; t) = \alpha(t)\phi(x)$. If you do this into heat e
 
 </description>
 				<pubDate>Tue, 19 Mar 2019 18:40:41 +0100</pubDate>
-				<link>http://localhost:4000/post/jek/</link>
-				<guid isPermaLink="true">http://localhost:4000/post/jek/</guid>
+				<link>https://maverickap.github.io//post/jek/</link>
+				<guid isPermaLink="true">https://maverickap.github.io//post/jek/</guid>
 			</item>
 		
 	</channel>
