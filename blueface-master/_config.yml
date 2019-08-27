@@ -2,7 +2,6 @@
 title: Research Notes
 description: A small and simple site I made to test out Jekyll.
 baseurl: "" # the subpath of your site, e.g. /blog
-exclude: [vendor]
 
 url: "https://maverickap.github.io/"
 github: http://github.com/maverickap/
