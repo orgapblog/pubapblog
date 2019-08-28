@@ -13,6 +13,9 @@ gems: [jekyll-paginate]
 paginate_path: "/page:num"
 rss_path: /feed.xml
 future: true
+jekyll_auth:
+  whitelist:
+    - about?
 navigation:
 - text: About
   url: /about/
