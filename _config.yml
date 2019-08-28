@@ -16,6 +16,10 @@ future: true
 jekyll_auth:
   whitelist:
     - about?
+    - css?
+    - photos?
+    - _layouts?
+    - _includes?
 navigation:
 - text: About
   url: /about/
