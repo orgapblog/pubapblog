@@ -75,6 +75,8 @@
 
 <h2 id="normalizing-flows">Normalizing Flows</h2>
 
+<p><img src="\photos\shakir_danilo_slide.png" alt="!" style="width: 500px; height: auto;" /></p>
+
 <p><strong>Key idea</strong>: Assume a simple probability distribution, take a sample from it and then <strong><em>transform</em></strong> that sample. This is equivalent to change of variables in probability distributions and, if the transformation meets some mild conditions, can result in a very complex pdf of the transformed variable. The formalism of normalizing flows now gives us a systematic way of specifying the approximate posterior distributions $q(z\vert x)$ required for variational inference.</p>
 
 <p>Example: If $f$ is monotonically increasing or monotonically decreasing function, such that $y = f(x)$, $x \sim p_{X}$, then we have:
