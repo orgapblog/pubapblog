@@ -84,7 +84,8 @@ respectively.</p>
 
 <p>Similarly for multivariate invertible mappings $f:\mathbb{R}^{m}\mapsto \mathbb{R}^{m}$ and $X\sim p_{X}$, $Y=f(X)$, we get:</p>
 
-<p>\[\boxed{ p_{Y}(y)=p_{X}(x)\left\lvert \operatorname{det}\frac{df^{-1}(y)}{dy}\right\rvert},\qquad complexity \rightarrow O(m^{3})\]</p>
+<p>\[\boxed{ p_{Y}(y)=p_{X}(x)\left\lvert \operatorname{det}\frac{df^{-1}(y)}{dy}\right\rvert =p_{X}(x)\left\lvert \operatorname{det}\frac{df(x)}{dy}\right\rvert^{-1} },\qquad complexity \rightarrow O(m^{3})\]
+where the last equality exploits $[ \mathrm{det}(A^{-1}) =\mathrm{det}(A)^{-1} ]$ and the <a href="https://en.wikipedia.org/wiki/Inverse_function_theorem">property of jacobian of inverse functions</a> (PS: invertibility of $f(\cdot)$ validates the use of this property).</p>
 
 <p>NFs are typically used to parametrise the approximate posterior $q(z\vert x)$ but can also be applied for the likelihood function. We can apply a series of mappings  $f_{k},~ k= [ 1,\dots,K ]$ and obtain a normalizing flow:</p>
 
@@ -109,24 +110,13 @@ respectively.</p>
 
 <p>This series of transformations can transform a simple probability distribution (e.g. Gaussian) into a complicated multi-modal one. To be of practical use, however, we can consider only transformations whose determinants of Jacobians are easy to compute. The original paper considered two simple family of transformations, named planar and radial flows.</p>
 
-<h3 id="density-estimation-generative-modelling">Density estimation (Generative modelling)</h3>
-<p>$p_X:$ data distribution, $p_Y:$ prior ob latent variable, $p_{f^{-1}(Y)}:$ push-forward density of $f^{-1}(Y)$, i.e the generative model</p>
-
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align}
- D_{KL}(p_X \Vert p_{f^{-1}(Y)}) & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{f^{-1}(Y)} (x) \right] \\ 
-                                & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{X} (x) \right] \\
-                                & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x))\left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]\\
-                                & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x)) - \log \left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]
-\end{align} %]]></script>
-
 <h2 id="planar-flow">Planar Flow</h2>
-<p>\[ f(\mathbf{z}) = \mathbf{z} + \mathbf{u} h(\mathbf{w}^T \mathbf{z} + b) \]
+<p>\[ f(\mathbf{z}) = \mathbf{z} + \mathbf{u} h(\mathbf{w}^{\top} \mathbf{z} + b) \]
 with $\mathbf{U}, \mathbf{W}\in \mathbb{R}^{d}$ and $b\in \mathbb{R}$ and $h$ an elemnet-wise non-linearity. Let $\psi (\mathbf{z}) = h’ (\mathbf{w}^T \mathbf{z} + b) \mathbf{w}$. Then the determinant can be easily computed as</p>
 
 <p>\[ \left| \mathrm{det} \frac{\partial f}{\partial \mathbf{z}} \right| =
-  \left| 1 + \mathbf{u}^T \psi( \mathbf{z} ) \right|.  \]
-We can think of it as slicing the $z$-space with straight lines (or hyperplanes), where each line contracts or expands the space around it, see figure 1 (in paper).</p>
+  \left| 1 + \mathbf{u}^{\top} \psi( \mathbf{z} ) \right| = \left| 1 + \mathbf{u}^{\top} h’ (\mathbf{w}^T \mathbf{z} + b) \mathbf{w} \right| .  \]
+Since $0\leq h’ \leq 1$ for $ h(x) = \tanh (x) $, we require $ \mathbf{u}^{\top}\mathbf{w} \geq -1$ for invertibility of such flows. We can think of planar flows as slicing the $\mathbf{z}$-space with straight lines (or hyperplanes), where each line contracts or expands the space around it, see figure 1 (in paper).</p>
 
 <h2 id="radial-flow">Radial Flow</h2>
 <p>\[  f(\mathbf{z}) = \mathbf{z} + \beta h(\alpha, r)(\mathbf{z} - \mathbf{z}_0),\]</p>
@@ -134,6 +124,17 @@ We can think of it as slicing the $z$-space with straight lines (or hyperplanes)
 <p>with <script type="math/tex">r = \Vert\mathbf{z} - \mathbf{z}_0 \Vert_2</script>, <script type="math/tex">h(\alpha, r) = \frac{1}{\alpha + r}</script> and parameters <script type="math/tex">\mathbf{z}_0 \in \mathbb{R}^d, \alpha \in \mathbb{R}_+</script> and <script type="math/tex">\beta \in \mathbb{R}</script>.</p>
 
 <p>Similarly to planar flows, radial flows introduce spheres in the $z$-space, which either contract or expand the space inside the sphere, see figure 1 (in paper).</p>
+
+<h3 id="density-estimation-generative-modelling">Density estimation (Generative modelling)</h3>
+<p>$p_X:$ data distribution, $p_Y:$ prior ob latent variable, $p_{f^{-1}(Y)}:$ push-forward density of $f^{-1}(Y)$, i.e the generative model</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}
+ D_{KL}(p_X \Vert p_{f^{-1}(Y)}) & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{f^{-1}(Y)} (x) \right] \\ 
+                                & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{X} (x) \right] \\
+                                & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x))\left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]\\
+                                & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x)) - \log \left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]
+\end{align*} %]]></script>
 
 
 <script type="text/x-mathjax-config">

@@ -113,6 +113,7 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
+  jekyll (~> 3.8)
   jekyll-auth
   jekyll-paginate
 

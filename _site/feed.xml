@@ -7,6 +7,16 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Jekyll blog with OAuth</title>
+				<description>&lt;p&gt;Refer these blogs &lt;a href=&quot;https://ben.balter.com/jekyll-auth/&quot;&gt;1&lt;/a&gt;, &lt;a href=&quot;https://blog.heroku.com/jekyll-on-heroku&quot;&gt;2&lt;/a&gt;.
+Combine the ideas from both.&lt;/p&gt;
+</description>
+				<pubDate>Wed, 28 Aug 2019 00:00:00 +0200</pubDate>
+				<link>http://localhost:4000/post/jekyll-blog-with-oauth/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/jekyll-blog-with-oauth/</guid>
+			</item>
+		
+			<item>
 				<title>Variational Inference of Normalizing Flows (Rezende &amp; Shakir, 2015)</title>
 				<description>&lt;p&gt;&lt;a href=&quot;http://proceedings.mlr.press/v37/rezende15.pdf&quot;&gt;Original paper link&lt;/a&gt;&lt;/p&gt;
 
@@ -21,7 +31,8 @@ respectively.&lt;/p&gt;
 
 &lt;p&gt;Similarly for multivariate invertible mappings $f:\mathbb{R}^{m}\mapsto \mathbb{R}^{m}$ and $X\sim p_{X}$, $Y=f(X)$, we get:&lt;/p&gt;
 
-&lt;p&gt;\[\boxed{ p_{Y}(y)=p_{X}(x)\left\lvert \operatorname{det}\frac{df^{-1}(y)}{dy}\right\rvert},\qquad complexity \rightarrow O(m^{3})\]&lt;/p&gt;
+&lt;p&gt;\[\boxed{ p_{Y}(y)=p_{X}(x)\left\lvert \operatorname{det}\frac{df^{-1}(y)}{dy}\right\rvert =p_{X}(x)\left\lvert \operatorname{det}\frac{df(x)}{dy}\right\rvert^{-1} },\qquad complexity \rightarrow O(m^{3})\]
+where the last equality exploits $[ \mathrm{det}(A^{-1}) =\mathrm{det}(A)^{-1} ]$ and the &lt;a href=&quot;https://en.wikipedia.org/wiki/Inverse_function_theorem&quot;&gt;property of jacobian of inverse functions&lt;/a&gt; (PS: invertibility of $f(\cdot)$ validates the use of this property).&lt;/p&gt;
 
 &lt;p&gt;NFs are typically used to parametrise the approximate posterior $q(z\vert x)$ but can also be applied for the likelihood function. We can apply a series of mappings  $f_{k},~ k= [ 1,\dots,K ]$ and obtain a normalizing flow:&lt;/p&gt;
 
@@ -46,24 +57,13 @@ respectively.&lt;/p&gt;
 
 &lt;p&gt;This series of transformations can transform a simple probability distribution (e.g. Gaussian) into a complicated multi-modal one. To be of practical use, however, we can consider only transformations whose determinants of Jacobians are easy to compute. The original paper considered two simple family of transformations, named planar and radial flows.&lt;/p&gt;
 
-&lt;h3 id=&quot;density-estimation-generative-modelling&quot;&gt;Density estimation (Generative modelling)&lt;/h3&gt;
-&lt;p&gt;$p_X:$ data distribution, $p_Y:$ prior ob latent variable, $p_{f^{-1}(Y)}:$ push-forward density of $f^{-1}(Y)$, i.e the generative model&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
- D_{KL}(p_X \Vert p_{f^{-1}(Y)}) &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{f^{-1}(Y)} (x) \right] \\ 
-                                &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{X} (x) \right] \\
-                                &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x))\left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]\\
-                                &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x)) - \log \left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]
-\end{align} %]]&gt;&lt;/script&gt;
-
 &lt;h2 id=&quot;planar-flow&quot;&gt;Planar Flow&lt;/h2&gt;
-&lt;p&gt;\[ f(\mathbf{z}) = \mathbf{z} + \mathbf{u} h(\mathbf{w}^T \mathbf{z} + b) \]
+&lt;p&gt;\[ f(\mathbf{z}) = \mathbf{z} + \mathbf{u} h(\mathbf{w}^{\top} \mathbf{z} + b) \]
 with $\mathbf{U}, \mathbf{W}\in \mathbb{R}^{d}$ and $b\in \mathbb{R}$ and $h$ an elemnet-wise non-linearity. Let $\psi (\mathbf{z}) = h’ (\mathbf{w}^T \mathbf{z} + b) \mathbf{w}$. Then the determinant can be easily computed as&lt;/p&gt;
 
 &lt;p&gt;\[ \left| \mathrm{det} \frac{\partial f}{\partial \mathbf{z}} \right| =
-  \left| 1 + \mathbf{u}^T \psi( \mathbf{z} ) \right|.  \]
-We can think of it as slicing the $z$-space with straight lines (or hyperplanes), where each line contracts or expands the space around it, see figure 1 (in paper).&lt;/p&gt;
+  \left| 1 + \mathbf{u}^{\top} \psi( \mathbf{z} ) \right| = \left| 1 + \mathbf{u}^{\top} h’ (\mathbf{w}^T \mathbf{z} + b) \mathbf{w} \right| .  \]
+Since $0\leq h’ \leq 1$ for $ h(x) = \tanh (x) $, we require $ \mathbf{u}^{\top}\mathbf{w} \geq -1$ for invertibility of such flows. We can think of planar flows as slicing the $\mathbf{z}$-space with straight lines (or hyperplanes), where each line contracts or expands the space around it, see figure 1 (in paper).&lt;/p&gt;
 
 &lt;h2 id=&quot;radial-flow&quot;&gt;Radial Flow&lt;/h2&gt;
 &lt;p&gt;\[  f(\mathbf{z}) = \mathbf{z} + \beta h(\alpha, r)(\mathbf{z} - \mathbf{z}_0),\]&lt;/p&gt;
@@ -71,6 +71,17 @@ We can think of it as slicing the $z$-space with straight lines (or hyperplanes)
 &lt;p&gt;with &lt;script type=&quot;math/tex&quot;&gt;r = \Vert\mathbf{z} - \mathbf{z}_0 \Vert_2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;h(\alpha, r) = \frac{1}{\alpha + r}&lt;/script&gt; and parameters &lt;script type=&quot;math/tex&quot;&gt;\mathbf{z}_0 \in \mathbb{R}^d, \alpha \in \mathbb{R}_+&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\beta \in \mathbb{R}&lt;/script&gt;.&lt;/p&gt;
 
 &lt;p&gt;Similarly to planar flows, radial flows introduce spheres in the $z$-space, which either contract or expand the space inside the sphere, see figure 1 (in paper).&lt;/p&gt;
+
+&lt;h3 id=&quot;density-estimation-generative-modelling&quot;&gt;Density estimation (Generative modelling)&lt;/h3&gt;
+&lt;p&gt;$p_X:$ data distribution, $p_Y:$ prior ob latent variable, $p_{f^{-1}(Y)}:$ push-forward density of $f^{-1}(Y)$, i.e the generative model&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align*}
+ D_{KL}(p_X \Vert p_{f^{-1}(Y)}) &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{f^{-1}(Y)} (x) \right] \\ 
+                                &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{X} (x) \right] \\
+                                &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x))\left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]\\
+                                &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x)) - \log \left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]
+\end{align*} %]]&gt;&lt;/script&gt;
 </description>
 				<pubDate>Tue, 27 Aug 2019 00:00:00 +0200</pubDate>
 				<link>http://localhost:4000/post/checksum/</link>
@@ -228,7 +239,16 @@ This basic problem has a remarkably simple solution and was outlined in the basi
 		
 			<item>
 				<title>Inference in probabilistic models</title>
-				<description>&lt;p&gt;&lt;strong&gt;Inference&lt;/strong&gt;: $x\sim p_{X}$, $z=f(x)$.&lt;br /&gt;
+				<description>&lt;p&gt;Statistical Machine Learning algorithms try to learn the structure of data by fitting a parametric distribution $p(x;θ)$ to it. Given a dataset, if we can represent it with a distribution, we can:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Generate new data “for free” by sampling from the learned distribution in silico; no need to run the true generative process for the data. This is a useful tool if the data is expensive to generate, i.e. a real-world experiment that takes a long time to run. Sampling is also used to construct estimators of high-dimensional integrals over spaces.&lt;/li&gt;
+  &lt;li&gt;Evaluate the likelihood of data observed at test time (this can be used for rejection sampling or to score how good our model is).&lt;/li&gt;
+  &lt;li&gt;Find the conditional relationship between variables. For example, learning the distribution $p(x_2\vert x_1)$ allows us to build discriminative classification or regression models.&lt;/li&gt;
+  &lt;li&gt;Score our algorithm by using complexity measures like entropy, mutual information, and moments of the distribution.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Inference&lt;/strong&gt;: $x\sim p_{X}$, $z=f(x)$.&lt;br /&gt;
 &lt;strong&gt;Generation&lt;/strong&gt;: $z\sim p_{Z}$, $x=f^{-1}(z)$&lt;/p&gt;
 
 &lt;p&gt;How can we use a model $p(\mathbf{x}, \mathbf{z})$ to analyze some data $\mathbf{x}$? In other words, what hidden structure of $\mathbf{z}$ explains the data? We seek to infer this hidden structure using the model.&lt;/p&gt;
@@ -242,9 +262,31 @@ The posterior is the distribution of the latent variables $\mathbf{z}$, conditio
 
 &lt;p&gt;&lt;strong&gt;Sampling methods&lt;/strong&gt; involves drawing random samples from an unknown true distribution. Some methods are Importance sampling, Rejection sampling, Metropolis-hastings method and Gibbs sampling. The last two mthods falls under category of MCMC methods.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Variational methods&lt;/strong&gt; involves approximating the unknown true distribution $p(\mathbf{x})$ with a simpler known distribution $q(\mathbf{x};\theta)$ parametrized by $\theta$. Basically we minimize the divergence between these distributions over $\theta$. To appriximate $p(\mathbf{x})$, &lt;em&gt;variational lower bound&lt;/em&gt; is the key. 2 ways to derive it: using Jensen’s inequality and using KL divergence. More on this &lt;a href=&quot;http://users.umiacs.umd.edu/~xyang35/files/understanding-variational-lower.pdf&quot;&gt;here&lt;/a&gt;. We then maximize this VB to approximate $q$ to $p$. Its connections with deeplearning are beautifully established in paper - &lt;em&gt;Auto-encoding Variational Bayes&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Variational methods&lt;/strong&gt; involves approximating the unknown true distribution $p(\mathbf{x})$ with a simpler known distribution $q(\mathbf{x};\theta)$ parametrized by $\theta$. Basically we minimize the divergence between these distributions over $\theta$. To approximate $p(\mathbf{x})$, &lt;em&gt;variational lower bound&lt;/em&gt; is the key. 2 ways to derive it: using Jensen’s inequality and using KL divergence. We then maximize this VB to approximate $q$ to $p$. Its connections with deeplearning are beautifully established in paper - &lt;a href=&quot;https://arxiv.org/abs/1312.6114&quot;&gt;Auto-encoding Variational Bayes (Kingma &amp;amp; Welling, 2014)&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;More on these methods could be read in the excellent book by David Mckay - `Information theory, Inference and Learning Algorithms’ and from blogs &lt;a href=&quot;https://medium.com/neuralspace/inference-in-probabilistic-models-monte-carlo-and-deterministic-methods-eae8800ee095&quot;&gt;1&lt;/a&gt;, &lt;a href=&quot;http://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html&quot;&gt;2&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;example-use-of-variational-inference-to-obtain-lower-bound-on-the-marginal-likelihood&quot;&gt;Example: Use of Variational Inference to obtain lower-bound on the marginal likelihood&lt;/h3&gt;
+&lt;p&gt;Consider a general probabilistic model with observations $x$, latent variables $z$ over which we must integrate, and model parameters $θ$. We introduce an approximate posterior distribution for the latent variables $q_{\phi}(z\vert x)$ and follow the variational principle (Jordan et al., 1999) to obtain a bound on the marginal likelihood:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align*} \log p_{θ}(x) &amp; = \log \int p_{θ}(x\vert z)p(z)dz \\ 
+                              &amp; = \log \int \frac{q_{\phi}(z\vert x)}{q_{\phi}(z\vert x)} p_{θ}(x\vert z)p(z)dz \\
+                              &amp; = \log \left( \mathbb{E}_{q} \left[ \frac{p( z)}{q_{\phi}(z\vert x)} . q_{\phi}(z\vert x) p_{θ}(x\vert z) \right] \right) \\
+                              &amp; \geq \mathbb{E}_{q} \left[\log \left(\frac{p( z)}{q_{\phi}(z\vert x)} . q_{\phi}(z\vert x) p_{θ}(x\vert z)\right) \right]  \\
+                              &amp; \geq \mathbb{E}_{q} \left[\log \left(\frac{p( z)}{q_{\phi}(z\vert x)}\right) + \log\left(q_{\phi}(z\vert x) p_{θ}(x\vert z)\right) \right]  \\
+                              &amp; = -\mathbb{D}_{\mathrm{KL}} [q_{\phi}(z\vert x) \Vert p( z)] + \mathbb{E}_q [\log p(x\vert z)],
+        \end{align*} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;where we have used Jensen’s inequality $ \left(f (\mathbb{E}[x]) ≤ \mathbb{E} [f(x)]\right) $. $p_θ (x\vert z)$ is a likelihood function and $p(z)$ is a prior over the latent variables. This bound is often referred to as the negative free energy $\mathcal{F}$ or as the evidence lower bound (ELBO). It consists of two terms: the first is the KL-divergence between the approximate posterior and the prior distribution (which acts as a regularizer), and the second is a reconstruction error. This bound provides a unified objective function for optimization of both the parameters $θ$ and $\phi$ of the model and variational approximation, respectively.&lt;/p&gt;
+
+&lt;p&gt;Current best practice in variational inference performs this optimization using mini-batches and stochastic gradient descent, which is what allows variational inference to be scaled to problems with very large data sets. There are two problems that must be addressed to successfully use the variational approach:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;efficient computation of the derivatives of the expected log-likelihood &lt;script type=&quot;math/tex&quot;&gt;\nabla_{\phi} \mathbb{E}_{q_{\phi}(z)}\left[\log p_{\theta} (x\vert z)\right]&lt;/script&gt;. This tackled in the paper &lt;a href=&quot;https://arxiv.org/abs/1312.6114&quot;&gt;Auto-encoding Variational Bayes (Kingma &amp;amp; Welling, 2014)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;choosing the richest, computationally-feasible approximate posterior distribution $q(·)$. This tackled in the paper &lt;a href=&quot;/post/checksum/&quot;&gt;Variational Inference of Normalizing Flows (Rezende &amp;amp; Shakir, 2015)&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
 </description>
 				<pubDate>Thu, 08 Aug 2019 00:00:00 +0200</pubDate>
 				<link>http://localhost:4000/post/inf_prob_models/</link>

@@ -71,6 +71,15 @@
 	<article>
 <div class="heading">Inference in probabilistic models</div>
 <p class="meta"><a class="permalink" href="">&#9679;</a> 08 Aug 2019</p>
+<p>Statistical Machine Learning algorithms try to learn the structure of data by fitting a parametric distribution $p(x;θ)$ to it. Given a dataset, if we can represent it with a distribution, we can:</p>
+
+<ol>
+  <li>Generate new data “for free” by sampling from the learned distribution in silico; no need to run the true generative process for the data. This is a useful tool if the data is expensive to generate, i.e. a real-world experiment that takes a long time to run. Sampling is also used to construct estimators of high-dimensional integrals over spaces.</li>
+  <li>Evaluate the likelihood of data observed at test time (this can be used for rejection sampling or to score how good our model is).</li>
+  <li>Find the conditional relationship between variables. For example, learning the distribution $p(x_2\vert x_1)$ allows us to build discriminative classification or regression models.</li>
+  <li>Score our algorithm by using complexity measures like entropy, mutual information, and moments of the distribution.</li>
+</ol>
+
 <p><strong>Inference</strong>: $x\sim p_{X}$, $z=f(x)$.<br />
 <strong>Generation</strong>: $z\sim p_{Z}$, $x=f^{-1}(z)$</p>
 
@@ -85,9 +94,31 @@ The posterior is the distribution of the latent variables $\mathbf{z}$, conditio
 
 <p><strong>Sampling methods</strong> involves drawing random samples from an unknown true distribution. Some methods are Importance sampling, Rejection sampling, Metropolis-hastings method and Gibbs sampling. The last two mthods falls under category of MCMC methods.</p>
 
-<p><strong>Variational methods</strong> involves approximating the unknown true distribution $p(\mathbf{x})$ with a simpler known distribution $q(\mathbf{x};\theta)$ parametrized by $\theta$. Basically we minimize the divergence between these distributions over $\theta$. To appriximate $p(\mathbf{x})$, <em>variational lower bound</em> is the key. 2 ways to derive it: using Jensen’s inequality and using KL divergence. More on this <a href="http://users.umiacs.umd.edu/~xyang35/files/understanding-variational-lower.pdf">here</a>. We then maximize this VB to approximate $q$ to $p$. Its connections with deeplearning are beautifully established in paper - <em>Auto-encoding Variational Bayes</em>.</p>
+<p><strong>Variational methods</strong> involves approximating the unknown true distribution $p(\mathbf{x})$ with a simpler known distribution $q(\mathbf{x};\theta)$ parametrized by $\theta$. Basically we minimize the divergence between these distributions over $\theta$. To approximate $p(\mathbf{x})$, <em>variational lower bound</em> is the key. 2 ways to derive it: using Jensen’s inequality and using KL divergence. We then maximize this VB to approximate $q$ to $p$. Its connections with deeplearning are beautifully established in paper - <a href="https://arxiv.org/abs/1312.6114">Auto-encoding Variational Bayes (Kingma &amp; Welling, 2014)</a>.</p>
 
 <p>More on these methods could be read in the excellent book by David Mckay - `Information theory, Inference and Learning Algorithms’ and from blogs <a href="https://medium.com/neuralspace/inference-in-probabilistic-models-monte-carlo-and-deterministic-methods-eae8800ee095">1</a>, <a href="http://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html">2</a>.</p>
+
+<h3 id="example-use-of-variational-inference-to-obtain-lower-bound-on-the-marginal-likelihood">Example: Use of Variational Inference to obtain lower-bound on the marginal likelihood</h3>
+<p>Consider a general probabilistic model with observations $x$, latent variables $z$ over which we must integrate, and model parameters $θ$. We introduce an approximate posterior distribution for the latent variables $q_{\phi}(z\vert x)$ and follow the variational principle (Jordan et al., 1999) to obtain a bound on the marginal likelihood:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*} \log p_{θ}(x) & = \log \int p_{θ}(x\vert z)p(z)dz \\ 
+                              & = \log \int \frac{q_{\phi}(z\vert x)}{q_{\phi}(z\vert x)} p_{θ}(x\vert z)p(z)dz \\
+                              & = \log \left( \mathbb{E}_{q} \left[ \frac{p( z)}{q_{\phi}(z\vert x)} . q_{\phi}(z\vert x) p_{θ}(x\vert z) \right] \right) \\
+                              & \geq \mathbb{E}_{q} \left[\log \left(\frac{p( z)}{q_{\phi}(z\vert x)} . q_{\phi}(z\vert x) p_{θ}(x\vert z)\right) \right]  \\
+                              & \geq \mathbb{E}_{q} \left[\log \left(\frac{p( z)}{q_{\phi}(z\vert x)}\right) + \log\left(q_{\phi}(z\vert x) p_{θ}(x\vert z)\right) \right]  \\
+                              & = -\mathbb{D}_{\mathrm{KL}} [q_{\phi}(z\vert x) \Vert p( z)] + \mathbb{E}_q [\log p(x\vert z)],
+        \end{align*} %]]></script>
+
+<p>where we have used Jensen’s inequality $ \left(f (\mathbb{E}[x]) ≤ \mathbb{E} [f(x)]\right) $. $p_θ (x\vert z)$ is a likelihood function and $p(z)$ is a prior over the latent variables. This bound is often referred to as the negative free energy $\mathcal{F}$ or as the evidence lower bound (ELBO). It consists of two terms: the first is the KL-divergence between the approximate posterior and the prior distribution (which acts as a regularizer), and the second is a reconstruction error. This bound provides a unified objective function for optimization of both the parameters $θ$ and $\phi$ of the model and variational approximation, respectively.</p>
+
+<p>Current best practice in variational inference performs this optimization using mini-batches and stochastic gradient descent, which is what allows variational inference to be scaled to problems with very large data sets. There are two problems that must be addressed to successfully use the variational approach:</p>
+
+<ol>
+  <li>efficient computation of the derivatives of the expected log-likelihood <script type="math/tex">\nabla_{\phi} \mathbb{E}_{q_{\phi}(z)}\left[\log p_{\theta} (x\vert z)\right]</script>. This tackled in the paper <a href="https://arxiv.org/abs/1312.6114">Auto-encoding Variational Bayes (Kingma &amp; Welling, 2014)</a></li>
+  <li>choosing the richest, computationally-feasible approximate posterior distribution $q(·)$. This tackled in the paper <a href="/post/checksum/">Variational Inference of Normalizing Flows (Rezende &amp; Shakir, 2015)</a>.</li>
+</ol>
+
 
 
 <script type="text/x-mathjax-config">
