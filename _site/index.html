@@ -94,9 +94,9 @@ Combine the ideas from both.</p>
 
 <h2 id="normalizing-flows">Normalizing Flows</h2>
 
-<p><img src="\photos\shakir_danilo_slide.png" alt="!" style="width: 500px; height: auto;" /></p>
+<p><img src="\photos\shakir_danilo_slide.png" alt="!" style="width: 600px; height: auto;" /></p>
 
-<p><strong>Key idea</strong>: Assume a simple probability distribution, take a sample from it and then <strong><em>transform</em></strong> that sample. This is equivalent to change of variables in probability distributions and, if the transformation meets some mild conditions, can result in a very complex pdf of the transformed variable. The formalism of normalizing flows now gives us a systematic way of specifying the approximate posterior distributions $q(z\vert x)$ required for variational inference.</p>
+<p><strong>Key idea</strong>: Assume a simple probability distribution, take a sample from it and then <strong><em>transform</em></strong> that sample. This is equivalent to change of variables in probability distributions and, if the transformation meets some mild conditions, can result in a very complex pdf of the transformed variable. The formalism of normalizing flows now gives us a systematic way of specifying the approximate posterior distributions $q(z\vert x)$ required for variational inference. (see <a href="/post/inf_prob_models/">Inference in probabilistic models</a>)</p>
 
 <p>Example: If $f$ is monotonically increasing or monotonically decreasing function, such that $y = f(x)$, $x \sim p_{X}$, then we have:
 \[ p_{Y}(y)= \frac{d}{dy}\mathbb{P}(Y\leq y)= \frac{d}{dy}\mathbb{P}(f(X)\leq y)=\frac{d}{dy}\mathbb{P}(X\leq f^{-1}(y))=p_{X}(f^{-1}(y))\frac{df^{-1}(y)}{dy}=p_{X}(x)\frac{df^{-1}(y)}{dy},\]
@@ -106,7 +106,7 @@ respectively.</p>
 <p>Similarly for multivariate invertible mappings $f:\mathbb{R}^{m}\mapsto \mathbb{R}^{m}$ and $X\sim p_{X}$, $Y=f(X)$, we get:</p>
 
 <p>\[\boxed{ p_{Y}(y)=p_{X}(x)\left\lvert \operatorname{det}\frac{df^{-1}(y)}{dy}\right\rvert =p_{X}(x)\left\lvert \operatorname{det}\frac{df(x)}{dy}\right\rvert^{-1} },\qquad complexity \rightarrow O(m^{3})\]
-where the last equality exploits $[ \mathrm{det}(A^{-1}) =\mathrm{det}(A)^{-1} ]$ and the <a href="https://en.wikipedia.org/wiki/Inverse_function_theorem">property of jacobian of inverse functions</a> (PS: invertibility of $f(\cdot)$ validates the use of this property).</p>
+where the last equality exploits the <a href="https://en.wikipedia.org/wiki/Inverse_function_theorem">property of jacobian of inverse functions</a> (PS: invertibility of $f(\cdot)$ validates the use of this property) and $[ \mathrm{det}(A^{-1}) =\mathrm{det}(A)^{-1} ]$.</p>
 
 <p>NFs are typically used to parametrise the approximate posterior $q(z\vert x)$ but can also be applied for the likelihood function. We can apply a series of mappings  $f_{k},~ k= [ 1,\dots,K ]$ and obtain a normalizing flow:</p>
 
@@ -131,13 +131,17 @@ where the last equality exploits $[ \mathrm{det}(A^{-1}) =\mathrm{det}(A)^{-1} ]
 
 <p>This series of transformations can transform a simple probability distribution (e.g. Gaussian) into a complicated multi-modal one. To be of practical use, however, we can consider only transformations whose determinants of Jacobians are easy to compute. The original paper considered two simple family of transformations, named planar and radial flows.</p>
 
+<hr />
+
 <h2 id="planar-flow">Planar Flow</h2>
 <p>\[ f(\mathbf{z}) = \mathbf{z} + \mathbf{u} h(\mathbf{w}^{\top} \mathbf{z} + b) \]
-with $\mathbf{U}, \mathbf{W}\in \mathbb{R}^{d}$ and $b\in \mathbb{R}$ and $h$ an elemnet-wise non-linearity. Let $\psi (\mathbf{z}) = h’ (\mathbf{w}^T \mathbf{z} + b) \mathbf{w}$. Then the determinant can be easily computed as</p>
+with $\mathbf{U}, \mathbf{W}\in \mathbb{R}^{d}$ and $b\in \mathbb{R}$ and $h$ an element-wise non-linearity. Let $\psi (\mathbf{z}) = h’ (\mathbf{w}^T \mathbf{z} + b) \mathbf{w}$. Then the determinant can be easily computed as</p>
 
 <p>\[ \left| \mathrm{det} \frac{\partial f}{\partial \mathbf{z}} \right| =
   \left| 1 + \mathbf{u}^{\top} \psi( \mathbf{z} ) \right| = \left| 1 + \mathbf{u}^{\top} h’ (\mathbf{w}^T \mathbf{z} + b) \mathbf{w} \right| .  \]
 Since $0\leq h’ \leq 1$ for $ h(x) = \tanh (x) $, we require $ \mathbf{u}^{\top}\mathbf{w} \geq -1$ for invertibility of such flows. We can think of planar flows as slicing the $\mathbf{z}$-space with straight lines (or hyperplanes), where each line contracts or expands the space around it, see figure 1 (in paper).</p>
+
+<hr />
 
 <h2 id="radial-flow">Radial Flow</h2>
 <p>\[  f(\mathbf{z}) = \mathbf{z} + \beta h(\alpha, r)(\mathbf{z} - \mathbf{z}_0),\]</p>
@@ -146,16 +150,57 @@ Since $0\leq h’ \leq 1$ for $ h(x) = \tanh (x) $, we require $ \mathbf{u}^{\to
 
 <p>Similarly to planar flows, radial flows introduce spheres in the $z$-space, which either contract or expand the space inside the sphere, see figure 1 (in paper).</p>
 
-<h3 id="density-estimation-generative-modelling">Density estimation (Generative modelling)</h3>
-<p>$p_X:$ data distribution, $p_Y:$ prior ob latent variable, $p_{f^{-1}(Y)}:$ push-forward density of $f^{-1}(Y)$, i.e the generative model</p>
+<hr />
+<h3 id="algorithmic-steps">Algorithmic steps</h3>
+<p>Suppose the unknown target distribution is specified using energy functions $U(z)$, $p(z) = \frac{1}{\mathcal{Z}} \exp(-U(z))$, where $\mathcal{Z}$ is the unknown partition function (normalization constant); that is, $p(z) \propto \exp({-U(z)})$.</p>
+
+<p><strong>Steps:</strong></p>
+<ol>
+  <li>
+    <p>Generate random samples from initial distribution $z_{0} \sim q_0 (z) = \mathcal{N}(z; \mu, \sigma^2 I)$.
+Here $\mu$ and $\sigma$ can either be fixed (such as standard Normal distribution) or can be estimated as follows:
+Draw auxillary random variable $\epsilon$ from standard normal distribution $\epsilon \sim \mathcal{N}(0, I)$ and apply linear normalizing flow transformation $f(\epsilon) = \mu + \sigma \epsilon$, re-parameterizing $\sigma = e^{(\frac{1}{2}*\log(var))}$ to ensure $\sigma &gt; 0$, then jointly optimize {$\mu$, $var$} together with the other normalizing flow parameters (see below).</p>
+  </li>
+  <li>Transform the initial samples $z_0$ through $K$ <em>Normalizing Flow</em> transforms, from which we obtain the transformed approximate distribution $q_{K}(z)$,
+  $\log q_{K}(z) = \log q_0 (z) - \sum_{k=1}^K \log (\mathrm{det} |J_k|)$
+where $J_k$ is the Jacobian of the $k$-th (invertible) normalizing flow transform.
+E.g. for planar flows,
+  $\log q_{K}(z) = \log q_0 (z) - \sum_{k=1}^K \log |1 + u_k^{\top} \psi_k(z_{k-1})|$
+where each flow includes model parameters $\lambda = \{ w, u, b \}$.</li>
+  <li>Jointly optimize all model parameters by minimizing <em>KL-Divergence</em> between the approximate distribution $q_{K}(z)$
+and the true distribution $p(z)$.
+  <script type="math/tex">% <![CDATA[
+\begin{align*}
+           loss = KL[q_{K}(z)||p(z)] & = \mathbb{E}_{z_K \sim q_{K}(z)} \left[ \log q_K(z_K) - \log p(z_K) \right]\\
+                          &= \mathbb{E}_{z_K \sim q_{K}(z)} \left[ \left(\log q_0(z_0) - \sum_k \log (\mathrm{det} |J_k|\right) - \left(-U(z_K) - \log(\mathcal{Z})\right) \right]\\
+                         &= \mathbb{E}_{z_0 \sim q_0(z)} \left[ \log q_0(z_0) - \sum_k \log \left(\mathrm{det} |J_k|\right) + U(f_1(f_2(\dots f_K(z_0)))) + \log(\mathcal{Z}) \right]
+  \end{align*} %]]></script><br />
+Here the partition function $\mathcal{Z}$ is independent of $z_0$ and model parameters, so we can ignore it for the optimization
+  $loss = \mathbb{E}_{z_0 \sim q_0(z)} \left[ \log q_0(z_0) - \sum_k \log (\mathrm{det} |J_k|) + U(z_K) \right]$</li>
+</ol>
+
+<p>The expectation could be approximated by Monte Carlo sampling, the mini-batch average here could be considered as the Monte Carlo Sampling Expectation.</p>
+
+<h3 id="ex-density-estimation-generative-modelling">Ex: Density estimation (Generative modelling)</h3>
+<p>$p_X:$ data distribution, $p_Y:$ prior over latent variable, $p_{f^{-1}(Y)}:$ push-forward density of $f^{-1}(Y)$, i.e the generative model</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
-\begin{align*}
+\begin{align*} 
  D_{KL}(p_X \Vert p_{f^{-1}(Y)}) & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{f^{-1}(Y)} (x) \right] \\ 
                                 & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{X} (x) \right] \\
                                 & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x))\left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]\\
-                                & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x)) - \log \left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]
+                                & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x)) - \log \left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right| \right]
 \end{align*} %]]></script>
+
+<h3 id="footnotes">Footnotes:</h3>
+<ol>
+  <li>
+    <p>See <a href="https://arxiv.org/abs/1511.01844">A note on the evaluation of generative models</a> for a thought-provoking discussion about how high log-likelihood is neither sufficient nor necessary to generate “plausible” images. Still, it’s better than nothing and in practice a useful diagnostic tool.</p>
+  </li>
+  <li>
+    <p>There’s a connection between Normalizing Flows and GANs via encoder-decoder GAN architectures that learn the inverse of the generator (ALI / BiGAN). Since there is a separate encoder trying to recover $u=G^{−1}(x)$ such that $x=G(u)$, the generator can be thought of as a flow for the simple uniform distribution. However, we don’t know how to compute the amount of volume expansion/contraction w.r.t. $x$, so we cannot recover density from GANs. However, it’s probably not entirely unreasonable to model the log-det-jacobian numerically or enforce some kind of linear-time Jacobian by construction.</p>
+  </li>
+</ol>
 
         </div>
              
@@ -354,6 +399,8 @@ The posterior is the distribution of the latent variables $\mathbf{z}$, conditio
 
 <p>More on these methods could be read in the excellent book by David Mckay - `Information theory, Inference and Learning Algorithms’ and from blogs <a href="https://medium.com/neuralspace/inference-in-probabilistic-models-monte-carlo-and-deterministic-methods-eae8800ee095">1</a>, <a href="http://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html">2</a>.</p>
 
+<hr />
+
 <h3 id="example-use-of-variational-inference-to-obtain-lower-bound-on-the-marginal-likelihood">Example: Use of Variational Inference to obtain lower-bound on the marginal likelihood</h3>
 <p>Consider a general probabilistic model with observations $x$, latent variables $z$ over which we must integrate, and model parameters $θ$. We introduce an approximate posterior distribution for the latent variables $q_{\phi}(z\vert x)$ and follow the variational principle (Jordan et al., 1999) to obtain a bound on the marginal likelihood:</p>
 
@@ -371,8 +418,8 @@ The posterior is the distribution of the latent variables $\mathbf{z}$, conditio
 <p>Current best practice in variational inference performs this optimization using mini-batches and stochastic gradient descent, which is what allows variational inference to be scaled to problems with very large data sets. There are two problems that must be addressed to successfully use the variational approach:</p>
 
 <ol>
-  <li>efficient computation of the derivatives of the expected log-likelihood <script type="math/tex">\nabla_{\phi} \mathbb{E}_{q_{\phi}(z)}\left[\log p_{\theta} (x\vert z)\right]</script>. This tackled in the paper <a href="https://arxiv.org/abs/1312.6114">Auto-encoding Variational Bayes (Kingma &amp; Welling, 2014)</a></li>
-  <li>choosing the richest, computationally-feasible approximate posterior distribution $q(·)$. This tackled in the paper <a href="/post/checksum/">Variational Inference of Normalizing Flows (Rezende &amp; Shakir, 2015)</a>.</li>
+  <li>efficient computation of the derivatives of the expected log-likelihood <script type="math/tex">\nabla_{\phi} \mathbb{E}_{q_{\phi}(z)}\left[\log p_{\theta} (x\vert z)\right]</script>. This is tackled in the paper <a href="https://arxiv.org/abs/1312.6114">Auto-encoding Variational Bayes (Kingma &amp; Welling, 2014)</a></li>
+  <li>choosing the richest, computationally-feasible approximate posterior distribution $q(·)$. This is tackled in the paper <a href="/post/checksum/">Variational Inference of Normalizing Flows (Rezende &amp; Shakir, 2015)</a>.</li>
 </ol>
 
 

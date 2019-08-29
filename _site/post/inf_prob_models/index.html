@@ -98,6 +98,8 @@ The posterior is the distribution of the latent variables $\mathbf{z}$, conditio
 
 <p>More on these methods could be read in the excellent book by David Mckay - `Information theory, Inference and Learning Algorithms’ and from blogs <a href="https://medium.com/neuralspace/inference-in-probabilistic-models-monte-carlo-and-deterministic-methods-eae8800ee095">1</a>, <a href="http://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html">2</a>.</p>
 
+<hr />
+
 <h3 id="example-use-of-variational-inference-to-obtain-lower-bound-on-the-marginal-likelihood">Example: Use of Variational Inference to obtain lower-bound on the marginal likelihood</h3>
 <p>Consider a general probabilistic model with observations $x$, latent variables $z$ over which we must integrate, and model parameters $θ$. We introduce an approximate posterior distribution for the latent variables $q_{\phi}(z\vert x)$ and follow the variational principle (Jordan et al., 1999) to obtain a bound on the marginal likelihood:</p>
 
@@ -115,8 +117,8 @@ The posterior is the distribution of the latent variables $\mathbf{z}$, conditio
 <p>Current best practice in variational inference performs this optimization using mini-batches and stochastic gradient descent, which is what allows variational inference to be scaled to problems with very large data sets. There are two problems that must be addressed to successfully use the variational approach:</p>
 
 <ol>
-  <li>efficient computation of the derivatives of the expected log-likelihood <script type="math/tex">\nabla_{\phi} \mathbb{E}_{q_{\phi}(z)}\left[\log p_{\theta} (x\vert z)\right]</script>. This tackled in the paper <a href="https://arxiv.org/abs/1312.6114">Auto-encoding Variational Bayes (Kingma &amp; Welling, 2014)</a></li>
-  <li>choosing the richest, computationally-feasible approximate posterior distribution $q(·)$. This tackled in the paper <a href="/post/checksum/">Variational Inference of Normalizing Flows (Rezende &amp; Shakir, 2015)</a>.</li>
+  <li>efficient computation of the derivatives of the expected log-likelihood <script type="math/tex">\nabla_{\phi} \mathbb{E}_{q_{\phi}(z)}\left[\log p_{\theta} (x\vert z)\right]</script>. This is tackled in the paper <a href="https://arxiv.org/abs/1312.6114">Auto-encoding Variational Bayes (Kingma &amp; Welling, 2014)</a></li>
+  <li>choosing the richest, computationally-feasible approximate posterior distribution $q(·)$. This is tackled in the paper <a href="/post/checksum/">Variational Inference of Normalizing Flows (Rezende &amp; Shakir, 2015)</a>.</li>
 </ol>
 
 

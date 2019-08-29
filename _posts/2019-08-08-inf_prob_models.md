@@ -31,6 +31,7 @@ $2$ methods exist: Sampling methods a.k.a. Monte-Carlo methods and Variational i
 
 More on these methods could be read in the excellent book by David Mckay - `Information theory, Inference and Learning Algorithms' and from blogs [1](https://medium.com/neuralspace/inference-in-probabilistic-models-monte-carlo-and-deterministic-methods-eae8800ee095), [2](http://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html).
 
+---
 
 ### Example: Use of Variational Inference to obtain lower-bound on the marginal likelihood
 Consider a general probabilistic model with observations $x$, latent variables $z$ over which we must integrate, and model parameters $θ$. We introduce an approximate posterior distribution for the latent variables $q_{\phi}(z\vert x)$ and follow the variational principle (Jordan et al., 1999) to obtain a bound on the marginal likelihood: 
@@ -47,6 +48,6 @@ where we have used Jensen's inequality $ \left(f (\mathbb{E}[x]) ≤ \mathbb{E} 
 
 Current best practice in variational inference performs this optimization using mini-batches and stochastic gradient descent, which is what allows variational inference to be scaled to problems with very large data sets. There are two problems that must be addressed to successfully use the variational approach:
 
-1. efficient computation of the derivatives of the expected log-likelihood $$\nabla_{\phi} \mathbb{E}_{q_{\phi}(z)}\left[\log p_{\theta} (x\vert z)\right]$$. This tackled in the paper [Auto-encoding Variational Bayes (Kingma & Welling, 2014)](https://arxiv.org/abs/1312.6114) 
-2. choosing the richest, computationally-feasible approximate posterior distribution $q(·)$. This tackled in the paper [Variational Inference of Normalizing Flows (Rezende & Shakir, 2015)](/post/checksum/).
+1. efficient computation of the derivatives of the expected log-likelihood $$\nabla_{\phi} \mathbb{E}_{q_{\phi}(z)}\left[\log p_{\theta} (x\vert z)\right]$$. This is tackled in the paper [Auto-encoding Variational Bayes (Kingma & Welling, 2014)](https://arxiv.org/abs/1312.6114) 
+2. choosing the richest, computationally-feasible approximate posterior distribution $q(·)$. This is tackled in the paper [Variational Inference of Normalizing Flows (Rezende & Shakir, 2015)](/post/checksum/).
 

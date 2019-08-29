@@ -17,6 +17,7 @@ future: true
 jekyll_auth:
   whitelist:
     - about?
+    - tutorials?
     - css?
     - photos?
     - _layouts?
