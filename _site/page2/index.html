@@ -4,7 +4,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <link rel="icon" type="image/icon" href="favicon.ico">
 
+
 <title>Home</title>
+
+
+<script src="https://storage.googleapis.com/montco-stats/javascript/vis-4.17.0/dist/vis.js" type="text/javascript"></script>
+<link href="https://storage.googleapis.com/montco-stats/javascript/vis-4.17.0/dist/vis-network.min.css" rel="stylesheet" type="text/css" />
 
 <link rel="stylesheet" href="http://localhost:4000/css/syntax.css">
 <link rel="stylesheet" href="http://localhost:4000/css/main.css">
@@ -69,6 +74,70 @@
 
 <section id="main">
 	  
+      <article>
+      <div class="heading"><a href="/post/inf_prob_models/">Inference in probabilistic models</a></div>
+      <p class="meta"><a class="permalink" href="/post/inf_prob_models/">&#9679;</a> 08 Aug 2019</p>
+      <div>
+        <p>Statistical Machine Learning algorithms try to learn the structure of data by fitting a parametric distribution $p(x;θ)$ to it. Given a dataset, if we can represent it with a distribution, we can:</p>
+
+<ol>
+  <li>Generate new data “for free” by sampling from the learned distribution in silico; no need to run the true generative process for the data. This is a useful tool if the data is expensive to generate, i.e. a real-world experiment that takes a long time to run. Sampling is also used to construct estimators of high-dimensional integrals over spaces.</li>
+  <li>Evaluate the likelihood of data observed at test time (this can be used for rejection sampling or to score how good our model is).</li>
+  <li>Find the conditional relationship between variables. For example, learning the distribution $p(x_2\vert x_1)$ allows us to build discriminative classification or regression models.</li>
+  <li>Score our algorithm by using complexity measures like entropy, mutual information, and moments of the distribution.</li>
+</ol>
+
+<p><strong>Inference</strong>: $x\sim p_{X}$, $z=f(x)$.<br />
+<strong>Generation</strong>: $z\sim p_{Z}$, $x=f^{-1}(z)$</p>
+
+<p>How can we use a model $p(\mathbf{x}, \mathbf{z})$ to analyze some data $\mathbf{x}$? In other words, what hidden structure of $\mathbf{z}$ explains the data? We seek to infer this hidden structure using the model.</p>
+
+<p>One method of inference leverages Bayes’ rule to define the posterior
+\[p(\mathbf{z} \mid \mathbf{x}) = \frac{p(\mathbf{x}, \mathbf{z})}{\int_{z} p(\mathbf{x}, \mathbf{z}) \text{d}\mathbf{z}}.\]
+​​ 
+The posterior is the distribution of the latent variables $\mathbf{z}$, conditioned on some (observed) data $\mathbf{x}$. Drawing analogy to representation learning, it is a probabilistic description of the data’s hidden representation. Often this distribution is unknown and difficult to compute due to intractable denominator (which has to be computed over all comfiguration of states). Hence, we go for approximations.</p>
+
+<p>$2$ methods exist: Sampling methods a.k.a. Monte-Carlo methods and Variational inference.</p>
+
+<p><strong>Sampling methods</strong> involves drawing random samples from an unknown true distribution. Some methods are Importance sampling, Rejection sampling, Metropolis-hastings method and Gibbs sampling. The last two mthods falls under category of MCMC methods.</p>
+
+<p><strong>Variational methods</strong> involves approximating the unknown true distribution $p(\mathbf{x})$ with a simpler known distribution $q(\mathbf{x};\theta)$ parametrized by $\theta$. Basically we minimize the divergence between these distributions over $\theta$. To approximate $p(\mathbf{x})$, <em>variational lower bound</em> is the key. We then maximize this VB to approximate $q$ to $p$. Its connections with deeplearning are beautifully established in paper - <a href="https://arxiv.org/abs/1312.6114">Auto-encoding Variational Bayes (Kingma &amp; Welling, 2014)</a>.</p>
+
+<p>More on these methods could be read in the excellent book by David Mckay - `Information theory, Inference and Learning Algorithms’ and from blogs <a href="https://medium.com/neuralspace/inference-in-probabilistic-models-monte-carlo-and-deterministic-methods-eae8800ee095">1</a>, <a href="http://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html">2</a>.</p>
+
+<hr />
+
+<h3 id="example-use-of-variational-inference-to-obtain-lower-bound-on-the-marginal-likelihood">Example: Use of Variational Inference to obtain lower-bound on the marginal likelihood</h3>
+<p>Consider a general probabilistic model with observations $x$, latent variables $z$ over which we must integrate, and model parameters $θ$. We introduce an approximate posterior distribution for the latent variables $q_{\phi}(z\vert x)$ and follow the variational principle (Jordan et al., 1999) to obtain a bound on the marginal likelihood:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*} \log p_{θ}(x) & = \log \int p_{θ}(x\vert z)p(z)dz \\ 
+                              & = \log \int \frac{q_{\phi}(z\vert x)}{q_{\phi}(z\vert x)} p_{θ}(x\vert z)p(z)dz \\
+                              & = \log \left( \mathbb{E}_{q} \left[ \frac{p( z)}{q_{\phi}(z\vert x)} . q_{\phi}(z\vert x) p_{θ}(x\vert z) \right] \right) \\
+                              & \geq \mathbb{E}_{q} \left[\log \left(\frac{p( z)}{q_{\phi}(z\vert x)} . q_{\phi}(z\vert x) p_{θ}(x\vert z)\right) \right]  \\
+                              & \geq \mathbb{E}_{q} \left[\log \left(\frac{p( z)}{q_{\phi}(z\vert x)}\right) + \log\left(q_{\phi}(z\vert x) p_{θ}(x\vert z)\right) \right]  \\
+                              & = -\mathbb{D}_{\mathrm{KL}} [q_{\phi}(z\vert x) \Vert p( z)] + \mathbb{E}_q [\log p(x\vert z)],
+        \end{align*} %]]></script>
+
+<p>where we have used Jensen’s inequality $ \left(f (\mathbb{E}[x]) ≤ \mathbb{E} [f(x)]\right) $. $p_θ (x\vert z)$ is a likelihood function and $p(z)$ is a prior over the latent variables. This bound is often referred to as the negative free energy $\mathcal{F}$ or as the evidence lower bound (ELBO). It consists of two terms: the first is the KL-divergence between the approximate posterior and the prior distribution (which acts as a regularizer), and the second is a reconstruction error. This bound provides a unified objective function for optimization of both the parameters $θ$ and $\phi$ of the model and variational approximation, respectively.</p>
+
+<p>Current best practice in variational inference performs this optimization using mini-batches and stochastic gradient descent, which is what allows variational inference to be scaled to problems with very large data sets. There are two problems that must be addressed to successfully use the variational approach:</p>
+
+<ol>
+  <li>efficient computation of the derivatives of the expected log-likelihood <script type="math/tex">\nabla_{\phi} \mathbb{E}_{q_{\phi}(z)}\left[\log p_{\theta} (x\vert z)\right]</script>. This is tackled in the paper <a href="https://arxiv.org/abs/1312.6114">Auto-encoding Variational Bayes (Kingma &amp; Welling, 2014)</a></li>
+  <li>choosing the richest, computationally-feasible approximate posterior distribution $q(·)$. This is tackled in the paper <a href="/post/checksum/">Variational Inference of Normalizing Flows (Rezende &amp; Shakir, 2015)</a>.</li>
+</ol>
+
+        </div>
+             
+	
+    	<span class="label label-default"><a href="/tags#distill-ref" title="View posts tagged with &quot;distill&quot;">distill</a></span>
+    
+
+
+     </article>
+     <hr>
+  
       <article>
       <div class="heading"><a href="/post/latexsublime-workflow/">Latex+Sublime+MathJax+Jekyll workflow</a></div>
       <p class="meta"><a class="permalink" href="/post/latexsublime-workflow/">&#9679;</a> 11 May 2019</p>
@@ -280,25 +349,6 @@ $ u(x; t) $ of the form $u(x; t) = \alpha(t)\phi(x)$. If you do this into heat e
      </article>
      <hr>
   
-      <article>
-      <div class="heading"><a href="/post/jek/">Kernel Methods and Pre-image problem</a></div>
-      <p class="meta"><a class="permalink" href="/post/jek/">&#9679;</a> 19 Mar 2019</p>
-      <div>
-        <p>A link to <a href="https://1drv.ms/b/s!AgUflGj0J6MbjVxD6OrOCM0LfxRv">notes on kernel methods</a>.</p>
-
-<p>Check out the <a href="http://jekyllrb.com">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/mojombo/jekyll">Jekyll’s GitHub repo</a>.</p>
-
-
-        </div>
-             
-	
-    	<span class="label label-default"><a href="/tags#distill-ref" title="View posts tagged with &quot;distill&quot;">distill</a></span>
-    
-
-
-     </article>
-     <hr>
-  
 
 
 <ul class="pager">
@@ -306,8 +356,14 @@ $ u(x; t) $ of the form $u(x; t) = \alpha(t)\phi(x)$. If you do this into heat e
       <li class="previous"><a href="/">&larr; Newer</a></li>
   
     
+      <li class="next"><a href="/page3">Older &rarr;</a></li>
+  
 </ul>
 </section>
+
+
+
+
 
 </body>
 </html>

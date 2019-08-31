@@ -27,7 +27,7 @@ $2$ methods exist: Sampling methods a.k.a. Monte-Carlo methods and Variational i
 
 **Sampling methods** involves drawing random samples from an unknown true distribution. Some methods are Importance sampling, Rejection sampling, Metropolis-hastings method and Gibbs sampling. The last two mthods falls under category of MCMC methods.
 
-**Variational methods** involves approximating the unknown true distribution $p(\mathbf{x})$ with a simpler known distribution $q(\mathbf{x};\theta)$ parametrized by $\theta$. Basically we minimize the divergence between these distributions over $\theta$. To approximate $p(\mathbf{x})$, *variational lower bound* is the key. 2 ways to derive it: using Jensen's inequality and using KL divergence. We then maximize this VB to approximate $q$ to $p$. Its connections with deeplearning are beautifully established in paper - [Auto-encoding Variational Bayes (Kingma & Welling, 2014)](https://arxiv.org/abs/1312.6114).
+**Variational methods** involves approximating the unknown true distribution $p(\mathbf{x})$ with a simpler known distribution $q(\mathbf{x};\theta)$ parametrized by $\theta$. Basically we minimize the divergence between these distributions over $\theta$. To approximate $p(\mathbf{x})$, *variational lower bound* is the key. We then maximize this VB to approximate $q$ to $p$. Its connections with deeplearning are beautifully established in paper - [Auto-encoding Variational Bayes (Kingma & Welling, 2014)](https://arxiv.org/abs/1312.6114).
 
 More on these methods could be read in the excellent book by David Mckay - `Information theory, Inference and Learning Algorithms' and from blogs [1](https://medium.com/neuralspace/inference-in-probabilistic-models-monte-carlo-and-deterministic-methods-eae8800ee095), [2](http://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html).
 
@@ -50,4 +50,3 @@ Current best practice in variational inference performs this optimization using 
 
 1. efficient computation of the derivatives of the expected log-likelihood $$\nabla_{\phi} \mathbb{E}_{q_{\phi}(z)}\left[\log p_{\theta} (x\vert z)\right]$$. This is tackled in the paper [Auto-encoding Variational Bayes (Kingma & Welling, 2014)](https://arxiv.org/abs/1312.6114) 
 2. choosing the richest, computationally-feasible approximate posterior distribution $q(·)$. This is tackled in the paper [Variational Inference of Normalizing Flows (Rezende & Shakir, 2015)](/post/checksum/).
-

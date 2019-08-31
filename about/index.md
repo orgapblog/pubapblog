@@ -1,6 +1,9 @@
 ---
 layout: default
 title: About ResearchNotes
+jsarr:
+- graphs/dag_default.js
+categories: Javascript
 ---
 
 ![!](\photos\TinyRickRIP.png){: style="max-width: 80px; height: auto;"}
@@ -10,6 +13,18 @@ I am a first-year Ph.D. candidate in [Stadius center for dynamical systems, sign
 I conduct research on basic machine learning at the intersection of kernel methods, deep learning and dynamical systems. My Ph.D. is generously funded by European Research Council and falls within the scope of [E-DUALITY](https://www.esat.kuleuven.be/stadius/E/) project.
 
 This blog mostly contains research notes made during my Ph.D. journey. High-level ideas, facts, summaries, mind-maps and musings will populate this blog.
+
+<style type="text/css">
+      #mynetwork {
+      width: auto;
+      height: 400px;
+      border: 1px solid lightgray;
+      }
+</style>
+
+<div id="mynetwork"></div>
+<br>
+<br>
 
 ---
 “[Wisdom] is earned through disgrace, through painful realization of the inadequacy of your personal world view.” — [Nat Hillard](https://stanforddailyarchive.com/cgi-bin/stanford?a=d&d=stanford20080118-01.2.19#)

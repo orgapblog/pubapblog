@@ -4,7 +4,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <link rel="icon" type="image/icon" href="favicon.ico">
 
+
 <title>Variational Inference of Normalizing Flows (Rezende & Shakir, 2015)</title>
+
+
+<script src="https://storage.googleapis.com/montco-stats/javascript/vis-4.17.0/dist/vis.js" type="text/javascript"></script>
+<link href="https://storage.googleapis.com/montco-stats/javascript/vis-4.17.0/dist/vis-network.min.css" rel="stylesheet" type="text/css" />
 
 <link rel="stylesheet" href="http://localhost:4000/css/syntax.css">
 <link rel="stylesheet" href="http://localhost:4000/css/main.css">
@@ -71,11 +76,12 @@
 	<article>
 <div class="heading">Variational Inference of Normalizing Flows (Rezende & Shakir, 2015)</div>
 <p class="meta"><a class="permalink" href="">&#9679;</a> 27 Aug 2019</p>
+
 <p><a href="http://proceedings.mlr.press/v37/rezende15.pdf">Original paper link</a></p>
 
-<h2 id="normalizing-flows">Normalizing Flows</h2>
+<h1 id="normalizing-flows">Normalizing Flows</h1>
 
-<p><img src="\photos\shakir_danilo_slide.png" alt="!" style="width: 600px; height: auto;" /></p>
+<p><img src="\photos\shakir_danilo_slide.png" alt="" style="width: 600px; height: auto;" /></p>
 
 <p><strong>Key idea</strong>: Assume a simple probability distribution, take a sample from it and then <strong><em>transform</em></strong> that sample. This is equivalent to change of variables in probability distributions and, if the transformation meets some mild conditions, can result in a very complex pdf of the transformed variable. The formalism of normalizing flows now gives us a systematic way of specifying the approximate posterior distributions $q(z\vert x)$ required for variational inference. (see <a href="/post/inf_prob_models/">Inference in probabilistic models</a>)</p>
 
@@ -110,7 +116,7 @@ where the last equality exploits the <a href="https://en.wikipedia.org/wiki/Inve
     }
   \right|.</script>
 
-<p>This series of transformations can transform a simple probability distribution (e.g. Gaussian) into a complicated multi-modal one. To be of practical use, however, we can consider only transformations whose determinants of Jacobians are easy to compute. The original paper considered two simple family of transformations, named planar and radial flows.</p>
+<p>This series of transformations can transform a simple probability distribution (e.g. Gaussian) into a complicated multi-modal one. Note that, after every mapping ($f_1, f_2, \dots $), the det-Jac has to be computed to ensure that the output is also a distribution. To be of practical use, however, we can consider only transformations whose determinants of Jacobians are easy to compute. The original paper considered two simple family of transformations, named planar and radial flows.</p>
 
 <hr />
 
@@ -153,7 +159,7 @@ and the true distribution $p(z)$.
   <script type="math/tex">% <![CDATA[
 \begin{align*}
            loss = KL[q_{K}(z)||p(z)] & = \mathbb{E}_{z_K \sim q_{K}(z)} \left[ \log q_K(z_K) - \log p(z_K) \right]\\
-                          &= \mathbb{E}_{z_K \sim q_{K}(z)} \left[ \left(\log q_0(z_0) - \sum_k \log (\mathrm{det} |J_k|\right) - \left(-U(z_K) - \log(\mathcal{Z})\right) \right]\\
+                          &= \mathbb{E}_{z_K \sim q_{K}(z)} \left[ \left(\log q_0(z_0) - \sum_k \log (\mathrm{det} |J_k|)\right) - \left(-U(z_K) - \log(\mathcal{Z})\right) \right]\\
                          &= \mathbb{E}_{z_0 \sim q_0(z)} \left[ \log q_0(z_0) - \sum_k \log \left(\mathrm{det} |J_k|\right) + U(f_1(f_2(\dots f_K(z_0)))) + \log(\mathcal{Z}) \right]
   \end{align*} %]]></script><br />
 Here the partition function $\mathcal{Z}$ is independent of $z_0$ and model parameters, so we can ignore it for the optimization
@@ -168,9 +174,9 @@ Here the partition function $\mathcal{Z}$ is independent of $z_0$ and model para
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{align*} 
  D_{KL}(p_X \Vert p_{f^{-1}(Y)}) & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{f^{-1}(Y)} (x) \right] \\ 
-                                & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{X} (x) \right] \\
-                                & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x))\left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]\\
-                                & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x)) - \log \left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right| \right]
+                                 & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{X} (x) \right] \\
+                                 & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x))\left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]\\
+                                 & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x)) - \log \left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right| \right]
 \end{align*} %]]></script>
 
 <h3 id="footnotes">Footnotes:</h3>
@@ -182,6 +188,8 @@ Here the partition function $\mathcal{Z}$ is independent of $z_0$ and model para
     <p>There’s a connection between Normalizing Flows and GANs via encoder-decoder GAN architectures that learn the inverse of the generator (ALI / BiGAN). Since there is a separate encoder trying to recover $u=G^{−1}(x)$ such that $x=G(u)$, the generator can be thought of as a flow for the simple uniform distribution. However, we don’t know how to compute the amount of volume expansion/contraction w.r.t. $x$, so we cannot recover density from GANs. However, it’s probably not entirely unreasonable to model the log-det-jacobian numerically or enforce some kind of linear-time Jacobian by construction.</p>
   </li>
 </ol>
+
+
 
 
 <script type="text/x-mathjax-config">
@@ -211,8 +219,15 @@ Here the partition function $\mathcal{Z}$ is independent of $z_0$ and model para
     	<span class="label label-default"><a href="/tags#paper_summary-ref" title="View posts tagged with &quot;paper_summary&quot;">paper_summary</a></span>
     
 
+
+
+
 </article>
 </section>
+
+
+
+
 
 </body>
 </html>

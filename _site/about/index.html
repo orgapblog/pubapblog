@@ -4,7 +4,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <link rel="icon" type="image/icon" href="favicon.ico">
 
+
 <title>About ResearchNotes</title>
+
+
+<script src="https://storage.googleapis.com/montco-stats/javascript/vis-4.17.0/dist/vis.js" type="text/javascript"></script>
+<link href="https://storage.googleapis.com/montco-stats/javascript/vis-4.17.0/dist/vis-network.min.css" rel="stylesheet" type="text/css" />
 
 <link rel="stylesheet" href="http://localhost:4000/css/syntax.css">
 <link rel="stylesheet" href="http://localhost:4000/css/main.css">
@@ -76,6 +81,18 @@
 
 <p>This blog mostly contains research notes made during my Ph.D. journey. High-level ideas, facts, summaries, mind-maps and musings will populate this blog.</p>
 
+<style type="text/css">
+      #mynetwork {
+      width: auto;
+      height: 400px;
+      border: 1px solid lightgray;
+      }
+</style>
+
+<div id="mynetwork"></div>
+<p><br />
+<br /></p>
+
 <hr />
 <p>“[Wisdom] is earned through disgrace, through painful realization of the inadequacy of your personal world view.” — <a href="https://stanforddailyarchive.com/cgi-bin/stanford?a=d&amp;d=stanford20080118-01.2.19#">Nat Hillard</a></p>
 
@@ -91,6 +108,47 @@
 </ul>
 
 </section>
+
+
+
+
+      <script type="text/javascript">
+         // create an array with nodes
+  var nodes = new vis.DataSet([
+    {id: 1, label: 'Code'},
+    {id: 2, label: 'Submit Entry'},
+    {id: 3, label: 'Think About Problem'},
+    {id: 4, label: 'Create a Post'},
+    {id: 5, label: 'View Results'},
+    {id: 6, label: 'Research'}      
+      
+  ]);
+
+  // create an array with edges
+  var edges = new vis.DataSet([
+      {from: 1, to: 3},
+      {from: 1, to: 2},
+      {from: 2, to: 4},
+      {from: 2, to: 5},
+      {from: 3, to: 1},
+      {from: 5, to: 4},
+      {from: 1, to: 6},
+      {from: 5, to: 1},
+      {from: 6, to: 3},
+      {from: 3, to: 6},                  
+      
+  ]);
+
+  // create a network
+  var container = document.getElementById('mynetwork');
+  var data = {
+    nodes: nodes,
+    edges: edges
+  };
+  var options = {};
+  var network = new vis.Network(container, data, options);
+      </script>
+
 
 </body>
 </html>

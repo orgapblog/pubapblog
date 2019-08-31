@@ -7,6 +7,30 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Latent variable models</title>
+				<description>&lt;p&gt;Many statistical models are generative models (that is, models that specify a full probability density over all variables in the situation) that make use of latent variables to describe a probability distribution over observables.&lt;/p&gt;
+
+&lt;p&gt;Some examples of latent variable models are mixture models, which model the observables as coming from a superposed mixture of simple probability distributions (the latent variables are the unknown class labels of the examples); hidden Markov models (Rabiner and Juang, 1986; Durbin et al., 1998); and factor analysis. More recent ones that are also popularized by ML community are RBMs, VAEs and GANs.&lt;/p&gt;
+
+&lt;p&gt;The decoding problem for error-correcting codes can also be viewed in terms of a latent variable model - figure below. In that case, the encoding matrix $G$ is normally known in advance. In latent variable modelling, the parameters equivalent to $G$ are usually not known, and must be inferred from the data along with the latent variables $s$. In the figure, The $K$ latent variables are the independent source bits $s_1, \dots , s_K$; these give rise to the observables via the generator matrix $G$.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/photos/latent_var.PNG&quot; alt=&quot;&quot; style=&quot;width: 250px; height: auto;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Usually, the latent variables have a simple distribution, often a separable distribution. Thus when we fit a latent variable model, we are finding a description of the data in terms of ‘independent components’. The ‘&lt;em&gt;independent component analysis&lt;/em&gt;’ algorithm corresponds to perhaps the simplest possible latent variable model with continuous latent variables.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;independent-component-analysis&quot;&gt;Independent Component Analysis&lt;/h2&gt;
+
+&lt;p&gt;Some references: &lt;a href=&quot;/post/latent-variable-models/&quot;&gt;tutorial&lt;/a&gt; and  Ch. 34 in David Mckay - `Information theory, Inference and Learning Algorithms’.&lt;/p&gt;
+
+</description>
+				<pubDate>Fri, 30 Aug 2019 00:00:00 +0200</pubDate>
+				<link>http://localhost:4000/post/latent-variable-models/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/latent-variable-models/</guid>
+			</item>
+		
+			<item>
 				<title>Jekyll blog with OAuth</title>
 				<description>&lt;p&gt;Refer these blogs &lt;a href=&quot;https://ben.balter.com/jekyll-auth/&quot;&gt;1&lt;/a&gt;, &lt;a href=&quot;https://blog.heroku.com/jekyll-on-heroku&quot;&gt;2&lt;/a&gt;.
 Combine the ideas from both.&lt;/p&gt;
@@ -20,9 +44,9 @@ Combine the ideas from both.&lt;/p&gt;
 				<title>Variational Inference of Normalizing Flows (Rezende &amp; Shakir, 2015)</title>
 				<description>&lt;p&gt;&lt;a href=&quot;http://proceedings.mlr.press/v37/rezende15.pdf&quot;&gt;Original paper link&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;normalizing-flows&quot;&gt;Normalizing Flows&lt;/h2&gt;
+&lt;h1 id=&quot;normalizing-flows&quot;&gt;Normalizing Flows&lt;/h1&gt;
 
-&lt;p&gt;&lt;img src=&quot;\photos\shakir_danilo_slide.png&quot; alt=&quot;!&quot; style=&quot;width: 600px; height: auto;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;\photos\shakir_danilo_slide.png&quot; alt=&quot;&quot; style=&quot;width: 600px; height: auto;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Key idea&lt;/strong&gt;: Assume a simple probability distribution, take a sample from it and then &lt;strong&gt;&lt;em&gt;transform&lt;/em&gt;&lt;/strong&gt; that sample. This is equivalent to change of variables in probability distributions and, if the transformation meets some mild conditions, can result in a very complex pdf of the transformed variable. The formalism of normalizing flows now gives us a systematic way of specifying the approximate posterior distributions $q(z\vert x)$ required for variational inference. (see &lt;a href=&quot;/post/inf_prob_models/&quot;&gt;Inference in probabilistic models&lt;/a&gt;)&lt;/p&gt;
 
@@ -57,7 +81,7 @@ where the last equality exploits the &lt;a href=&quot;https://en.wikipedia.org/w
     }
   \right|.&lt;/script&gt;
 
-&lt;p&gt;This series of transformations can transform a simple probability distribution (e.g. Gaussian) into a complicated multi-modal one. To be of practical use, however, we can consider only transformations whose determinants of Jacobians are easy to compute. The original paper considered two simple family of transformations, named planar and radial flows.&lt;/p&gt;
+&lt;p&gt;This series of transformations can transform a simple probability distribution (e.g. Gaussian) into a complicated multi-modal one. Note that, after every mapping ($f_1, f_2, \dots $), the det-Jac has to be computed to ensure that the output is also a distribution. To be of practical use, however, we can consider only transformations whose determinants of Jacobians are easy to compute. The original paper considered two simple family of transformations, named planar and radial flows.&lt;/p&gt;
 
 &lt;hr /&gt;
 
@@ -100,7 +124,7 @@ and the true distribution $p(z)$.
   &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
 \begin{align*}
            loss = KL[q_{K}(z)||p(z)] &amp; = \mathbb{E}_{z_K \sim q_{K}(z)} \left[ \log q_K(z_K) - \log p(z_K) \right]\\
-                          &amp;= \mathbb{E}_{z_K \sim q_{K}(z)} \left[ \left(\log q_0(z_0) - \sum_k \log (\mathrm{det} |J_k|\right) - \left(-U(z_K) - \log(\mathcal{Z})\right) \right]\\
+                          &amp;= \mathbb{E}_{z_K \sim q_{K}(z)} \left[ \left(\log q_0(z_0) - \sum_k \log (\mathrm{det} |J_k|)\right) - \left(-U(z_K) - \log(\mathcal{Z})\right) \right]\\
                          &amp;= \mathbb{E}_{z_0 \sim q_0(z)} \left[ \log q_0(z_0) - \sum_k \log \left(\mathrm{det} |J_k|\right) + U(f_1(f_2(\dots f_K(z_0)))) + \log(\mathcal{Z}) \right]
   \end{align*} %]]&gt;&lt;/script&gt;&lt;br /&gt;
 Here the partition function $\mathcal{Z}$ is independent of $z_0$ and model parameters, so we can ignore it for the optimization
@@ -115,9 +139,9 @@ Here the partition function $\mathcal{Z}$ is independent of $z_0$ and model para
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align*} 
  D_{KL}(p_X \Vert p_{f^{-1}(Y)}) &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{f^{-1}(Y)} (x) \right] \\ 
-                                &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{X} (x) \right] \\
-                                &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x))\left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]\\
-                                &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x)) - \log \left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right| \right]
+                                 &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{X} (x) \right] \\
+                                 &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x))\left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]\\
+                                 &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x)) - \log \left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right| \right]
 \end{align*} %]]&gt;&lt;/script&gt;
 
 &lt;h3 id=&quot;footnotes&quot;&gt;Footnotes:&lt;/h3&gt;
@@ -309,7 +333,7 @@ The posterior is the distribution of the latent variables $\mathbf{z}$, conditio
 
 &lt;p&gt;&lt;strong&gt;Sampling methods&lt;/strong&gt; involves drawing random samples from an unknown true distribution. Some methods are Importance sampling, Rejection sampling, Metropolis-hastings method and Gibbs sampling. The last two mthods falls under category of MCMC methods.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Variational methods&lt;/strong&gt; involves approximating the unknown true distribution $p(\mathbf{x})$ with a simpler known distribution $q(\mathbf{x};\theta)$ parametrized by $\theta$. Basically we minimize the divergence between these distributions over $\theta$. To approximate $p(\mathbf{x})$, &lt;em&gt;variational lower bound&lt;/em&gt; is the key. 2 ways to derive it: using Jensen’s inequality and using KL divergence. We then maximize this VB to approximate $q$ to $p$. Its connections with deeplearning are beautifully established in paper - &lt;a href=&quot;https://arxiv.org/abs/1312.6114&quot;&gt;Auto-encoding Variational Bayes (Kingma &amp;amp; Welling, 2014)&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Variational methods&lt;/strong&gt; involves approximating the unknown true distribution $p(\mathbf{x})$ with a simpler known distribution $q(\mathbf{x};\theta)$ parametrized by $\theta$. Basically we minimize the divergence between these distributions over $\theta$. To approximate $p(\mathbf{x})$, &lt;em&gt;variational lower bound&lt;/em&gt; is the key. We then maximize this VB to approximate $q$ to $p$. Its connections with deeplearning are beautifully established in paper - &lt;a href=&quot;https://arxiv.org/abs/1312.6114&quot;&gt;Auto-encoding Variational Bayes (Kingma &amp;amp; Welling, 2014)&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;More on these methods could be read in the excellent book by David Mckay - `Information theory, Inference and Learning Algorithms’ and from blogs &lt;a href=&quot;https://medium.com/neuralspace/inference-in-probabilistic-models-monte-carlo-and-deterministic-methods-eae8800ee095&quot;&gt;1&lt;/a&gt;, &lt;a href=&quot;http://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html&quot;&gt;2&lt;/a&gt;.&lt;/p&gt;
 
@@ -335,7 +359,6 @@ The posterior is the distribution of the latent variables $\mathbf{z}$, conditio
   &lt;li&gt;efficient computation of the derivatives of the expected log-likelihood &lt;script type=&quot;math/tex&quot;&gt;\nabla_{\phi} \mathbb{E}_{q_{\phi}(z)}\left[\log p_{\theta} (x\vert z)\right]&lt;/script&gt;. This is tackled in the paper &lt;a href=&quot;https://arxiv.org/abs/1312.6114&quot;&gt;Auto-encoding Variational Bayes (Kingma &amp;amp; Welling, 2014)&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;choosing the richest, computationally-feasible approximate posterior distribution $q(·)$. This is tackled in the paper &lt;a href=&quot;/post/checksum/&quot;&gt;Variational Inference of Normalizing Flows (Rezende &amp;amp; Shakir, 2015)&lt;/a&gt;.&lt;/li&gt;
 &lt;/ol&gt;
-
 </description>
 				<pubDate>Thu, 08 Aug 2019 00:00:00 +0200</pubDate>
 				<link>http://localhost:4000/post/inf_prob_models/</link>
@@ -535,8 +558,6 @@ $ u(x; t) $ of the form $u(x; t) = \alpha(t)\phi(x)$. If you do this into heat e
 			<item>
 				<title>Kernel Methods and Pre-image problem</title>
 				<description>&lt;p&gt;A link to &lt;a href=&quot;https://1drv.ms/b/s!AgUflGj0J6MbjVxD6OrOCM0LfxRv&quot;&gt;notes on kernel methods&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/mojombo/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;.&lt;/p&gt;
 
 </description>
 				<pubDate>Tue, 19 Mar 2019 18:40:41 +0100</pubDate>
