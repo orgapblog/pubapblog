@@ -18,8 +18,10 @@ jekyll_auth:
   whitelist:
     - about?
     - tutorials?
+    - paper_summary?
     - css?
     - photos?
+    - pdfs?
     - _layouts?
     - _includes?
 
