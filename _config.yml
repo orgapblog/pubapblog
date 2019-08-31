@@ -19,6 +19,7 @@ jekyll_auth:
     - about?
     - tutorials?
     - paper_summary?
+    - post?
     - css?
     - photos?
     - pdfs?
