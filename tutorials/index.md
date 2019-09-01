@@ -23,4 +23,7 @@ This is a page that I will hopefully keep up to date with a list of tutorials fr
 ## Measure Theory
 > [__Measure Theory for Dummies__](../pdfs/UWEETR-2006-0008.pdf){:target="_blank"}: There are a number of great texts that do measure theory justice. This is not one of them. Rather this is a hacky way to get the basic ideas down so you can read through research papers and follow what’s going on.
 
+## Play with Graphs
+> [__Amit Agarwal's Play with Graphs__](../pdfs/Play_with_graphs.pdf){:target="_blank"}: A visual introduction to graphs. Intended for high-school level students.
+
 [__Add a tutorial__](mailto:pandeyarun279@gmail.com?Subject=New%20Tutorial&Body=Hi,). Note: Please include (at least) the topic title, a URL, and a short description (phrase or sentence) about the tutorial.

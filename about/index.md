@@ -16,15 +16,13 @@ This blog mostly contains research notes made during my Ph.D. journey. High-leve
 
 <style type="text/css">
       #mynetwork {
-      width: auto;
+      width: 400px;
       height: 400px;
       border: 1px solid lightgray;
       }
 </style>
 
-<div id="mynetwork"></div>
-<br>
-<br>
+<center> <div id="mynetwork"></div> </center>
 
 ---
 “[Wisdom] is earned through disgrace, through painful realization of the inadequacy of your personal world view.” — [Nat Hillard](https://stanforddailyarchive.com/cgi-bin/stanford?a=d&d=stanford20080118-01.2.19#)
