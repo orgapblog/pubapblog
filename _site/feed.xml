@@ -20,9 +20,21 @@
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;independent-component-analysis&quot;&gt;Independent Component Analysis&lt;/h2&gt;
+&lt;h3 id=&quot;independent-component-analysis&quot;&gt;Independent Component Analysis&lt;/h3&gt;
 
 &lt;p&gt;Some references: &lt;a href=&quot;/post/latent-variable-models/&quot;&gt;tutorial&lt;/a&gt; and  Ch. 34 in David Mckay - `Information theory, Inference and Learning Algorithms’.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;footnotes&quot;&gt;Footnotes:&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;MLE of ICA has the same form as Normalizing flows. Perhaps, NFs could be exploited to computed ICA ?!&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Is there a connection between ICA and KPCA?? The eigenvectors are independent, but what can we say about the non-gaussianity?!&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
 
 </description>
 				<pubDate>Fri, 30 Aug 2019 00:00:00 +0200</pubDate>
@@ -81,7 +93,7 @@ where the last equality exploits the &lt;a href=&quot;https://en.wikipedia.org/w
     }
   \right|.&lt;/script&gt;
 
-&lt;p&gt;This series of transformations can transform a simple probability distribution (e.g. Gaussian) into a complicated multi-modal one. Note that, after every mapping ($f_1, f_2, \dots $), the det-Jac has to be computed to ensure that the output is also a distribution. To be of practical use, however, we can consider only transformations whose determinants of Jacobians are easy to compute. The original paper considered two simple family of transformations, named planar and radial flows.&lt;/p&gt;
+&lt;p&gt;This series of transformations can transform a simple probability distribution (e.g. Gaussian) into a complicated multi-modal one. Note that after every mapping ($f_1, f_2, \dots $), the det-Jac has to be computed to ensure that the output is also a distribution. To be of practical use, however, we can consider only transformations whose determinants of Jacobians are easy to compute. The original paper considered two simple family of transformations, named planar and radial flows.&lt;/p&gt;
 
 &lt;hr /&gt;
 
@@ -143,6 +155,8 @@ Here the partition function $\mathcal{Z}$ is independent of $z_0$ and model para
                                  &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x))\left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]\\
                                  &amp; = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x)) - \log \left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right| \right]
 \end{align*} %]]&gt;&lt;/script&gt;
+
+&lt;hr /&gt;
 
 &lt;h3 id=&quot;footnotes&quot;&gt;Footnotes:&lt;/h3&gt;
 &lt;ol&gt;

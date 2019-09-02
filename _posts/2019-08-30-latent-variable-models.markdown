@@ -17,7 +17,14 @@ Usually, the latent variables have a simple distribution, often a separable dist
 
 ---
 
-## Independent Component Analysis
+### Independent Component Analysis
 
 Some references: [tutorial](/post/latent-variable-models/) and  Ch. 34 in David Mckay - `Information theory, Inference and Learning Algorithms’.
+
+---
+
+### Footnotes:
+1. MLE of ICA has the same form as Normalizing flows. Perhaps, NFs could be exploited to computed ICA ?!
+
+2. Is there a connection between ICA and KPCA?? The eigenvectors are independent, but what can we say about the non-gaussianity?!
 
