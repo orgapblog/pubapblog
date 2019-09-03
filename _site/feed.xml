@@ -7,10 +7,64 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Latent Space Cartography (Liu et. al, 2019)</title>
+				<description>&lt;p&gt;&lt;a href=&quot;https://idl.cs.washington.edu/files/2019-LatentSpaceCartography-EuroVis.pdf&quot;&gt;Paper Link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Employes latent-space visualization techniques (t-SNE, UMAP, and PCA) and contributes to methods eastbalishing semantic relationship between latent-space and the generated model. In particular, they contribute&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;a review of domain literature and a characterization of common latent-space interpretation goals and tasks;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;a visual analysis system that supports these tasks, including novel projection strategies, visual and statistical methods to assess attribute vector uncertainty, and global attribute vector comparison methods; and&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;three case studies demonstrating new insights into diverse data types across multiple domains.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In the literature, there exists 6 interpretation sub-tasks:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;View Reconstruction Examples:&lt;/strong&gt; A majority of articles on generative models (31/54) present a list of example generation results. These examples serve as qualitative evidence that the models produce compelling, plausible, yet novel outputs unseen in the training data. They also show reconstruction fidelity versus generation diversity, as there is usually a trade-off between the two.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;View Interpolation Results:&lt;/strong&gt; Linear interpolation in a continuous latent space is done by following a path between two points and displaying outputs at sampled locations on the path (usually in steps of equal distance). A number of articles (18/54) adopt this approach. Interpolation sequences naturally show the smoothness of the latent space, and they are important indicators of interpretability. For instance, authors may point out subtle changes in transitions that reflect deeper domain-specific principles&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Examine Nearest Neighbors:&lt;/strong&gt; This task is employed by articles on both word embeddings (10/24) and generative models (6/54), but the emphasis is different. Word embedding articles use
+anecdotal nearest neighbors to qualitatively show what the algorithms manage to achieve. Articles on generative models use nearest neighbors from the training set as a comparison, demonstrating
+that the algorithms generate novel results indistinguishable from, or better than, the input.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Perform Attribute Vector Arithmetic:&lt;/strong&gt; An example of this task for word embeddings shows that the vector(king) - vector(man) + vector(woman) produces a vector very close to vector(queen).
+This simple algebraic operation demonstrates that pairs of data points sharing a particular relationship have approximately constant vector offsets. We observe this task in both generative (3/54)
+and word embedding (10/24) models.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Compare Similarities:&lt;/strong&gt; This task is popular for benchmarks
+of word embeddings (13/24), testing how well the cosine similarity
+between word vectors matches ratings from human annotators.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Visualize Distribution:&lt;/strong&gt; Researchers visualize latent spaces
+using various means described in §3. This task is common to both
+generative (20/54) and word embedding (7/24) settings.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+				<pubDate>Tue, 03 Sep 2019 00:00:00 +0200</pubDate>
+				<link>http://localhost:4000/post/latent-space-cartography-lie-et-al-2019/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/latent-space-cartography-lie-et-al-2019/</guid>
+			</item>
+		
+			<item>
 				<title>Latent variable models</title>
 				<description>&lt;p&gt;Many statistical models are generative models (that is, models that specify a full probability density over all variables in the situation) that make use of latent variables to describe a probability distribution over observables.&lt;/p&gt;
 
-&lt;p&gt;Some examples of latent variable models are mixture models, which model the observables as coming from a superposed mixture of simple probability distributions (the latent variables are the unknown class labels of the examples); hidden Markov models (Rabiner and Juang, 1986; Durbin et al., 1998); and factor analysis. More recent ones that are also popularized by ML community are RBMs, VAEs and GANs.&lt;/p&gt;
+&lt;p&gt;Some examples of latent variable models are mixture models, which model the observables as coming from a superposed mixture of simple probability distributions (the latent variables are the unknown class labels of the examples); hidden Markov models (Rabiner and Juang, 1986; Durbin et al., 1998); Probabilistic PCA; Mixture models; Gaussian-Process Latent variable model (GP-LVM, &lt;a href=&quot;https://papers.nips.cc/paper/2540-gaussian-process-latent-variable-models-for-visualisation-of-high-dimensional-data.pdf&quot;&gt;Lawrence 2005&lt;/a&gt;) and factor analysis. More recent ones that are popularized by ML community are RBMs, VAEs and GANs.&lt;/p&gt;
 
 &lt;p&gt;The decoding problem for error-correcting codes can also be viewed in terms of a latent variable model - figure below. In that case, the encoding matrix $G$ is normally known in advance. In latent variable modelling, the parameters equivalent to $G$ are usually not known, and must be inferred from the data along with the latent variables $s$. In the figure, The $K$ latent variables are the independent source bits $s_1, \dots , s_K$; these give rise to the observables via the generator matrix $G$.&lt;/p&gt;
 

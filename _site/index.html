@@ -68,12 +68,73 @@
 <section id="main">
 	  
       <article>
+      <div class="heading"><a href="/post/latent-space-cartography-lie-et-al-2019/">Latent Space Cartography (Liu et. al, 2019)</a></div>
+      <p class="meta"><a class="permalink" href="/post/latent-space-cartography-lie-et-al-2019/">&#9679;</a> 03 Sep 2019</p>
+      <div>
+        <p><a href="https://idl.cs.washington.edu/files/2019-LatentSpaceCartography-EuroVis.pdf">Paper Link</a></p>
+
+<p>Employes latent-space visualization techniques (t-SNE, UMAP, and PCA) and contributes to methods eastbalishing semantic relationship between latent-space and the generated model. In particular, they contribute</p>
+<ol>
+  <li>
+    <p>a review of domain literature and a characterization of common latent-space interpretation goals and tasks;</p>
+  </li>
+  <li>
+    <p>a visual analysis system that supports these tasks, including novel projection strategies, visual and statistical methods to assess attribute vector uncertainty, and global attribute vector comparison methods; and</p>
+  </li>
+  <li>
+    <p>three case studies demonstrating new insights into diverse data types across multiple domains.</p>
+  </li>
+</ol>
+
+<p>In the literature, there exists 6 interpretation sub-tasks:</p>
+
+<ol>
+  <li>
+    <p><strong>View Reconstruction Examples:</strong> A majority of articles on generative models (31/54) present a list of example generation results. These examples serve as qualitative evidence that the models produce compelling, plausible, yet novel outputs unseen in the training data. They also show reconstruction fidelity versus generation diversity, as there is usually a trade-off between the two.</p>
+  </li>
+  <li>
+    <p><strong>View Interpolation Results:</strong> Linear interpolation in a continuous latent space is done by following a path between two points and displaying outputs at sampled locations on the path (usually in steps of equal distance). A number of articles (18/54) adopt this approach. Interpolation sequences naturally show the smoothness of the latent space, and they are important indicators of interpretability. For instance, authors may point out subtle changes in transitions that reflect deeper domain-specific principles</p>
+  </li>
+  <li>
+    <p><strong>Examine Nearest Neighbors:</strong> This task is employed by articles on both word embeddings (10/24) and generative models (6/54), but the emphasis is different. Word embedding articles use
+anecdotal nearest neighbors to qualitatively show what the algorithms manage to achieve. Articles on generative models use nearest neighbors from the training set as a comparison, demonstrating
+that the algorithms generate novel results indistinguishable from, or better than, the input.</p>
+  </li>
+  <li>
+    <p><strong>Perform Attribute Vector Arithmetic:</strong> An example of this task for word embeddings shows that the vector(king) - vector(man) + vector(woman) produces a vector very close to vector(queen).
+This simple algebraic operation demonstrates that pairs of data points sharing a particular relationship have approximately constant vector offsets. We observe this task in both generative (3/54)
+and word embedding (10/24) models.</p>
+  </li>
+  <li>
+    <p><strong>Compare Similarities:</strong> This task is popular for benchmarks
+of word embeddings (13/24), testing how well the cosine similarity
+between word vectors matches ratings from human annotators.</p>
+  </li>
+  <li>
+    <p><strong>Visualize Distribution:</strong> Researchers visualize latent spaces
+using various means described in §3. This task is common to both
+generative (20/54) and word embedding (7/24) settings.</p>
+  </li>
+</ol>
+
+
+        </div>
+             
+	
+    	<span class="label label-default"><a href="/tags#paper_summary-ref" title="View posts tagged with &quot;paper_summary&quot;">paper_summary</a></span>
+    
+
+
+     </article>
+     <hr>
+  
+      <article>
       <div class="heading"><a href="/post/latent-variable-models/">Latent variable models</a></div>
       <p class="meta"><a class="permalink" href="/post/latent-variable-models/">&#9679;</a> 30 Aug 2019</p>
       <div>
         <p>Many statistical models are generative models (that is, models that specify a full probability density over all variables in the situation) that make use of latent variables to describe a probability distribution over observables.</p>
 
-<p>Some examples of latent variable models are mixture models, which model the observables as coming from a superposed mixture of simple probability distributions (the latent variables are the unknown class labels of the examples); hidden Markov models (Rabiner and Juang, 1986; Durbin et al., 1998); and factor analysis. More recent ones that are also popularized by ML community are RBMs, VAEs and GANs.</p>
+<p>Some examples of latent variable models are mixture models, which model the observables as coming from a superposed mixture of simple probability distributions (the latent variables are the unknown class labels of the examples); hidden Markov models (Rabiner and Juang, 1986; Durbin et al., 1998); Probabilistic PCA; Mixture models; Gaussian-Process Latent variable model (GP-LVM, <a href="https://papers.nips.cc/paper/2540-gaussian-process-latent-variable-models-for-visualisation-of-high-dimensional-data.pdf">Lawrence 2005</a>) and factor analysis. More recent ones that are popularized by ML community are RBMs, VAEs and GANs.</p>
 
 <p>The decoding problem for error-correcting codes can also be viewed in terms of a latent variable model - figure below. In that case, the encoding matrix $G$ is normally known in advance. In latent variable modelling, the parameters equivalent to $G$ are usually not known, and must be inferred from the data along with the latent variables $s$. In the figure, The $K$ latent variables are the independent source bits $s_1, \dots , s_K$; these give rise to the observables via the generator matrix $G$.</p>
 
@@ -249,162 +310,6 @@ Here the partition function $\mathcal{Z}$ is independent of $z_0$ and model para
              
 	
     	<span class="label label-default"><a href="/tags#paper_summary-ref" title="View posts tagged with &quot;paper_summary&quot;">paper_summary</a></span>
-    
-
-
-     </article>
-     <hr>
-  
-      <article>
-      <div class="heading"><a href="/post/optimal-stopping-problem/">Optimal Stopping Problem</a></div>
-      <p class="meta"><a class="permalink" href="/post/optimal-stopping-problem/">&#9679;</a> 24 Aug 2019</p>
-      <div>
-        <p>There are a lot of everyday situations where people make decisions one after the other, and what is decided earlier affects the choices later on. Most people probably go by some gut feeling about when it’s time to stop and select the next best option and settle down.</p>
-
-<p>In this article we will examine the “Optimal Stopping Problem,” a mathematical puzzle that can manifest in many different real world examples. For instance:</p>
-
-<ul>
-  <li>When should a hiring manager stop interviewing people for a new job position? <br />
-This is the classical “secretary problem” within the field of study of mathematics: probability-optimization. This problem in it’s simplest form has following features:
-    <ul>
-      <li>There is one secretarial position available.</li>
-      <li>The number of applicants is $n$.</li>
-      <li>The applicants are interviewed sequentially in random order, each order being equally likely.</li>
-      <li>After each interview the hiring manager must decide to reject or hire the applicant.</li>
-      <li>An applicant once rejected cannot later be recalled.</li>
-      <li>Once the hiring manager decides to hire an applicant his/her search is over and there is no need to interview any more candidates.<br />
-This basic problem has a remarkably simple solution and was outlined in the basic paper by  Gilbert and Mosteller ( 1966 ), with elegant derivations and extensions in a number of important directions.</li>
-    </ul>
-  </li>
-  <li>
-    <p>We have a house and we wish to sell it. Each day we get a new offer for the house, which could be higher or lower than the previous offer; however, each day the house is on the market we must pay for advertising. We wish to maximise the amount you earn by choosing a stopping rule. When should we stop looking at potential buyers and finally settle the deal?</p>
-  </li>
-  <li>
-    <p>At some point in a lot of peoples lives, we wonder when we should stop dating and finally settle down with the right partner. Most people probably go by some gut feeling about when it’s time to stop. Editor’s Note: Of course, for mathematicians this is a purely theoretical example.</p>
-  </li>
-  <li>Suppose we are a doctor and patients arrive sequentially at our clinic and must be treated immediately by one of the treatments. It is assumed that response from treatment is immediate so that the effectiveness of the treatment that the present patient receives is known before the next patient is treated. It is not known precisely which one of the treatments is best, but we must decide which treatment to give each patient, keeping in mind that our goal is to cure as many patients as possible. This may require us to give a patient a treatment which is not the one that looks best at the present time in order to gain information that may be of use to future patients. When should we <strong>stop evaluating</strong> more treatments and finally select the best one?</li>
-</ul>
-
-<p>There are many different solutions to the problems listed above, as the strategy we choose will depend on our objective. Do we want to ensure that the option we select is better than average? What if we just want to be sure that we do not pick the worst option? In this article our goal will be to “<strong>minimize the risk</strong>” of missing the best option. In other words, we want to “maximize the chances” (i.e. probability) of selecting the best option.</p>
-
-<h3 id="the-prelude">The Prelude</h3>
-
-<p>The general form of our strategy will be to “gather information” when we are presented with our first options. We know that we will not choose any of these; however, we will examine them in order to know “how good” we should expect our options to be. After a certain point, once we are done gathering information, we will choose the first option that was better than all the ones we have seen before. After some thought, we can see that this strategy makes some intuitive sense. We don’t want to choose an option too early since there would be a high likelihood a better option would come later. But when should we stop gathering information? While we don’t want to choose an option too early, we certainly don’t want to gather information for too long and risk the best option passing us by.</p>
-
-<p>This type of problem is called the “<strong>Optimal Stopping Problem</strong>”, which mathematicians and computer scientists have researched for many years.</p>
-
-<h3 id="a-real-life-example">A Real-life Example</h3>
-
-<p>Suppose we want to sell our house. We have a pool of n potential buyers (we number them from $1$ to $n$), who we meet one after the other. After a potential buyer has made their offer, we must decline or accept their offer. If we decide to accept their offer, we can no longer sell the house to anyone else and if we reject an offer the buyer will take their business elsewhere, and we will not be able to change our minds later on. For simplicity’s sake, we will assume there is no advertising cost (i.e. we do not have to pay to keep our house on the market).</p>
-
-<p>Among our pool of $n$ people, there’s at least one who gives us the highest value for our property. We will call that person  $m$  (where  $m$  ranges from  $1$  to  $n$) – it’s who we’d ideally want to end up making deal with.</p>
-
-<p>Our strategy is to discuss the deal with  $m-1$  of the $n$ people and then settle with the next best person who is better. (The reason for doing the calculations with  $m-1$  is that  m is the minimum number of potential buyers that we will encounter; there are  $m-1$  who give us the data we need before we start searching, and the $m^{th}$ is the first one who can be accepted.)</p>
-
-<p>Given a pool of $n$ potential buyers, let $P(m; n)$ represent the probability that we will choose the best offer if we use the strategy discussed earlier. I.e. If there are $n$ buyers and we “gather information” during the first $m-1$ offers and pick the first offer that is better than the current best, the probability that we will select the best possible offer is $P(m; n)$.</p>
-
-<p>Notice immediately that $P(1; n) = \dfrac{1}{n}$ and $P(n; n) = \dfrac{1}{n}$. These two cases essentially give no choice, meaning, it is just like the probability of picking one person at random out of total number of people ($n$) and hence the probability is $\dfrac{1}{n}$. But interesting things happen ‘<strong><em>in between</em></strong>’ these two extremes. As we see more people , we already have a notion of the “best so far,” and the next person we see that beats the current “best so far” is more likely to be the best person in the group for us. Unfortunately, it works the other way around as well. As we continue to see more people, the likelihood of having already passed the best so far increases, thereby decreasing our chances at finding the optimal person.</p>
-
-<p>We want to find the optimal place to stop – a sort of middle ground that maximizes our chances of choosing the optimal person.</p>
-
-<p>To do this, we want to maximize $P(m; n)$. In the process of doing this, we want to make sure our solution generalizes. A good way to generalize is to find the right ratio $\dfrac{m}{n}$, the percentage of our population that we should analyze before making a decision.</p>
-
-<h4 id="mathematical-formalism">Mathematical Formalism</h4>
-<p>Our first step here is to get an equation for $P(m; n)$.</p>
-
-<p>Let’s say we have collected information about $m - 1$ potential buyers and now are looking at the $k^{th}$ person in the sequence, where  $m-1 \leq k \leq n$.</p>
-
-<p>Now let’s break down some things that are going on here:</p>
-<ul>
-  <li>We know that this  $k^{th}$  person has a $\dfrac{1}{n}$ probability of being the best buyer.</li>
-  <li>We also know that in order to be considering the $k^{th}$ buyer in this sequence, the highest ranking person thus far must be in the group of $m - 1$ people out of the $k - 1$ people we had previously inspected and rejected (otherwise we would have stopped at someone before the $k^{th}$ person).</li>
-</ul>
-
-<p>And the probability of the highest ranked person thus far being in that group of $m - 1$ people out of the $k - 1$ people inspected is:
-\[ \dfrac{m - 1}{k - 1}. \]</p>
-
-<p>And therefore, the overall probability of finding the best potential partner this time is:
-\[ (\dfrac{m - 1}{k - 1}).(\dfrac{1}{n}) = \dfrac{m - 1}{n(k - 1)}\]</p>
-
-<p>Note: In the following section we will use summation notation ($ \sum $ symbol), which works as follows: Suppose we have a sequence of numbers $x_1, x_2, …, x_n$, then, by definition, $\sum_{i=1}^{n} x_i = x_1 + x_2 + x_3 + … + x_n$. Thus $\sum_{i=1}^{n} 1 = n$ and $\sum_{i=1}^{3} x_i = x_1 + x_2 + x_3$. We use this notation because it is shorter than writing out each term in the sum.</p>
-
-<p>Now to determine $ P(m; n) $, we must remember that $ k $ can take on any value from $ m $ to $ n $. As a consequence, we must sum these probabilities for any value of $ k $ (note the range of $ k $ above). A compact way to express this is as follows:
-\[P(m; n) =\sum_{k=m}^{n} \dfrac{m-1}{n(k - 1)}= \dfrac{m-1}{n}\sum_{k=m}^{n}\dfrac{1}{k-1}. \tag{1} \label{1}\]</p>
-
-<p>At this point, it is possible to determine the maximum value using methods of optimization one learns in calculus, but this can get nasty pretty quickly. We will lay out a more elegant (albeit more mathematically involved) approach in the following section.</p>
-
-<h4 id="to-get-more-technical">To Get More Technical</h4>
-<p>Given a number $n$, we want to maximize the value of $P(m;n)$. Hence, the optimal value for $ m $ will be such that:
-       \[P(m - 1; n) &lt; P(m; n) \text{ and } P(m + 1; n) &lt; P(m;n) \tag{2} \label{2}\]</p>
-
-<p>Author’s Note: If you want to be very pedantic, you could ask what happens if there are two “best” values of $ m $, with one of those strict inequality signs replaced by a partial inequality. It turns out that the only time when equality is possible is when $ n=2 $, which is not very interesting anyway.</p>
-
-<p>Let’s break this down part by part. From the first inequality in (\ref{2}) and using (\ref{1}):
-\[P(m - 1; n) &lt; P (m; n)\]</p>
-
-<p>\[\dfrac{m-2}{n}\sum_{k=m-1}^{n} \dfrac{1}{k - 1}&lt;\dfrac{m-1}{n} \sum_{k=m}^{n}\dfrac{1}{k-1}\]</p>
-
-<p>\[(m-2)\sum_{k=m-1}^{n} \dfrac{1}{k - 1}&lt;(m-1) \sum_{k=m}^{n}\dfrac{1}{k-1}.\]</p>
-
-<p>Rewriting the left hand side:</p>
-
-<p>\[(m-2)(\dfrac{1}{m-2})+\sum_{k=m}^{n} \dfrac{1}{k - 1}&lt;(m-1) \sum_{k=m}^{n}\dfrac{1}{k-1}.\]</p>
-
-<p>After algebraic simplification, we get:
-    \[1&lt;\sum_{k=m}^{n}\dfrac{1}{k-1}\tag{3} \label{3}\]</p>
-
-<p>Let’s now do the same thing for the other inequality from (\ref{2}):</p>
-
-<p>\[P (m; n) &gt; P (m + 1; n)\]</p>
-
-<p>\[(m-1)\sum_{k=m}^{n}\dfrac{1}{k-1}&gt;m\sum_{k=m+1}^{n}\dfrac{1}{k-1}\]</p>
-
-<p>Performing a similar calculations to what we did with the last inequality, we get:</p>
-
-<p>\[(m-1)(\dfrac{1}{m-1}+\sum_{k=m+1}^{n}\dfrac{1}{k-1})&gt;m\sum_{k=m+1}^{n}\dfrac{1}{k-1}\]</p>
-
-<p>\[(1+(m-1)\sum_{k=m+1}^{n}\dfrac{1}{k-1})&gt;m\sum_{k=m+1}^{n}\dfrac{1}{k-1}\]</p>
-
-<p>\[1&gt;\sum_{k=m+1}^{n}\dfrac{1}{k-1}\tag{4}\label{4}\]</p>
-
-<p>Let’s remember that our goal here is to find an appropriate approximation for the ratio $ \dfrac{m}{n} $ for the best $ m  $.</p>
-
-<p>One fact that is going to help us immensely in this calculation is the approximation of the partial sum of a harmonic series. Mathematically, the approximation is:</p>
-
-<p>\[\sum_{k=1}^{x}\dfrac{1}{k}\approx\ln(x)+c \]</p>
-
-<p>where $ c $ is the Euler-Mascheroni constant.</p>
-
-<p>Now this approximation greatly helps us simplify inequalities (\ref{3}) and (\ref{4}).</p>
-
-<p>Using this approximation for (\ref{3}), we derive the following:</p>
-
-<p>\[1&lt;\sum_{k=m}^{n}\dfrac{1}{k-1}=\sum_{k=m-1}^{n-1}\dfrac{1}{k}=\sum_{k=1}^{n-1}\dfrac{1}{k}-\sum_{k=1}^{m-2}\dfrac{1}{k}\approx\ln(\dfrac{n-1}{m-2})\]</p>
-
-<p>Similarly, for (\ref{4}), we obtain:</p>
-
-<p>\[1&gt;\sum_{k=m+1}^{n}\dfrac{1}{k-1}=\sum_{k=m}^{n-1}\dfrac{1}{k}=\sum_{k=1}^{n-1}\dfrac{1}{k}-\sum_{k=1}^{m-1}\dfrac{1}{k}\approx\ln(\dfrac{n-1}{m-1})\]</p>
-
-<p>Alright, almost done! Notice that we can make another approximation of these results for large $ n $.</p>
-
-<p>For sufficiently large $ n $, the constants in our expressions will make negligible difference in our final result, allowing us to make the following claim:</p>
-
-<p>\[1\approx\ln(\dfrac{n}{m})\]</p>
-
-<p>Now, using the properties of natural logarithm, value of $e$ and then taking it’s inverse, we get:</p>
-
-<p>\[\boxed{(\dfrac{m}{n})\approx(\dfrac{1}{e})\approx 0.37}\]</p>
-
-<p><em>Q.E.D.</em></p>
-
-<p>This result was proven through a lot of (good) approximations, but other more rigorous methods including those used in optimization come to the same result.</p>
-
-<p>So here we have it! A proof of why you should keep $37\%$ on your mind when it comes to matters of making choices.</p>
-
-        </div>
-             
-	
-    	<span class="label label-default"><a href="/tags#distill-ref" title="View posts tagged with &quot;distill&quot;">distill</a></span>
     
 
 
