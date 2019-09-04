@@ -68,6 +68,134 @@
 <section id="main">
 	  
       <article>
+      <div class="heading"><a href="/post/checksum/">Variational Inference of Normalizing Flows (Rezende & Shakir, 2015)</a></div>
+      <p class="meta"><a class="permalink" href="/post/checksum/">&#9679;</a> 27 Aug 2019</p>
+      <div>
+        <p><a href="http://proceedings.mlr.press/v37/rezende15.pdf">Original paper link</a></p>
+
+<h1 id="normalizing-flows">Normalizing Flows</h1>
+
+<p><img src="\photos\shakir_danilo_slide.png" alt="" style="width: 600px; height: auto;" /></p>
+
+<p><strong>Key idea</strong>: Assume a simple probability distribution, take a sample from it and then <strong><em>transform</em></strong> that sample. This is equivalent to change of variables in probability distributions and, if the transformation meets some mild conditions, can result in a very complex pdf of the transformed variable. The formalism of normalizing flows now gives us a systematic way of specifying the approximate posterior distributions $q(z\vert x)$ required for variational inference. (see <a href="/post/inf_prob_models/">Inference in probabilistic models</a>)</p>
+
+<p>Example: If $f$ is monotonically increasing or monotonically decreasing function, such that $y = f(x)$, $x \sim p_{X}$, then we have:
+\[ p_{Y}(y)= \frac{d}{dy}\mathbb{P}(Y\leq y)= \frac{d}{dy}\mathbb{P}(f(X)\leq y)=\frac{d}{dy}\mathbb{P}(X\leq f^{-1}(y))=p_{X}(f^{-1}(y))\frac{df^{-1}(y)}{dy}=p_{X}(x)\frac{df^{-1}(y)}{dy},\]
+\[ p_{Y}(y)= \frac{d}{dy}\mathbb{P}(Y\leq y)= \frac{d}{dy}\mathbb{P}(f(X)\leq y)=\frac{d}{dy}\mathbb{P}(X\geq f^{-1}(y))=-p_{X}(f^{-1}(y))\frac{df^{-1}(y)}{dy}=-p_{X}(x)\frac{df^{-1}(y)}{dy},\]
+respectively.</p>
+
+<p>Similarly for multivariate invertible mappings $f:\mathbb{R}^{m}\mapsto \mathbb{R}^{m}$ and $X\sim p_{X}$, $Y=f(X)$, we get:</p>
+
+<p>\[\boxed{ p_{Y}(y)=p_{X}(x)\left\lvert \operatorname{det}\frac{df^{-1}(y)}{dy}\right\rvert =p_{X}(x)\left\lvert \operatorname{det}\frac{df(x)}{dy}\right\rvert^{-1} },\qquad complexity \rightarrow O(m^{3})\]
+where the last equality exploits the <a href="https://en.wikipedia.org/wiki/Inverse_function_theorem">property of jacobian of inverse functions</a> (PS: invertibility of $f(\cdot)$ validates the use of this property) and $[ \mathrm{det}(A^{-1}) =\mathrm{det}(A)^{-1} ]$.</p>
+
+<p>NFs are typically used to parametrise the approximate posterior $q(z\vert x)$ but can also be applied for the likelihood function. We can apply a series of mappings  $f_{k},~ k= [ 1,\dots,K ]$ and obtain a normalizing flow:</p>
+
+<script type="math/tex; mode=display">\mathbf{z}_K = f_K \circ \dots \circ f_1 (\mathbf{z}_0), \quad \mathbf{z}_0 \sim q_0(\mathbf{z}_0),</script>
+
+<script type="math/tex; mode=display">\mathbf{z}_K \sim q_K(\mathbf{z}_K) = q_0(\mathbf{z}_0) \prod_{k=1}^K
+  \left|
+    \mathrm{det} \frac{
+      \partial f_k
+    }{
+      \partial \mathbf{z}_{k-1}\
+    }
+  \right| ^{-1}, \quad or</script>
+
+<script type="math/tex; mode=display">\ln q_K (\mathbf{z}_K) = \ln q_0(\mathbf{z}_0) - \sum_{k=1}^{K} \ln \mathrm{det} \left|
+     \frac{
+      \partial f_k
+    }{
+      \partial \mathbf{z}_{k-1}\
+    }
+  \right|.</script>
+
+<p>This series of transformations can transform a simple probability distribution (e.g. Gaussian) into a complicated multi-modal one. Note that after every mapping ($f_1, f_2, \dots $), the det-Jac has to be computed to ensure that the output is also a distribution. To be of practical use, however, we can consider only transformations whose determinants of Jacobians are easy to compute. The original paper considered two simple family of transformations, named planar and radial flows.</p>
+
+<hr />
+
+<h2 id="planar-flow">Planar Flow</h2>
+<p>\[ f(\mathbf{z}) = \mathbf{z} + \mathbf{u} h(\mathbf{w}^{\top} \mathbf{z} + b) \]
+with $\mathbf{U}, \mathbf{W}\in \mathbb{R}^{d}$ and $b\in \mathbb{R}$ and $h$ an element-wise non-linearity. Let $\psi (\mathbf{z}) = h’ (\mathbf{w}^T \mathbf{z} + b) \mathbf{w}$. Then the determinant can be easily computed as</p>
+
+<p>\[ \left| \mathrm{det} \frac{\partial f}{\partial \mathbf{z}} \right| =
+  \left| 1 + \mathbf{u}^{\top} \psi( \mathbf{z} ) \right| = \left| 1 + \mathbf{u}^{\top} h’ (\mathbf{w}^T \mathbf{z} + b) \mathbf{w} \right| .  \]
+Since $0\leq h’ \leq 1$ for $ h(x) = \tanh (x) $, we require $ \mathbf{u}^{\top}\mathbf{w} \geq -1$ for invertibility of such flows. We can think of planar flows as slicing the $\mathbf{z}$-space with straight lines (or hyperplanes), where each line contracts or expands the space around it, see figure 1 (in paper).</p>
+
+<hr />
+
+<h2 id="radial-flow">Radial Flow</h2>
+<p>\[  f(\mathbf{z}) = \mathbf{z} + \beta h(\alpha, r)(\mathbf{z} - \mathbf{z}_0),\]</p>
+
+<p>with <script type="math/tex">r = \Vert\mathbf{z} - \mathbf{z}_0 \Vert_2</script>, <script type="math/tex">h(\alpha, r) = \frac{1}{\alpha + r}</script> and parameters <script type="math/tex">\mathbf{z}_0 \in \mathbb{R}^d, \alpha \in \mathbb{R}_+</script> and <script type="math/tex">\beta \in \mathbb{R}</script>.</p>
+
+<p>Similarly to planar flows, radial flows introduce spheres in the $z$-space, which either contract or expand the space inside the sphere, see figure 1 (in paper).</p>
+
+<hr />
+<h3 id="algorithmic-steps">Algorithmic steps</h3>
+<p>Suppose the unknown target distribution is specified using energy functions $U(z)$, $p(z) = \frac{1}{\mathcal{Z}} \exp(-U(z))$, where $\mathcal{Z}$ is the unknown partition function (normalization constant); that is, $p(z) \propto \exp({-U(z)})$.</p>
+
+<p><strong>Steps:</strong></p>
+<ol>
+  <li>
+    <p>Generate random samples from initial distribution $z_{0} \sim q_0 (z) = \mathcal{N}(z; \mu, \sigma^2 I)$.
+Here $\mu$ and $\sigma$ can either be fixed (such as standard Normal distribution) or can be estimated as follows:
+Draw auxillary random variable $\epsilon$ from standard normal distribution $\epsilon \sim \mathcal{N}(0, I)$ and apply linear normalizing flow transformation $f(\epsilon) = \mu + \sigma \epsilon$, re-parameterizing $\sigma = e^{(\frac{1}{2}*\log(var))}$ to ensure $\sigma &gt; 0$, then jointly optimize {$\mu$, $var$} together with the other normalizing flow parameters (see below).</p>
+  </li>
+  <li>Transform the initial samples $z_0$ through $K$ <em>Normalizing Flow</em> transforms, from which we obtain the transformed approximate distribution $q_{K}(z)$,
+  $\log q_{K}(z) = \log q_0 (z) - \sum_{k=1}^K \log (\mathrm{det} |J_k|)$
+where $J_k$ is the Jacobian of the $k$-th (invertible) normalizing flow transform.
+E.g. for planar flows,
+  $\log q_{K}(z) = \log q_0 (z) - \sum_{k=1}^K \log |1 + u_k^{\top} \psi_k(z_{k-1})|$
+where each flow includes model parameters $\lambda = \{ w, u, b \}$.</li>
+  <li>Jointly optimize all model parameters by minimizing <em>KL-Divergence</em> between the approximate distribution $q_{K}(z)$
+and the true distribution $p(z)$.
+  <script type="math/tex">% <![CDATA[
+\begin{align*}
+           loss = KL[q_{K}(z)||p(z)] & = \mathbb{E}_{z_K \sim q_{K}(z)} \left[ \log q_K(z_K) - \log p(z_K) \right]\\
+                          &= \mathbb{E}_{z_K \sim q_{K}(z)} \left[ \left(\log q_0(z_0) - \sum_k \log (\mathrm{det} |J_k|)\right) - \left(-U(z_K) - \log(\mathcal{Z})\right) \right]\\
+                         &= \mathbb{E}_{z_0 \sim q_0(z)} \left[ \log q_0(z_0) - \sum_k \log \left(\mathrm{det} |J_k|\right) + U(f_1(f_2(\dots f_K(z_0)))) + \log(\mathcal{Z}) \right]
+  \end{align*} %]]></script><br />
+Here the partition function $\mathcal{Z}$ is independent of $z_0$ and model parameters, so we can ignore it for the optimization
+  $loss = \mathbb{E}_{z_0 \sim q_0(z)} \left[ \log q_0(z_0) - \sum_k \log (\mathrm{det} |J_k|) + U(z_K) \right]$</li>
+</ol>
+
+<p>The expectation could be approximated by Monte Carlo sampling, the mini-batch average here could be considered as the Monte Carlo Sampling Expectation.</p>
+
+<h3 id="ex-density-estimation-generative-modelling">Ex: Density estimation (Generative modelling)</h3>
+<p>$p_X:$ data distribution, $p_Y:$ prior over latent variable, $p_{f^{-1}(Y)}:$ push-forward density of $f^{-1}(Y)$, i.e the generative model</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*} 
+ D_{KL}(p_X \Vert p_{f^{-1}(Y)}) & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{f^{-1}(Y)} (x) \right] \\ 
+                                 & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{X} (x) \right] \\
+                                 & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x))\left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]\\
+                                 & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x)) - \log \left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right| \right]
+\end{align*} %]]></script>
+
+<hr />
+
+<h3 id="footnotes">Footnotes:</h3>
+<ol>
+  <li>
+    <p>See <a href="https://arxiv.org/abs/1511.01844">A note on the evaluation of generative models</a> for a thought-provoking discussion about how high log-likelihood is neither sufficient nor necessary to generate “plausible” images. Still, it’s better than nothing and in practice a useful diagnostic tool.</p>
+  </li>
+  <li>
+    <p>There’s a connection between Normalizing Flows and GANs via encoder-decoder GAN architectures that learn the inverse of the generator (ALI / BiGAN). Since there is a separate encoder trying to recover $u=G^{−1}(x)$ such that $x=G(u)$, the generator can be thought of as a flow for the simple uniform distribution. However, we don’t know how to compute the amount of volume expansion/contraction w.r.t. $x$, so we cannot recover density from GANs. However, it’s probably not entirely unreasonable to model the log-det-jacobian numerically or enforce some kind of linear-time Jacobian by construction.</p>
+  </li>
+</ol>
+
+        </div>
+             
+	
+    	<span class="label label-default"><a href="/tags#paper_summary-ref" title="View posts tagged with &quot;paper_summary&quot;">paper_summary</a></span>
+    
+
+
+     </article>
+     <hr>
+  
+      <article>
       <div class="heading"><a href="/post/optimal-stopping-problem/">Optimal Stopping Problem</a></div>
       <p class="meta"><a class="permalink" href="/post/optimal-stopping-problem/">&#9679;</a> 24 Aug 2019</p>
       <div>
@@ -312,143 +440,6 @@ The posterior is the distribution of the latent variables $\mathbf{z}$, conditio
 <p>That’s it. Your set-up is done!</p>
 
 <p>To work faster with Sublime, learning keybindings (a.k.a keyboard shortcuts) is a must.</p>
-
-        </div>
-             
-	
-    	<span class="label label-default"><a href="/tags#distill-ref" title="View posts tagged with &quot;distill&quot;">distill</a></span>
-    
-
-
-     </article>
-     <hr>
-  
-      <article>
-      <div class="heading"><a href="/post/FactOnFuncAna/">LMI Formulation</a></div>
-      <p class="meta"><a class="permalink" href="/post/FactOnFuncAna/">&#9679;</a> 01 May 2019</p>
-      <div>
-        <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta http-equiv="Content-Style-Type" content="text/css" />
-  <meta name="generator" content="pandoc" />
-  <meta name="author" content="Arun Pandey" />
-  <title>LMI formulation for Deep Learning</title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-</head>
-<body>
-<div id="header">
-</div>
-<h1 id="introduction">Introduction</h1>
-<p>Representing the objective function in energy form: <span class="math display">\[\begin{aligned}
-        \underset{w_1, w_2}{min} &amp; J = &amp; -x^\top  w_1 h_1 - \sigma(h_1)^\top  w_2 h_2.
-    \end{aligned}\]</span> <span class="math inline">\( J \)</span> could be written in quadratic form as:</p>
-<p><span class="math display">\[J=
-    -\dfrac{1}{2}\begin{bmatrix}
-        x^\top &amp; h_{1}^\top &amp; \sigma(h_1)^\top &amp; h_{2}^\top
-    \end{bmatrix}
-    \begin{bmatrix}
-        \ast       &amp; w_{1} &amp; \ast       &amp; \ast \\
-        w_{1}^\top &amp; \ast  &amp; \ast       &amp; \ast \\
-        \ast       &amp; \ast  &amp; \ast       &amp; w_2  \\
-        \ast       &amp; \ast  &amp; w_{2}^\top &amp; \ast \\
-    \end{bmatrix}
-    \begin{bmatrix}
-        x \\ h_{1} \\ \sigma\left(h_1\right) \\ h_{2}
-    \end{bmatrix}\]</span></p>
-<p>Now, we characterizing the objective <span class="math inline">\( J \)</span> in terms of <span class="math inline">\( 1^{st}\)</span> layer using parameter <span class="math inline">\( \gamma \)</span>, the augmented objective is given by: <span class="math display">\[J \leq -\gamma x^\top w_1 h_1,\]</span></p>
-<p>for some <span class="math inline">\( \gamma \gt 0 \)</span>. Using the sector <span class="math inline">\( \left[0,1\right] \)</span> non-linearity <span class="math display">\[\sigma\left(h_1 \right)^\top  \left( \sigma(h_1) - h_1 \right) \leq 0,~~~\forall h_1\]</span> and s-procedure trick, we obtain the following:</p>
-<p><span class="math display">\[-(1-\gamma)x^\top w_1 h_1 - \sigma(h_1)^\top w_{2}h_{2}- \sigma\left(h_1 \right)^\top  \left( \sigma(h_1) - h_1 \right) \leq 0. ~~~\forall x, h_{1}, h_{2}\]</span> Hence, we solve the following optimization problem: <span class="math display">\[\begin{aligned}
-        \underset{\gamma, w_{1}, w_{2}, h_{1_{i}}}{min} &amp; \quad -\gamma - \sum_{i}^{}x_{i}^T w_{1}h_{1_{i}} \\
-        s.t.                                            &amp; -\dfrac{1}{2}\begin{bmatrix}
-            x^\top &amp; h_{1}^\top &amp; \sigma(h_1)^\top &amp; h_{2}^\top
-        \end{bmatrix}
-        \begin{bmatrix}
-            \ast                 &amp; (1-\gamma)w_{1} &amp; \ast       &amp; \ast \\
-            (1-\gamma)w_{1}^\top &amp; \ast            &amp; -\mathbb{I}    &amp; \ast \\
-            \ast                 &amp; -\mathbb{I}         &amp; 2\mathbb{I}    &amp; w_2  \\
-            \ast                 &amp; \ast            &amp; w_{2}^\top &amp; \ast \\
-        \end{bmatrix}
-        \begin{bmatrix}
-            x \\ h_{1} \\ \sigma\left(h_1\right) \\ h_{2}
-        \end{bmatrix} \leq 0,                                                                   \\
-                                                        &amp; \quad \gamma \gt 0.
-    \end{aligned}\]</span> Since the first constraint is true <span class="math inline">\(\forall~ x,~ h_{1}, ~\sigma(h_{1}) ~\&amp; ~h_{2} \)</span>, we only need the matrix to be positive semi-definite. Hence, restating the above problem: <span class="math display">\[\begin{aligned}
-        \underset{\gamma, w_{1}, w_{2}, h_{1_{i}}}{min} &amp; \quad -\gamma - \sum_{i}^{}x_{i}^\top w_{1}h_{1_{i}} \\
-        s.t.                                            &amp; \qquad
-        P \succeq 0                                                                                            \\
-                                                        &amp; \qquad \gamma \gt 0
-    \end{aligned}\]</span> where <span class="math inline">\( P:= \begin{bmatrix}
-        \ast                 &amp; (1-\gamma)w_{1} &amp; \ast       &amp; \ast \\
-        (1-\gamma)w_{1}^\top &amp; \ast            &amp; -\mathbb{I}    &amp; \ast \\
-        \ast                 &amp; -\mathbb{I}         &amp; 2\mathbb{I}    &amp; w_2  \\
-        \ast                 &amp; \ast            &amp; w_{2}^\top &amp; \ast \\
-    \end{bmatrix} \)</span>.</p>
-<h1 id="regularization">Regularization</h1>
-<p>Regularizing the above problem to improve the structure of matrix. <span class="math display">\[\begin{aligned}
-        \underset{w_1, w_2}{min} &amp; \tilde{J} = &amp; -x^\top  w_1 h_1 - \sigma(h_1)^\top  w_2 h_2 -\dfrac{\eta_{1}}{2}x^T x -\dfrac{\eta_{2}}{2}h_{1}^T h_{1} -\dfrac{\eta_{4}}{2}h_{2}^T h_{2}, ~~~~ \forall \eta_{1},~\eta_{2},~\eta_{4}\gt0
-    \end{aligned}\]</span> and <span class="math inline">\( \eta_{3}\sigma\left(h_1 \right)^\top  \left( \sigma(h_1) - h_1 \right) \leq 0,~~~\forall h_1 , \eta_{3}\geq 0 \)</span>, we have the following optimization problem</p>
-<p><span class="math display">\[\begin{aligned}
-        \underset{\gamma, w_{1}, w_{2}, h_{1_{i}}}{min} &amp; \quad -\gamma - \sum_{i}^{}x_{i}^\top w_{1}h_{1_{i}} \\
-        s.t.                                            &amp; \qquad
-        \tilde{P} \succeq 0                                                                                    \\
-                                                        &amp; \qquad \gamma \gt 0
-    \end{aligned}\]</span></p>
-<p>where <span class="math inline">\( \tilde{P}:= \begin{bmatrix}
-        \eta_{1}             &amp; (1-\gamma)w_{1} &amp; \ast            &amp; \ast     \\
-        (1-\gamma)w_{1}^\top &amp; \eta_{2}        &amp; -\eta_{3}\mathbb{I} &amp; \ast     \\
-        \ast                 &amp; -\eta_{3}\mathbb{I} &amp; 2\eta_{3}\mathbb{I} &amp; w_2      \\
-        \ast                 &amp; \ast            &amp; w_{2}^\top      &amp; \eta_{4} \\
-    \end{bmatrix} \)</span>.</p>
-<h2 id="from-bmi-to-lmi">From BMI to LMI</h2>
-<p>Due to bilinearity in <span class="math inline">\( \tilde{P} \)</span>, the problem is in general NP-hard to solve. Hence a workaround is to impose a stronger condition on positive definiteness in the following way: <span class="math display">\[\tilde{P} = \tilde{P_{1}} + \tilde{P_{2}},\]</span> where <span class="math inline">\( \tilde{P_{1}} = \begin{bmatrix}
-        \dfrac{\eta_{1}}{2} &amp; w_{1}               &amp; \ast            &amp; \ast     \\
-        w_{1}^\top          &amp; \dfrac{\eta_{2}}{2} &amp; -\eta_{3}\mathbb{I} &amp; \ast     \\
-        \ast                &amp; -\eta_{3}\mathbb{I}     &amp; 2\eta_{3}\mathbb{I} &amp; w_2      \\
-        \ast                &amp; \ast                &amp; w_{2}^\top      &amp; \eta_{4} \\
-    \end{bmatrix} \)</span> and <span class="math inline">\( \tilde{P_{2}} = \begin{bmatrix}
-        \dfrac{\eta_{1}}{2} &amp; -\gamma w_{1}       &amp; \ast &amp; \ast \\
-        -\gamma w_{1}^\top  &amp; \dfrac{\eta_{2}}{2} &amp; \ast &amp; \ast \\
-        \ast                &amp; \ast                &amp; \ast &amp; \ast \\
-        \ast                &amp; \ast                &amp; \ast &amp; \ast \\
-    \end{bmatrix}. \)</span><br />
-<br />
-Left multiplying <span class="math inline">\( \tilde{P_{2}} \)</span> with <span class="math inline">\( \gamma^{-1} \)</span>, we get <span class="math inline">\( \tilde{P_{2}}^{&#39;} := \begin{bmatrix}
-        \gamma^{-1}\dfrac{\eta_{1}}{2} &amp; - w_{1}                        &amp; \ast &amp; \ast \\
-        - w_{1}^\top                   &amp; \gamma^{-1}\dfrac{\eta_{2}}{2} &amp; \ast &amp; \ast \\
-        \ast                           &amp; \ast                           &amp; \ast &amp; \ast \\
-        \ast                           &amp; \ast                           &amp; \ast &amp; \ast \\
-    \end{bmatrix}.\)</span><br />
-<br />
-Hence, given <span class="math inline">\( \tilde{P_{1}} \succeq 0 \)</span> and <span class="math inline">\( \tilde{P_{2}} \succeq 0, \)</span> implies <span class="math inline">\( \tilde{P} \succeq 0\)</span>. Doing the change of variables <span class="math inline">\( L=w_{1}h_{1} \)</span>, to remove the bi-linearity from objective function and noting that <span class="math inline">\( {\left\lVertL\right\rVert}\leq{\left\lVertw_{1}\right\rVert} {\left\lVerth_{1}\right\rVert} \)</span> <span class="math inline">\( \leq {\left\lVertw_{1}\right\rVert} {\left\lVertx\right\rVert} \)</span>, since <span class="math inline">\( h_{1} \)</span> are just the latent variables of <span class="math inline">\( x \)</span>, we have the following reformulated problem</p>
-<p><span class="math display">\[\label{eq: 2}
-    \boxed{\begin{aligned}
-            \underset{\gamma, w_{1}, w_{2}, L}{min} &amp; \quad -\gamma - Tr\left( x^\top L \right) \\
-            s.t.                                    &amp; \qquad
-            \tilde{P_{1}} \succeq 0                                                             \\
-                                                    &amp; \qquad
-            \tilde{P_{2}}^{&#39;} \succeq 0                                                         \\
-                                                    &amp; \qquad \gamma \gt 0              \\
-                                                    &amp; {\left\lVertL\right\rVert}\leq {\left\lVertw_{1}\right\rVert} {\left\lVertx\right\rVert}
-        \end{aligned} }\]</span></p>
-<p>Solving equation would yield <span class="math inline">\( \gamma,~  w_{1},~  w_{2}~ \&amp; ~ L \)</span>. Since <span class="math inline">\( w_{1} \in \mathbb{R}^{d\times s_{1}} \)</span> and <span class="math inline">\( h_{1} \in \mathbb{R}^{s_{1} \times N} \)</span>, we solve:</p>
-<p><span class="math display">\[\begin{cases}
-        Underdetermined ~system ~({\tiny no~ sol^{n}/infinitely~ many~ sol^{n}_{s}}),           &amp; \text{if } d\textless s_{1}    \\
-        Overdetermined ~system~({\tiny mostly~ no ~sol^{n} ~except~ when~ lin.~ dep.~ exists}), &amp; \text{if } d\gt s_{1} \\
-        Consistent ~system~(\tiny unique~ sol^{n} ~exists),                                     &amp; \text{if } d=s_{1}
-    \end{cases}\]</span></p>
-<p>Other than the consistent case, by choosing <span class="math inline">\( d\leq s_{1}  \)</span>, we prefer to solve the underdetermined system in the following way: <span class="math display">\[\begin{aligned}
-        \underset{h_{1}}{min} &amp; \quad {\left\lVerth_{1}\right\rVert}^{2}_{2} \\
-        s.t.                  &amp; \quad
-        w_{1}h_{1}=L
-    \end{aligned}\]</span> Solving the Lagrangian formulation and using KKT conditions we obtain</p>
-<p><span class="math display">\[\label{}
-    \boxed{h_{1}= w_{1}^{\top}\left( w_{1}w_{1}^{\top} \right)^{-1}L}\]</span></p>
-<p>Now differentiating <span class="math inline">\( \tilde{J} \)</span> w.r.t <span class="math inline">\( h_{2} \)</span>, we obtain the solution for <span class="math inline">\( h_{2} \)</span> <span class="math display">\[\label{}
-    \boxed{h_{2}=-\dfrac{1}{\eta_{4}}w_{2}^{\top}\sigma(h_{1})}\]</span></p>
-</body>
-</html>
 
         </div>
              

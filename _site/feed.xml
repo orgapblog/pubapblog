@@ -61,6 +61,16 @@ generative (20/54) and word embedding (7/24) settings.&lt;/p&gt;
 			</item>
 		
 			<item>
+				<title>Energy-based learning</title>
+				<description>&lt;p&gt;&lt;a href=&quot;http://yann.lecun.com/exdb/publis/pdf/lecun-06.pdf&quot;&gt;Reference&lt;/a&gt;&lt;/p&gt;
+
+</description>
+				<pubDate>Tue, 03 Sep 2019 00:00:00 +0200</pubDate>
+				<link>http://localhost:4000/post/energy-based-learning/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/energy-based-learning/</guid>
+			</item>
+		
+			<item>
 				<title>Latent variable models</title>
 				<description>&lt;p&gt;Many statistical models are generative models (that is, models that specify a full probability density over all variables in the situation) that make use of latent variables to describe a probability distribution over observables.&lt;/p&gt;
 
@@ -621,16 +631,6 @@ $ u(x; t) $ of the form $u(x; t) = \alpha(t)\phi(x)$. If you do this into heat e
 				<pubDate>Wed, 01 May 2019 00:00:00 +0200</pubDate>
 				<link>http://localhost:4000/post/tes/</link>
 				<guid isPermaLink="true">http://localhost:4000/post/tes/</guid>
-			</item>
-		
-			<item>
-				<title>Kernel Methods and Pre-image problem</title>
-				<description>&lt;p&gt;A link to &lt;a href=&quot;https://1drv.ms/b/s!AgUflGj0J6MbjVxD6OrOCM0LfxRv&quot;&gt;notes on kernel methods&lt;/a&gt;.&lt;/p&gt;
-
-</description>
-				<pubDate>Tue, 19 Mar 2019 18:40:41 +0100</pubDate>
-				<link>http://localhost:4000/post/jek/</link>
-				<guid isPermaLink="true">http://localhost:4000/post/jek/</guid>
 			</item>
 		
 	</channel>

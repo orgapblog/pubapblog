@@ -11,6 +11,15 @@
     </url>
   
     <url>
+      <loc>/post/energy-based-learning/</loc>
+      
+        <lastmod>2019-09-03T00:00:00+02:00</lastmod>
+      
+      <changefreq>weekly</changefreq>
+      <priority>1.0</priority>
+    </url>
+  
+    <url>
       <loc>/post/latent-variable-models/</loc>
       
         <lastmod>2019-08-30T00:00:00+02:00</lastmod>
