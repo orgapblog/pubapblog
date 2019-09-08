@@ -68,6 +68,80 @@
 <section id="main">
 	  
       <article>
+      <div class="heading"><a href="/post/fixing-the-nans-in-svdbackward-problem/">Fixing the NaNs in SVD.backward() problem</a></div>
+      <p class="meta"><a class="permalink" href="/post/fixing-the-nans-in-svdbackward-problem/">&#9679;</a> 08 Sep 2019</p>
+      <div>
+        <p>Typically, in the case of datasets such as MNIST, CIFAR-10; we have categorical labels. When the number of samples is less than the number of categories, this means that the kernel matrix of such dataset will be severly rank deficient; no matter whatever the function map is used. In RKMs, we can easily hedge that problem because we add many kernel matrices togather. Hence, the resulting matrix could be made well-conditioned, since the data in $\mathcal{X}$ is typically distinct.</p>
+
+        </div>
+             
+	
+    	<span class="label label-default"><a href="/tags#distill-ref" title="View posts tagged with &quot;distill&quot;">distill</a></span>
+    
+
+
+     </article>
+     <hr>
+  
+      <article>
+      <div class="heading"><a href="/post/intuition-behind-generative-rkm/">Intuition behind Generative RKM</a></div>
+      <p class="meta"><a class="permalink" href="/post/intuition-behind-generative-rkm/">&#9679;</a> 06 Sep 2019</p>
+      <div>
+        <p>Extracting feature through feature maps (in our case CNN), and then forming a latent space whose basis is formed by eigenvectors of kernel matrix. We strongly suspect that this encodes a disentangled representation of input data. This is in strong spirit with latent variable models, where we seek to find the indpendent hidden factors that lead to data generation in first place. For further connections, see post on <a href="/post/latent-variable-models/index.html">latent variable models</a>.</p>
+
+        </div>
+             
+	
+    	<span class="label label-default"><a href="/tags#distill-ref" title="View posts tagged with &quot;distill&quot;">distill</a></span>
+    
+
+
+     </article>
+     <hr>
+  
+      <article>
+      <div class="heading"><a href="/post/beta-vae-learning-basic-visual-concepts-with-aconstrained-variational-framework/">Beta-VAE - Learning Basic Visual Concepts with a Constrained Variational Framework</a></div>
+      <p class="meta"><a class="permalink" href="/post/beta-vae-learning-basic-visual-concepts-with-aconstrained-variational-framework/">&#9679;</a> 06 Sep 2019</p>
+      <div>
+        <p><a href="https://openreview.net/references/pdf?id=Sy2fzU9gl">Original Paper link</a></p>
+
+<p>They propose $β$-VAE, a deep unsupervised generative approach for disentangled factor learning that can automatically discover the <em>independent latent
+factors</em> of variation in unsupervised data (see post on <a href="/post/latent-variable-models/">Latent Variable Models</a>).</p>
+
+<p>They propose
+to augment the original VAE framework with a single hyperparameter $β$ that controls the extent
+of learning constraints applied to the model. The constraints impose a limit on the capacity of the
+latent information channel and an emphasis on learning statistically <em>independent latent factors</em>. This,
+when combined with the data log likelihood maximisation objective of generative models, leads to
+the model acquiring the most efficient latent representation of the data, which is disentangled if the
+data is produced using at least some ground truth factors of variation that are independent.</p>
+
+<p>They develop a new <em>measure of disentanglement</em> and show that β-VAE also significantly outperforms all
+our baselines on this measure (ICA, PCA, VAE by Kingma &amp; Ba (2014), DC-IGN by Kulkarni et al.
+(2015), and InfoGAN by Chen et al. (2016))</p>
+
+<p><strong>Key Step:</strong> In order
+to encourage this disentangling property in the inferred $q_{\phi}(z\vert x)$, we introduce a constraint over it by
+trying to match it to a prior $p(z)$ that can both control the capacity of the latent information bottleneck,
+and embodies the desiderata of statistical independence mentioned above. This can be achieved if
+we set the prior to be an isotropic unit Gaussian ($p(z) = N(0; \mathbf{I})$), hence arriving at the constrained
+optimisation problem, where $\epsilon$ specifies the strength of the applied constraint.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\underset{φ;θ}{\mathrm{max}}~
+\mathbb{E}_{x\sim D} \left[ \mathbb{E}_{q_{φ}(z\vert x)}[\log p_{θ}(x\vert z)] \right]  \quad \text{subject to}\quad D_{KL}(q_{φ}(z\vert x)\Vert p(z)) < \epsilon %]]></script>
+
+        </div>
+             
+	
+    	<span class="label label-default"><a href="/tags#paper_summary-ref" title="View posts tagged with &quot;paper_summary&quot;">paper_summary</a></span>
+    
+
+
+     </article>
+     <hr>
+  
+      <article>
       <div class="heading"><a href="/post/latent-space-cartography-lie-et-al-2019/">Latent Space Cartography (Liu et. al, 2019)</a></div>
       <p class="meta"><a class="permalink" href="/post/latent-space-cartography-lie-et-al-2019/">&#9679;</a> 03 Sep 2019</p>
       <div>
@@ -122,83 +196,6 @@ generative (20/54) and word embedding (7/24) settings.</p>
              
 	
     	<span class="label label-default"><a href="/tags#paper_summary-ref" title="View posts tagged with &quot;paper_summary&quot;">paper_summary</a></span>
-    
-
-
-     </article>
-     <hr>
-  
-      <article>
-      <div class="heading"><a href="/post/energy-based-learning/">Energy-based learning</a></div>
-      <p class="meta"><a class="permalink" href="/post/energy-based-learning/">&#9679;</a> 03 Sep 2019</p>
-      <div>
-        <p><a href="http://yann.lecun.com/exdb/publis/pdf/lecun-06.pdf">Reference</a></p>
-
-
-        </div>
-             
-	
-    	<span class="label label-default"><a href="/tags#distill-ref" title="View posts tagged with &quot;distill&quot;">distill</a></span>
-    
-
-
-     </article>
-     <hr>
-  
-      <article>
-      <div class="heading"><a href="/post/latent-variable-models/">Latent variable models</a></div>
-      <p class="meta"><a class="permalink" href="/post/latent-variable-models/">&#9679;</a> 30 Aug 2019</p>
-      <div>
-        <p>Many statistical models are generative models (that is, models that specify a full probability density over all variables in the situation) that make use of latent variables to describe a probability distribution over observables.</p>
-
-<p>Some examples of latent variable models are mixture models, which model the observables as coming from a superposed mixture of simple probability distributions (the latent variables are the unknown class labels of the examples); hidden Markov models (Rabiner and Juang, 1986; Durbin et al., 1998); Probabilistic PCA; Mixture models; Gaussian-Process Latent variable model (GP-LVM, <a href="https://papers.nips.cc/paper/2540-gaussian-process-latent-variable-models-for-visualisation-of-high-dimensional-data.pdf">Lawrence 2005</a>) and factor analysis. More recent ones that are popularized by ML community are RBMs, VAEs and GANs.</p>
-
-<p>The decoding problem for error-correcting codes can also be viewed in terms of a latent variable model - figure below. In that case, the encoding matrix $G$ is normally known in advance. In latent variable modelling, the parameters equivalent to $G$ are usually not known, and must be inferred from the data along with the latent variables $s$. In the figure, The $K$ latent variables are the independent source bits $s_1, \dots , s_K$; these give rise to the observables via the generator matrix $G$.</p>
-
-<p><img src="/photos/latent_var.PNG" alt="" style="width: 250px; height: auto;" /></p>
-
-<p>Usually, the latent variables have a simple distribution, often a separable distribution. Thus when we fit a latent variable model, we are finding a description of the data in terms of ‘independent components’. The ‘<em>independent component analysis</em>’ algorithm corresponds to perhaps the simplest possible latent variable model with continuous latent variables.</p>
-
-<hr />
-
-<h3 id="independent-component-analysis">Independent Component Analysis</h3>
-
-<p>Some references: <a href="/post/latent-variable-models/">tutorial</a> and  Ch. 34 in David Mckay - `Information theory, Inference and Learning Algorithms’.</p>
-
-<hr />
-
-<h3 id="footnotes">Footnotes:</h3>
-<ol>
-  <li>
-    <p>MLE of ICA has the same form as Normalizing flows. Perhaps, NFs could be exploited to computed ICA ?!</p>
-  </li>
-  <li>
-    <p>Is there a connection between ICA and KPCA?? The eigenvectors are independent, but what can we say about the non-gaussianity?!</p>
-  </li>
-</ol>
-
-
-        </div>
-             
-	
-    	<span class="label label-default"><a href="/tags#distill-ref" title="View posts tagged with &quot;distill&quot;">distill</a></span>
-    
-
-
-     </article>
-     <hr>
-  
-      <article>
-      <div class="heading"><a href="/post/jekyll-blog-with-oauth/">Jekyll blog with OAuth</a></div>
-      <p class="meta"><a class="permalink" href="/post/jekyll-blog-with-oauth/">&#9679;</a> 28 Aug 2019</p>
-      <div>
-        <p>Refer these blogs <a href="https://ben.balter.com/jekyll-auth/">1</a>, <a href="https://blog.heroku.com/jekyll-on-heroku">2</a>.
-Combine the ideas from both.</p>
-
-        </div>
-             
-	
-    	<span class="label label-default"><a href="/tags#distill-ref" title="View posts tagged with &quot;distill&quot;">distill</a></span>
     
 
 

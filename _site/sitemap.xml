@@ -2,6 +2,33 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
     <url>
+      <loc>/post/fixing-the-nans-in-svdbackward-problem/</loc>
+      
+        <lastmod>2019-09-08T00:00:00+02:00</lastmod>
+      
+      <changefreq>weekly</changefreq>
+      <priority>1.0</priority>
+    </url>
+  
+    <url>
+      <loc>/post/intuition-behind-generative-rkm/</loc>
+      
+        <lastmod>2019-09-06T00:00:00+02:00</lastmod>
+      
+      <changefreq>weekly</changefreq>
+      <priority>1.0</priority>
+    </url>
+  
+    <url>
+      <loc>/post/beta-vae-learning-basic-visual-concepts-with-aconstrained-variational-framework/</loc>
+      
+        <lastmod>2019-09-06T00:00:00+02:00</lastmod>
+      
+      <changefreq>weekly</changefreq>
+      <priority>1.0</priority>
+    </url>
+  
+    <url>
       <loc>/post/latent-space-cartography-lie-et-al-2019/</loc>
       
         <lastmod>2019-09-03T00:00:00+02:00</lastmod>
@@ -100,6 +127,8 @@
       <priority>1.0</priority>
     </url>
   
+  
+    
   
     
   

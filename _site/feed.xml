@@ -7,6 +7,59 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Fixing the NaNs in SVD.backward() problem</title>
+				<description>&lt;p&gt;Typically, in the case of datasets such as MNIST, CIFAR-10; we have categorical labels. When the number of samples is less than the number of categories, this means that the kernel matrix of such dataset will be severly rank deficient; no matter whatever the function map is used. In RKMs, we can easily hedge that problem because we add many kernel matrices togather. Hence, the resulting matrix could be made well-conditioned, since the data in $\mathcal{X}$ is typically distinct.&lt;/p&gt;
+</description>
+				<pubDate>Sun, 08 Sep 2019 00:00:00 +0200</pubDate>
+				<link>http://localhost:4000/post/fixing-the-nans-in-svdbackward-problem/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/fixing-the-nans-in-svdbackward-problem/</guid>
+			</item>
+		
+			<item>
+				<title>Intuition behind Generative RKM</title>
+				<description>&lt;p&gt;Extracting feature through feature maps (in our case CNN), and then forming a latent space whose basis is formed by eigenvectors of kernel matrix. We strongly suspect that this encodes a disentangled representation of input data. This is in strong spirit with latent variable models, where we seek to find the indpendent hidden factors that lead to data generation in first place. For further connections, see post on &lt;a href=&quot;/post/latent-variable-models/index.html&quot;&gt;latent variable models&lt;/a&gt;.&lt;/p&gt;
+</description>
+				<pubDate>Fri, 06 Sep 2019 00:00:00 +0200</pubDate>
+				<link>http://localhost:4000/post/intuition-behind-generative-rkm/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/intuition-behind-generative-rkm/</guid>
+			</item>
+		
+			<item>
+				<title>Beta-VAE - Learning Basic Visual Concepts with a Constrained Variational Framework</title>
+				<description>&lt;p&gt;&lt;a href=&quot;https://openreview.net/references/pdf?id=Sy2fzU9gl&quot;&gt;Original Paper link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;They propose $β$-VAE, a deep unsupervised generative approach for disentangled factor learning that can automatically discover the &lt;em&gt;independent latent
+factors&lt;/em&gt; of variation in unsupervised data (see post on &lt;a href=&quot;/post/latent-variable-models/&quot;&gt;Latent Variable Models&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;They propose
+to augment the original VAE framework with a single hyperparameter $β$ that controls the extent
+of learning constraints applied to the model. The constraints impose a limit on the capacity of the
+latent information channel and an emphasis on learning statistically &lt;em&gt;independent latent factors&lt;/em&gt;. This,
+when combined with the data log likelihood maximisation objective of generative models, leads to
+the model acquiring the most efficient latent representation of the data, which is disentangled if the
+data is produced using at least some ground truth factors of variation that are independent.&lt;/p&gt;
+
+&lt;p&gt;They develop a new &lt;em&gt;measure of disentanglement&lt;/em&gt; and show that β-VAE also significantly outperforms all
+our baselines on this measure (ICA, PCA, VAE by Kingma &amp;amp; Ba (2014), DC-IGN by Kulkarni et al.
+(2015), and InfoGAN by Chen et al. (2016))&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Key Step:&lt;/strong&gt; In order
+to encourage this disentangling property in the inferred $q_{\phi}(z\vert x)$, we introduce a constraint over it by
+trying to match it to a prior $p(z)$ that can both control the capacity of the latent information bottleneck,
+and embodies the desiderata of statistical independence mentioned above. This can be achieved if
+we set the prior to be an isotropic unit Gaussian ($p(z) = N(0; \mathbf{I})$), hence arriving at the constrained
+optimisation problem, where $\epsilon$ specifies the strength of the applied constraint.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\underset{φ;θ}{\mathrm{max}}~
+\mathbb{E}_{x\sim D} \left[ \mathbb{E}_{q_{φ}(z\vert x)}[\log p_{θ}(x\vert z)] \right]  \quad \text{subject to}\quad D_{KL}(q_{φ}(z\vert x)\Vert p(z)) &lt; \epsilon %]]&gt;&lt;/script&gt;
+</description>
+				<pubDate>Fri, 06 Sep 2019 00:00:00 +0200</pubDate>
+				<link>http://localhost:4000/post/beta-vae-learning-basic-visual-concepts-with-aconstrained-variational-framework/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/beta-vae-learning-basic-visual-concepts-with-aconstrained-variational-framework/</guid>
+			</item>
+		
+			<item>
 				<title>Latent Space Cartography (Liu et. al, 2019)</title>
 				<description>&lt;p&gt;&lt;a href=&quot;https://idl.cs.washington.edu/files/2019-LatentSpaceCartography-EuroVis.pdf&quot;&gt;Paper Link&lt;/a&gt;&lt;/p&gt;
 
@@ -72,11 +125,11 @@ generative (20/54) and word embedding (7/24) settings.&lt;/p&gt;
 		
 			<item>
 				<title>Latent variable models</title>
-				<description>&lt;p&gt;Many statistical models are generative models (that is, models that specify a full probability density over all variables in the situation) that make use of latent variables to describe a probability distribution over observables.&lt;/p&gt;
+				<description>&lt;p&gt;Many statistical models that are generative models (that is, models that specify a full probability density over all variables in the situation) make use of latent variables to describe a probability distribution over observables.&lt;/p&gt;
 
-&lt;p&gt;Some examples of latent variable models are mixture models, which model the observables as coming from a superposed mixture of simple probability distributions (the latent variables are the unknown class labels of the examples); hidden Markov models (Rabiner and Juang, 1986; Durbin et al., 1998); Probabilistic PCA; Mixture models; Gaussian-Process Latent variable model (GP-LVM, &lt;a href=&quot;https://papers.nips.cc/paper/2540-gaussian-process-latent-variable-models-for-visualisation-of-high-dimensional-data.pdf&quot;&gt;Lawrence 2005&lt;/a&gt;) and factor analysis. More recent ones that are popularized by ML community are RBMs, VAEs and GANs.&lt;/p&gt;
+&lt;p&gt;Some examples of latent variable models are mixture models, which model the observables as coming from a superposed mixture of simple probability distributions (the latent variables are the unknown class labels of the examples); hidden Markov models (Rabiner and Juang, 1986; Durbin et al., 1998); Probabilistic PCA; Gaussian-Process Latent variable model (GP-LVM, &lt;a href=&quot;https://papers.nips.cc/paper/2540-gaussian-process-latent-variable-models-for-visualisation-of-high-dimensional-data.pdf&quot;&gt;Lawrence 2005&lt;/a&gt;) and factor analysis. More recent ones that are popularized by ML community are RBMs, VAEs and GANs.&lt;/p&gt;
 
-&lt;p&gt;The decoding problem for error-correcting codes can also be viewed in terms of a latent variable model - figure below. In that case, the encoding matrix $G$ is normally known in advance. In latent variable modelling, the parameters equivalent to $G$ are usually not known, and must be inferred from the data along with the latent variables $s$. In the figure, The $K$ latent variables are the independent source bits $s_1, \dots , s_K$; these give rise to the observables via the generator matrix $G$.&lt;/p&gt;
+&lt;p&gt;The decoding problem for error-correcting codes can also be viewed in terms of a latent variable model - figure below. In that case, the encoding matrix $G$ is normally known in advance. In latent variable modelling, the parameters equivalent to $G$ are usually not known, and must be inferred from the data along with the latent variables $s$. In the figure, the $K$ latent variables are the independent source bits $s_1, \dots , s_K$; these give rise to the observables via the generator matrix $G$.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/photos/latent_var.PNG&quot; alt=&quot;&quot; style=&quot;width: 250px; height: auto;&quot; /&gt;&lt;/p&gt;
 
@@ -441,196 +494,6 @@ The posterior is the distribution of the latent variables $\mathbf{z}$, conditio
 				<pubDate>Thu, 08 Aug 2019 00:00:00 +0200</pubDate>
 				<link>http://localhost:4000/post/inf_prob_models/</link>
 				<guid isPermaLink="true">http://localhost:4000/post/inf_prob_models/</guid>
-			</item>
-		
-			<item>
-				<title>Latex+Sublime+MathJax+Jekyll workflow</title>
-				<description>&lt;p&gt;So basically to make heavy math websites faster, use the workflow as below:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Have the pre-requisites installed first i.e. latex using miktex and Sublime text 3.&lt;/li&gt;
-  &lt;li&gt;Make sure you have Perl also on your system.&lt;/li&gt;
-  &lt;li&gt;Add “latexindent.pl” package from miktex.&lt;/li&gt;
-  &lt;li&gt;Now set-up your sublime text as follows:
-    &lt;ul&gt;
-      &lt;li&gt;First things first: install ‘package control’&lt;/li&gt;
-      &lt;li&gt;Then add the following packages: LaTexTools, LateXYZ, Jekyll, BeautifyLatex&lt;/li&gt;
-      &lt;li&gt;Optionally add these packages just to make your experience better: materialtheme, side bar, advanced new file, file icon and GitGutter.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;If needed, use Pandoc to convert tex file to html&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;pandoc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name_of_tex_file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tex&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathjax&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;o&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name_of_ex_file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;html&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;That’s it. Your set-up is done!&lt;/p&gt;
-
-&lt;p&gt;To work faster with Sublime, learning keybindings (a.k.a keyboard shortcuts) is a must.&lt;/p&gt;
-</description>
-				<pubDate>Sat, 11 May 2019 00:00:00 +0200</pubDate>
-				<link>http://localhost:4000/post/latexsublime-workflow/</link>
-				<guid isPermaLink="true">http://localhost:4000/post/latexsublime-workflow/</guid>
-			</item>
-		
-			<item>
-				<title>LMI Formulation</title>
-				<description>&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
-&lt;head&gt;
-  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
-  &lt;meta http-equiv=&quot;Content-Style-Type&quot; content=&quot;text/css&quot; /&gt;
-  &lt;meta name=&quot;generator&quot; content=&quot;pandoc&quot; /&gt;
-  &lt;meta name=&quot;author&quot; content=&quot;Arun Pandey&quot; /&gt;
-  &lt;title&gt;LMI formulation for Deep Learning&lt;/title&gt;
-  &lt;style type=&quot;text/css&quot;&gt;code{white-space: pre;}&lt;/style&gt;
-  &lt;script src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;div id=&quot;header&quot;&gt;
-&lt;/div&gt;
-&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
-&lt;p&gt;Representing the objective function in energy form: &lt;span class=&quot;math display&quot;&gt;\[\begin{aligned}
-        \underset{w_1, w_2}{min} &amp;amp; J = &amp;amp; -x^\top  w_1 h_1 - \sigma(h_1)^\top  w_2 h_2.
-    \end{aligned}\]&lt;/span&gt; &lt;span class=&quot;math inline&quot;&gt;\( J \)&lt;/span&gt; could be written in quadratic form as:&lt;/p&gt;
-&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[J=
-    -\dfrac{1}{2}\begin{bmatrix}
-        x^\top &amp;amp; h_{1}^\top &amp;amp; \sigma(h_1)^\top &amp;amp; h_{2}^\top
-    \end{bmatrix}
-    \begin{bmatrix}
-        \ast       &amp;amp; w_{1} &amp;amp; \ast       &amp;amp; \ast \\
-        w_{1}^\top &amp;amp; \ast  &amp;amp; \ast       &amp;amp; \ast \\
-        \ast       &amp;amp; \ast  &amp;amp; \ast       &amp;amp; w_2  \\
-        \ast       &amp;amp; \ast  &amp;amp; w_{2}^\top &amp;amp; \ast \\
-    \end{bmatrix}
-    \begin{bmatrix}
-        x \\ h_{1} \\ \sigma\left(h_1\right) \\ h_{2}
-    \end{bmatrix}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Now, we characterizing the objective &lt;span class=&quot;math inline&quot;&gt;\( J \)&lt;/span&gt; in terms of &lt;span class=&quot;math inline&quot;&gt;\( 1^{st}\)&lt;/span&gt; layer using parameter &lt;span class=&quot;math inline&quot;&gt;\( \gamma \)&lt;/span&gt;, the augmented objective is given by: &lt;span class=&quot;math display&quot;&gt;\[J \leq -\gamma x^\top w_1 h_1,\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;for some &lt;span class=&quot;math inline&quot;&gt;\( \gamma \gt 0 \)&lt;/span&gt;. Using the sector &lt;span class=&quot;math inline&quot;&gt;\( \left[0,1\right] \)&lt;/span&gt; non-linearity &lt;span class=&quot;math display&quot;&gt;\[\sigma\left(h_1 \right)^\top  \left( \sigma(h_1) - h_1 \right) \leq 0,~~~\forall h_1\]&lt;/span&gt; and s-procedure trick, we obtain the following:&lt;/p&gt;
-&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[-(1-\gamma)x^\top w_1 h_1 - \sigma(h_1)^\top w_{2}h_{2}- \sigma\left(h_1 \right)^\top  \left( \sigma(h_1) - h_1 \right) \leq 0. ~~~\forall x, h_{1}, h_{2}\]&lt;/span&gt; Hence, we solve the following optimization problem: &lt;span class=&quot;math display&quot;&gt;\[\begin{aligned}
-        \underset{\gamma, w_{1}, w_{2}, h_{1_{i}}}{min} &amp;amp; \quad -\gamma - \sum_{i}^{}x_{i}^T w_{1}h_{1_{i}} \\
-        s.t.                                            &amp;amp; -\dfrac{1}{2}\begin{bmatrix}
-            x^\top &amp;amp; h_{1}^\top &amp;amp; \sigma(h_1)^\top &amp;amp; h_{2}^\top
-        \end{bmatrix}
-        \begin{bmatrix}
-            \ast                 &amp;amp; (1-\gamma)w_{1} &amp;amp; \ast       &amp;amp; \ast \\
-            (1-\gamma)w_{1}^\top &amp;amp; \ast            &amp;amp; -\mathbb{I}    &amp;amp; \ast \\
-            \ast                 &amp;amp; -\mathbb{I}         &amp;amp; 2\mathbb{I}    &amp;amp; w_2  \\
-            \ast                 &amp;amp; \ast            &amp;amp; w_{2}^\top &amp;amp; \ast \\
-        \end{bmatrix}
-        \begin{bmatrix}
-            x \\ h_{1} \\ \sigma\left(h_1\right) \\ h_{2}
-        \end{bmatrix} \leq 0,                                                                   \\
-                                                        &amp;amp; \quad \gamma \gt 0.
-    \end{aligned}\]&lt;/span&gt; Since the first constraint is true &lt;span class=&quot;math inline&quot;&gt;\(\forall~ x,~ h_{1}, ~\sigma(h_{1}) ~\&amp;amp; ~h_{2} \)&lt;/span&gt;, we only need the matrix to be positive semi-definite. Hence, restating the above problem: &lt;span class=&quot;math display&quot;&gt;\[\begin{aligned}
-        \underset{\gamma, w_{1}, w_{2}, h_{1_{i}}}{min} &amp;amp; \quad -\gamma - \sum_{i}^{}x_{i}^\top w_{1}h_{1_{i}} \\
-        s.t.                                            &amp;amp; \qquad
-        P \succeq 0                                                                                            \\
-                                                        &amp;amp; \qquad \gamma \gt 0
-    \end{aligned}\]&lt;/span&gt; where &lt;span class=&quot;math inline&quot;&gt;\( P:= \begin{bmatrix}
-        \ast                 &amp;amp; (1-\gamma)w_{1} &amp;amp; \ast       &amp;amp; \ast \\
-        (1-\gamma)w_{1}^\top &amp;amp; \ast            &amp;amp; -\mathbb{I}    &amp;amp; \ast \\
-        \ast                 &amp;amp; -\mathbb{I}         &amp;amp; 2\mathbb{I}    &amp;amp; w_2  \\
-        \ast                 &amp;amp; \ast            &amp;amp; w_{2}^\top &amp;amp; \ast \\
-    \end{bmatrix} \)&lt;/span&gt;.&lt;/p&gt;
-&lt;h1 id=&quot;regularization&quot;&gt;Regularization&lt;/h1&gt;
-&lt;p&gt;Regularizing the above problem to improve the structure of matrix. &lt;span class=&quot;math display&quot;&gt;\[\begin{aligned}
-        \underset{w_1, w_2}{min} &amp;amp; \tilde{J} = &amp;amp; -x^\top  w_1 h_1 - \sigma(h_1)^\top  w_2 h_2 -\dfrac{\eta_{1}}{2}x^T x -\dfrac{\eta_{2}}{2}h_{1}^T h_{1} -\dfrac{\eta_{4}}{2}h_{2}^T h_{2}, ~~~~ \forall \eta_{1},~\eta_{2},~\eta_{4}\gt0
-    \end{aligned}\]&lt;/span&gt; and &lt;span class=&quot;math inline&quot;&gt;\( \eta_{3}\sigma\left(h_1 \right)^\top  \left( \sigma(h_1) - h_1 \right) \leq 0,~~~\forall h_1 , \eta_{3}\geq 0 \)&lt;/span&gt;, we have the following optimization problem&lt;/p&gt;
-&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\begin{aligned}
-        \underset{\gamma, w_{1}, w_{2}, h_{1_{i}}}{min} &amp;amp; \quad -\gamma - \sum_{i}^{}x_{i}^\top w_{1}h_{1_{i}} \\
-        s.t.                                            &amp;amp; \qquad
-        \tilde{P} \succeq 0                                                                                    \\
-                                                        &amp;amp; \qquad \gamma \gt 0
-    \end{aligned}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;where &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P}:= \begin{bmatrix}
-        \eta_{1}             &amp;amp; (1-\gamma)w_{1} &amp;amp; \ast            &amp;amp; \ast     \\
-        (1-\gamma)w_{1}^\top &amp;amp; \eta_{2}        &amp;amp; -\eta_{3}\mathbb{I} &amp;amp; \ast     \\
-        \ast                 &amp;amp; -\eta_{3}\mathbb{I} &amp;amp; 2\eta_{3}\mathbb{I} &amp;amp; w_2      \\
-        \ast                 &amp;amp; \ast            &amp;amp; w_{2}^\top      &amp;amp; \eta_{4} \\
-    \end{bmatrix} \)&lt;/span&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;from-bmi-to-lmi&quot;&gt;From BMI to LMI&lt;/h2&gt;
-&lt;p&gt;Due to bilinearity in &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P} \)&lt;/span&gt;, the problem is in general NP-hard to solve. Hence a workaround is to impose a stronger condition on positive definiteness in the following way: &lt;span class=&quot;math display&quot;&gt;\[\tilde{P} = \tilde{P_{1}} + \tilde{P_{2}},\]&lt;/span&gt; where &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P_{1}} = \begin{bmatrix}
-        \dfrac{\eta_{1}}{2} &amp;amp; w_{1}               &amp;amp; \ast            &amp;amp; \ast     \\
-        w_{1}^\top          &amp;amp; \dfrac{\eta_{2}}{2} &amp;amp; -\eta_{3}\mathbb{I} &amp;amp; \ast     \\
-        \ast                &amp;amp; -\eta_{3}\mathbb{I}     &amp;amp; 2\eta_{3}\mathbb{I} &amp;amp; w_2      \\
-        \ast                &amp;amp; \ast                &amp;amp; w_{2}^\top      &amp;amp; \eta_{4} \\
-    \end{bmatrix} \)&lt;/span&gt; and &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P_{2}} = \begin{bmatrix}
-        \dfrac{\eta_{1}}{2} &amp;amp; -\gamma w_{1}       &amp;amp; \ast &amp;amp; \ast \\
-        -\gamma w_{1}^\top  &amp;amp; \dfrac{\eta_{2}}{2} &amp;amp; \ast &amp;amp; \ast \\
-        \ast                &amp;amp; \ast                &amp;amp; \ast &amp;amp; \ast \\
-        \ast                &amp;amp; \ast                &amp;amp; \ast &amp;amp; \ast \\
-    \end{bmatrix}. \)&lt;/span&gt;&lt;br /&gt;
-&lt;br /&gt;
-Left multiplying &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P_{2}} \)&lt;/span&gt; with &lt;span class=&quot;math inline&quot;&gt;\( \gamma^{-1} \)&lt;/span&gt;, we get &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P_{2}}^{&amp;#39;} := \begin{bmatrix}
-        \gamma^{-1}\dfrac{\eta_{1}}{2} &amp;amp; - w_{1}                        &amp;amp; \ast &amp;amp; \ast \\
-        - w_{1}^\top                   &amp;amp; \gamma^{-1}\dfrac{\eta_{2}}{2} &amp;amp; \ast &amp;amp; \ast \\
-        \ast                           &amp;amp; \ast                           &amp;amp; \ast &amp;amp; \ast \\
-        \ast                           &amp;amp; \ast                           &amp;amp; \ast &amp;amp; \ast \\
-    \end{bmatrix}.\)&lt;/span&gt;&lt;br /&gt;
-&lt;br /&gt;
-Hence, given &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P_{1}} \succeq 0 \)&lt;/span&gt; and &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P_{2}} \succeq 0, \)&lt;/span&gt; implies &lt;span class=&quot;math inline&quot;&gt;\( \tilde{P} \succeq 0\)&lt;/span&gt;. Doing the change of variables &lt;span class=&quot;math inline&quot;&gt;\( L=w_{1}h_{1} \)&lt;/span&gt;, to remove the bi-linearity from objective function and noting that &lt;span class=&quot;math inline&quot;&gt;\( {\left\lVertL\right\rVert}\leq{\left\lVertw_{1}\right\rVert} {\left\lVerth_{1}\right\rVert} \)&lt;/span&gt; &lt;span class=&quot;math inline&quot;&gt;\( \leq {\left\lVertw_{1}\right\rVert} {\left\lVertx\right\rVert} \)&lt;/span&gt;, since &lt;span class=&quot;math inline&quot;&gt;\( h_{1} \)&lt;/span&gt; are just the latent variables of &lt;span class=&quot;math inline&quot;&gt;\( x \)&lt;/span&gt;, we have the following reformulated problem&lt;/p&gt;
-&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\label{eq: 2}
-    \boxed{\begin{aligned}
-            \underset{\gamma, w_{1}, w_{2}, L}{min} &amp;amp; \quad -\gamma - Tr\left( x^\top L \right) \\
-            s.t.                                    &amp;amp; \qquad
-            \tilde{P_{1}} \succeq 0                                                             \\
-                                                    &amp;amp; \qquad
-            \tilde{P_{2}}^{&amp;#39;} \succeq 0                                                         \\
-                                                    &amp;amp; \qquad \gamma \gt 0              \\
-                                                    &amp;amp; {\left\lVertL\right\rVert}\leq {\left\lVertw_{1}\right\rVert} {\left\lVertx\right\rVert}
-        \end{aligned} }\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Solving equation would yield &lt;span class=&quot;math inline&quot;&gt;\( \gamma,~  w_{1},~  w_{2}~ \&amp;amp; ~ L \)&lt;/span&gt;. Since &lt;span class=&quot;math inline&quot;&gt;\( w_{1} \in \mathbb{R}^{d\times s_{1}} \)&lt;/span&gt; and &lt;span class=&quot;math inline&quot;&gt;\( h_{1} \in \mathbb{R}^{s_{1} \times N} \)&lt;/span&gt;, we solve:&lt;/p&gt;
-&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\begin{cases}
-        Underdetermined ~system ~({\tiny no~ sol^{n}/infinitely~ many~ sol^{n}_{s}}),           &amp;amp; \text{if } d\textless s_{1}    \\
-        Overdetermined ~system~({\tiny mostly~ no ~sol^{n} ~except~ when~ lin.~ dep.~ exists}), &amp;amp; \text{if } d\gt s_{1} \\
-        Consistent ~system~(\tiny unique~ sol^{n} ~exists),                                     &amp;amp; \text{if } d=s_{1}
-    \end{cases}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Other than the consistent case, by choosing &lt;span class=&quot;math inline&quot;&gt;\( d\leq s_{1}  \)&lt;/span&gt;, we prefer to solve the underdetermined system in the following way: &lt;span class=&quot;math display&quot;&gt;\[\begin{aligned}
-        \underset{h_{1}}{min} &amp;amp; \quad {\left\lVerth_{1}\right\rVert}^{2}_{2} \\
-        s.t.                  &amp;amp; \quad
-        w_{1}h_{1}=L
-    \end{aligned}\]&lt;/span&gt; Solving the Lagrangian formulation and using KKT conditions we obtain&lt;/p&gt;
-&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\label{}
-    \boxed{h_{1}= w_{1}^{\top}\left( w_{1}w_{1}^{\top} \right)^{-1}L}\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;Now differentiating &lt;span class=&quot;math inline&quot;&gt;\( \tilde{J} \)&lt;/span&gt; w.r.t &lt;span class=&quot;math inline&quot;&gt;\( h_{2} \)&lt;/span&gt;, we obtain the solution for &lt;span class=&quot;math inline&quot;&gt;\( h_{2} \)&lt;/span&gt; &lt;span class=&quot;math display&quot;&gt;\[\label{}
-    \boxed{h_{2}=-\dfrac{1}{\eta_{4}}w_{2}^{\top}\sigma(h_{1})}\]&lt;/span&gt;&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</description>
-				<pubDate>Wed, 01 May 2019 00:00:00 +0200</pubDate>
-				<link>http://localhost:4000/post/FactOnFuncAna/</link>
-				<guid isPermaLink="true">http://localhost:4000/post/FactOnFuncAna/</guid>
-			</item>
-		
-			<item>
-				<title>Manifolds learning and diffusion maps</title>
-				<description>&lt;h1 id=&quot;manifold-learning&quot;&gt;Manifold learning&lt;/h1&gt;
-
-&lt;p&gt;Manifold learning is basically using the geometric properties of data to exploit machine learning. It is frequently used in dimensionality reduction (KPCA, LLE, diffusion maps etc), clustering and semi-supervised/supervised learning. It has strong connections with differential geometry and assumes the data lies near a manifold embedded in high-dimensional space.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;diffusion-maps&quot;&gt;Diffusion Maps&lt;/h1&gt;
-&lt;p&gt;Diffusion maps approximate some differential operators on data manifold $\mathcal{M}$. (proofs in the literature show this in the $\lim N\rightarrow \infty, \epsilon \rightarrow 0$). Here, we take the Taylor expansions of the functions to arrive at differential operators.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&quot;why-is-laplacian-special&quot;&gt;Why is Laplacian special??&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The usage of this operator comes up in various daily-life problems: heat equation, wave equation, fuild-flow, quantum mechanics etc &amp;amp; more recently in manifold learning (that’s what this blog summarizes!).&lt;/li&gt;
-  &lt;li&gt;It is invariant to &lt;em&gt;translation  &amp;amp; rotation&lt;/em&gt;. In general if $S$ is an operator which satisfies such properties, then $ S=\sum_{j=1}^{m}a_{j}\Delta^{j} $.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;solving-deltapsilambdapsi-&quot;&gt;Solving $\Delta\psi=\lambda\psi$ !&lt;/h3&gt;
-&lt;p&gt;We want to solve $\Delta\psi=\lambda\psi$. A standard method (inspired by Stone-Weierstrass Theorem) is to look for solutions
-$ u(x; t) $ of the form $u(x; t) = \alpha(t)\phi(x)$. If you do this into heat equation, we get&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\dfrac{\Delta\phi(x)}{\phi(x)}= - \dfrac{\Delta\alpha(x)}{\alpha(x)}&lt;/script&gt;
-</description>
-				<pubDate>Wed, 01 May 2019 00:00:00 +0200</pubDate>
-				<link>http://localhost:4000/post/tes/</link>
-				<guid isPermaLink="true">http://localhost:4000/post/tes/</guid>
 			</item>
 		
 	</channel>
