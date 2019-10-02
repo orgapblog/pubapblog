@@ -115,7 +115,21 @@ generative (20/54) and word embedding (7/24) settings.&lt;/p&gt;
 		
 			<item>
 				<title>Energy-based learning</title>
-				<description>&lt;p&gt;&lt;a href=&quot;http://yann.lecun.com/exdb/publis/pdf/lecun-06.pdf&quot;&gt;Reference&lt;/a&gt;&lt;/p&gt;
+				<description>&lt;h2 id=&quot;ising-model&quot;&gt;Ising model&lt;/h2&gt;
+
+&lt;p&gt;Ref. pg 400 of book Information theory, Inference, and Learning Algorithms.&lt;/p&gt;
+
+&lt;p&gt;Ising models are important first as models of magnetic systems that have
+a phase transition. The theory of universality in statistical physics shows that
+all systems with the same dimension (here, two), and the same symmetries,
+have equivalent critical properties, i.e., the scaling laws shown by their phase
+transitions are identical. So by studying Ising models we can find out not only
+about magnetic phase transitions but also about phase transitions in many
+other systems.&lt;/p&gt;
+
+&lt;p&gt;General form of Ising model is known as ‘spin glasses’ to physicists, and as ‘Hopfield networks’ or ‘Boltzmann machines’ to the neural network community. In some of these models, all spins are declared to be neighbours of each other, in which case physicists call the system an ‘infinite-range’ spin glass, and networkers call it a ‘fully connected’ network.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://yann.lecun.com/exdb/publis/pdf/lecun-06.pdf&quot;&gt;A Tutorial on Energy-based Learning, Yann LeCunn, 2004&lt;/a&gt;&lt;/p&gt;
 
 </description>
 				<pubDate>Tue, 03 Sep 2019 00:00:00 +0200</pubDate>
