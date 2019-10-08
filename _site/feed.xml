@@ -485,18 +485,18 @@ The posterior is the distribution of the latent variables $\mathbf{z}$, conditio
 &lt;hr /&gt;
 
 &lt;h3 id=&quot;example-use-of-variational-inference-to-obtain-lower-bound-on-the-marginal-likelihood&quot;&gt;Example: Use of Variational Inference to obtain lower-bound on the marginal likelihood&lt;/h3&gt;
-&lt;p&gt;Consider a general probabilistic model with observations $x$, latent variables $z$ over which we must integrate, and model parameters $θ$. We introduce an approximate posterior distribution for the latent variables $q_{\phi}(z\vert x)$ and follow the variational principle (Jordan et al., 1999) to obtain a bound on the marginal likelihood:&lt;/p&gt;
+&lt;p&gt;Consider a general probabilistic model with observations $x$, latent variables $z$ over which we must marginalize, and model parameters $θ$. We introduce an approximate posterior distribution for the latent variables $q_{\phi}(z\vert x)$ and follow the variational principle (Jordan et al., 1999) to obtain a bound on the marginal likelihood:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align*} \log p_{θ}(x) &amp; = \log \int p_{θ}(x\vert z)p(z)dz \\ 
                               &amp; = \log \int \frac{q_{\phi}(z\vert x)}{q_{\phi}(z\vert x)} p_{θ}(x\vert z)p(z)dz \\
                               &amp; = \log \left( \mathbb{E}_{q} \left[ \frac{p( z)}{q_{\phi}(z\vert x)} . q_{\phi}(z\vert x) p_{θ}(x\vert z) \right] \right) \\
                               &amp; \geq \mathbb{E}_{q} \left[\log \left(\frac{p( z)}{q_{\phi}(z\vert x)} . q_{\phi}(z\vert x) p_{θ}(x\vert z)\right) \right]  \\
-                              &amp; \geq \mathbb{E}_{q} \left[\log \left(\frac{p( z)}{q_{\phi}(z\vert x)}\right) + \log\left(q_{\phi}(z\vert x) p_{θ}(x\vert z)\right) \right]  \\
+                              &amp; = \mathbb{E}_{q} \left[\log \left(\frac{p( z)}{q_{\phi}(z\vert x)}\right) + \log\left(q_{\phi}(z\vert x) p_{θ}(x\vert z)\right) \right]  \\
                               &amp; = -\mathbb{D}_{\mathrm{KL}} [q_{\phi}(z\vert x) \Vert p( z)] + \mathbb{E}_q [\log p(x\vert z)],
         \end{align*} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;where we have used Jensen’s inequality $ \left(f (\mathbb{E}[x]) ≤ \mathbb{E} [f(x)]\right) $. $p_θ (x\vert z)$ is a likelihood function and $p(z)$ is a prior over the latent variables. This bound is often referred to as the negative free energy $\mathcal{F}$ or as the evidence lower bound (ELBO). It consists of two terms: the first is the KL-divergence between the approximate posterior and the prior distribution (which acts as a regularizer), and the second is a reconstruction error. This bound provides a unified objective function for optimization of both the parameters $θ$ and $\phi$ of the model and variational approximation, respectively.&lt;/p&gt;
+&lt;p&gt;where we have used Jensen’s inequality $ \left(f (\mathbb{E}[x]) \geq \mathbb{E} [f(x)]\right) $, when $f(\cdot)$ is concave, $p_θ (x\vert z)$ is a likelihood function and $p(z)$ is a prior over the latent variables. This bound is often referred to as the negative free energy $\mathcal{F}$ or as the evidence lower bound (ELBO). It consists of two terms: the first is the KL-divergence between the approximate posterior and the prior distribution (which acts as a regularizer), and the second is a reconstruction error. This bound provides a unified objective function for optimization of both the parameters $θ$ and $\phi$ of the model and variational approximation, respectively.&lt;/p&gt;
 
 &lt;p&gt;Current best practice in variational inference performs this optimization using mini-batches and stochastic gradient descent, which is what allows variational inference to be scaled to problems with very large data sets. There are two problems that must be addressed to successfully use the variational approach:&lt;/p&gt;
 
