@@ -10,4 +10,5 @@ Extracting feature through feature maps (in our case CNN), and then forming a la
 With reference to the recent arxiv paper, in the alternating minimization procedure, by updating the network parameters we are essentially trying to get close to 0. Since this is what we should get by substituting $\mathbf{h}_i$ and $\lambda$ into the objective function. In the ideal case, appropriately defined reconstruction errors should also be 0.
 
 ## Links with Augmented Lagrangian/Quadratic penalty method
-The derivation of $\mathcal{J}_{stab}$ from $\mathcal{J}$ seems possible from the "perturbed problem in penalty method".  
+The derivation of $\mathcal{J}_{stab}$ from $\mathcal{J}$ seems possible from the "perturbed problem in penalty method".
+
