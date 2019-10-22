@@ -7,8 +7,41 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
-				<title>Fixing the NaNs in SVD.backward() problem</title>
+				<title>Meta-Learning Deep Energy-Based Models</title>
+				<description>&lt;p&gt;&lt;a href=&quot;https://arxiv.org/abs/1910.02720&quot;&gt;Paper link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;They study the problem of learning associative memory – a system which is able to retrieve a remembered pattern based on its distorted or incomplete version.&lt;/p&gt;
+
+&lt;p&gt;Attractor networks (Hopfield networks are a particular type) provide a sound model of associative memory: patterns are stored as attractors of the network dynamics and associative retrieval is performed by running the dynamics starting from a query pattern until it converges to an attractor.&lt;/p&gt;
+
+&lt;p&gt;In such models the dynamics are often implemented as an optimization procedure that minimizes an energy function, such as in the classical Hopfield networks.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;\photos\sergey_bartunov.png&quot; alt=&quot;&quot; style=&quot;width: 600px; height: auto;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Basically they have interpretation in terms of auto-encoder and minimize the reconstruction errors on distorted patterns to learn appropraite writing and retrieval rules.&lt;/p&gt;
+
+&lt;p&gt;\[ \underset{\theta, r, \tau}{\mathop{min}}~\mathbb{E}_{X\sim p(X)} \left[\mathcal{L}\left(X, \mathop{read}\left(\tilde{X};\mathop{write}(X)\right)\right)\right].\]&lt;/p&gt;
+
+&lt;p&gt;Here writing loss is defined as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{W}\left(x, \theta\right)= \mathcal{E}\left(x, \theta\right) + \alpha ||\nabla_{x}\mathcal{E}\left(x, \theta\right) ||_{2}^{2}+ \beta ||\theta - \bar{\theta}||_{2}^{2}.&lt;/script&gt;
+
+&lt;p&gt;The Early-stopping gradient descent is implement on writing loss to implement the wrting rule:&lt;/p&gt;
+
+&lt;p&gt;\[ \mathop{write}(X)=\theta^{(T)},~~\theta^{(T+1)}=\theta^{(T)}- \eta^{(T)} \frac{1}{N}\sum_{i=1}^{N}\nabla_{\theta}\mathcal{W}(x_i ; \theta^{(T)}) . \]
+Here, $\mathop{write}$ is modelled by encoder and $\mathop{read}$ is modelled by decoder.&lt;/p&gt;
+</description>
+				<pubDate>Tue, 22 Oct 2019 00:00:00 +0200</pubDate>
+				<link>http://localhost:4000/post/meta-learning-deep-energy-based-models/</link>
+				<guid isPermaLink="true">http://localhost:4000/post/meta-learning-deep-energy-based-models/</guid>
+			</item>
+		
+			<item>
+				<title>NaNs in SVD.backward()</title>
 				<description>&lt;p&gt;Typically, in the case of datasets such as MNIST, CIFAR-10; we have categorical labels. When the number of samples is less than the number of categories, this means that the kernel matrix of such dataset will be severly rank deficient; no matter whatever the function map is used. In RKMs, we can easily hedge that problem because we add many kernel matrices togather. Hence, the resulting matrix could be made well-conditioned, since the data in $\mathcal{X}$ is typically distinct.&lt;/p&gt;
+
+&lt;p&gt;PyTorch’s grad through SVD algorithm on CUDA is unstable. The same procedure works pretty well on CPU but throws error when used on GPU. Find out the exact algorithm.&lt;/p&gt;
+
 </description>
 				<pubDate>Sun, 08 Sep 2019 00:00:00 +0200</pubDate>
 				<link>http://localhost:4000/post/fixing-the-nans-in-svdbackward-problem/</link>
@@ -23,6 +56,7 @@
 
 &lt;h2 id=&quot;links-with-augmented-lagrangianquadratic-penalty-method&quot;&gt;Links with Augmented Lagrangian/Quadratic penalty method&lt;/h2&gt;
 &lt;p&gt;The derivation of $\mathcal{J}_{stab}$ from $\mathcal{J}$ seems possible from the “perturbed problem in penalty method”.&lt;/p&gt;
+
 </description>
 				<pubDate>Fri, 06 Sep 2019 00:00:00 +0200</pubDate>
 				<link>http://localhost:4000/post/intuition-behind-generative-rkm/</link>
@@ -456,63 +490,6 @@ This basic problem has a remarkably simple solution and was outlined in the basi
 				<pubDate>Sat, 24 Aug 2019 00:00:00 +0200</pubDate>
 				<link>http://localhost:4000/post/optimal-stopping-problem/</link>
 				<guid isPermaLink="true">http://localhost:4000/post/optimal-stopping-problem/</guid>
-			</item>
-		
-			<item>
-				<title>Inference in probabilistic models</title>
-				<description>&lt;p&gt;Statistical Machine Learning algorithms try to learn the structure of data by fitting a parametric distribution $p(x;θ)$ to it. Given a dataset, if we can represent it with a distribution, we can:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Generate new data “for free” by sampling from the learned distribution in silico; no need to run the true generative process for the data. This is a useful tool if the data is expensive to generate, i.e. a real-world experiment that takes a long time to run. Sampling is also used to construct estimators of high-dimensional integrals over spaces.&lt;/li&gt;
-  &lt;li&gt;Evaluate the likelihood of data observed at test time (this can be used for rejection sampling or to score how good our model is).&lt;/li&gt;
-  &lt;li&gt;Find the conditional relationship between variables. For example, learning the distribution $p(x_2\vert x_1)$ allows us to build discriminative classification or regression models.&lt;/li&gt;
-  &lt;li&gt;Score our algorithm by using complexity measures like entropy, mutual information, and moments of the distribution.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;Inference&lt;/strong&gt;: $x\sim p_{X}$, $z=f(x)$.&lt;br /&gt;
-&lt;strong&gt;Generation&lt;/strong&gt;: $z\sim p_{Z}$, $x=f^{-1}(z)$&lt;/p&gt;
-
-&lt;p&gt;How can we use a model $p(\mathbf{x}, \mathbf{z})$ to analyze some data $\mathbf{x}$? In other words, what hidden structure of $\mathbf{z}$ explains the data? We seek to infer this hidden structure using the model.&lt;/p&gt;
-
-&lt;p&gt;One method of inference leverages Bayes’ rule to define the posterior
-\[p(\mathbf{z} \mid \mathbf{x}) = \frac{p(\mathbf{x}, \mathbf{z})}{\int_{z} p(\mathbf{x}, \mathbf{z}) \text{d}\mathbf{z}}.\]
-​​ 
-The posterior is the distribution of the latent variables $\mathbf{z}$, conditioned on some (observed) data $\mathbf{x}$. Drawing analogy to representation learning, it is a probabilistic description of the data’s hidden representation. Often this distribution is unknown and difficult to compute due to intractable denominator (which has to be computed over all comfiguration of states). Hence, we go for approximations.&lt;/p&gt;
-
-&lt;p&gt;$2$ methods exist: Sampling methods a.k.a. Monte-Carlo methods and Variational inference.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Sampling methods&lt;/strong&gt; involves drawing random samples from an unknown true distribution. Some methods are Importance sampling, Rejection sampling, Metropolis-hastings method and Gibbs sampling. The last two mthods falls under category of MCMC methods.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Variational methods&lt;/strong&gt; involves approximating the unknown true distribution $p(\mathbf{x})$ with a simpler known distribution $q(\mathbf{x};\theta)$ parametrized by $\theta$. Basically we minimize the divergence between these distributions over $\theta$. To approximate $p(\mathbf{x})$, &lt;em&gt;variational lower bound&lt;/em&gt; is the key. We then maximize this VB to approximate $q$ to $p$. Its connections with deeplearning are beautifully established in paper - &lt;a href=&quot;https://arxiv.org/abs/1312.6114&quot;&gt;Auto-encoding Variational Bayes (Kingma &amp;amp; Welling, 2014)&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;More on these methods could be read in the excellent book by David Mckay - `Information theory, Inference and Learning Algorithms’ and from blogs &lt;a href=&quot;https://medium.com/neuralspace/inference-in-probabilistic-models-monte-carlo-and-deterministic-methods-eae8800ee095&quot;&gt;1&lt;/a&gt;, &lt;a href=&quot;http://arogozhnikov.github.io/2016/12/19/markov_chain_monte_carlo.html&quot;&gt;2&lt;/a&gt;.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;example-use-of-variational-inference-to-obtain-lower-bound-on-the-marginal-likelihood&quot;&gt;Example: Use of Variational Inference to obtain lower-bound on the marginal likelihood&lt;/h3&gt;
-&lt;p&gt;Consider a general probabilistic model with observations $x$, latent variables $z$ over which we must marginalize, and model parameters $θ$. We introduce an approximate posterior distribution for the latent variables $q_{\phi}(z\vert x)$ and follow the variational principle (Jordan et al., 1999) to obtain a bound on the marginal likelihood:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align*} \log p_{θ}(x) &amp; = \log \int p_{θ}(x\vert z)p(z)dz \\ 
-                              &amp; = \log \int \frac{q_{\phi}(z\vert x)}{q_{\phi}(z\vert x)} p_{θ}(x\vert z)p(z)dz \\
-                              &amp; = \log \left( \mathbb{E}_{q} \left[ \frac{p( z)}{q_{\phi}(z\vert x)} . q_{\phi}(z\vert x) p_{θ}(x\vert z) \right] \right) \\
-                              &amp; \geq \mathbb{E}_{q} \left[\log \left(\frac{p( z)}{q_{\phi}(z\vert x)} . q_{\phi}(z\vert x) p_{θ}(x\vert z)\right) \right]  \\
-                              &amp; = \mathbb{E}_{q} \left[\log \left(\frac{p( z)}{q_{\phi}(z\vert x)}\right) + \log\left(q_{\phi}(z\vert x) p_{θ}(x\vert z)\right) \right]  \\
-                              &amp; = -\mathbb{D}_{\mathrm{KL}} [q_{\phi}(z\vert x) \Vert p( z)] + \mathbb{E}_q [\log p(x\vert z)],
-        \end{align*} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;where we have used Jensen’s inequality $ \left(f (\mathbb{E}[x]) \geq \mathbb{E} [f(x)]\right) $, when $f(\cdot)$ is concave, $p_θ (x\vert z)$ is a likelihood function and $p(z)$ is a prior over the latent variables. This bound is often referred to as the negative free energy $\mathcal{F}$ or as the evidence lower bound (ELBO). It consists of two terms: the first is the KL-divergence between the approximate posterior and the prior distribution (which acts as a regularizer), and the second is a reconstruction error. This bound provides a unified objective function for optimization of both the parameters $θ$ and $\phi$ of the model and variational approximation, respectively.&lt;/p&gt;
-
-&lt;p&gt;Current best practice in variational inference performs this optimization using mini-batches and stochastic gradient descent, which is what allows variational inference to be scaled to problems with very large data sets. There are two problems that must be addressed to successfully use the variational approach:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;efficient computation of the derivatives of the expected log-likelihood &lt;script type=&quot;math/tex&quot;&gt;\nabla_{\phi} \mathbb{E}_{q_{\phi}(z)}\left[\log p_{\theta} (x\vert z)\right]&lt;/script&gt;. This is tackled in the paper &lt;a href=&quot;https://arxiv.org/abs/1312.6114&quot;&gt;Auto-encoding Variational Bayes (Kingma &amp;amp; Welling, 2014)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;choosing the richest, computationally-feasible approximate posterior distribution $q(·)$. This is tackled in the paper &lt;a href=&quot;/post/checksum/&quot;&gt;Variational Inference of Normalizing Flows (Rezende &amp;amp; Shakir, 2015)&lt;/a&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-				<pubDate>Thu, 08 Aug 2019 00:00:00 +0200</pubDate>
-				<link>http://localhost:4000/post/inf_prob_models/</link>
-				<guid isPermaLink="true">http://localhost:4000/post/inf_prob_models/</guid>
 			</item>
 		
 	</channel>

@@ -68,10 +68,50 @@
 <section id="main">
 	  
       <article>
-      <div class="heading"><a href="/post/fixing-the-nans-in-svdbackward-problem/">Fixing the NaNs in SVD.backward() problem</a></div>
+      <div class="heading"><a href="/post/meta-learning-deep-energy-based-models/">Meta-Learning Deep Energy-Based Models</a></div>
+      <p class="meta"><a class="permalink" href="/post/meta-learning-deep-energy-based-models/">&#9679;</a> 22 Oct 2019</p>
+      <div>
+        <p><a href="https://arxiv.org/abs/1910.02720">Paper link</a></p>
+
+<p>They study the problem of learning associative memory – a system which is able to retrieve a remembered pattern based on its distorted or incomplete version.</p>
+
+<p>Attractor networks (Hopfield networks are a particular type) provide a sound model of associative memory: patterns are stored as attractors of the network dynamics and associative retrieval is performed by running the dynamics starting from a query pattern until it converges to an attractor.</p>
+
+<p>In such models the dynamics are often implemented as an optimization procedure that minimizes an energy function, such as in the classical Hopfield networks.</p>
+
+<p><img src="\photos\sergey_bartunov.png" alt="" style="width: 600px; height: auto;" /></p>
+
+<p>Basically they have interpretation in terms of auto-encoder and minimize the reconstruction errors on distorted patterns to learn appropraite writing and retrieval rules.</p>
+
+<p>\[ \underset{\theta, r, \tau}{\mathop{min}}~\mathbb{E}_{X\sim p(X)} \left[\mathcal{L}\left(X, \mathop{read}\left(\tilde{X};\mathop{write}(X)\right)\right)\right].\]</p>
+
+<p>Here writing loss is defined as:</p>
+
+<script type="math/tex; mode=display">\mathcal{W}\left(x, \theta\right)= \mathcal{E}\left(x, \theta\right) + \alpha ||\nabla_{x}\mathcal{E}\left(x, \theta\right) ||_{2}^{2}+ \beta ||\theta - \bar{\theta}||_{2}^{2}.</script>
+
+<p>The Early-stopping gradient descent is implement on writing loss to implement the wrting rule:</p>
+
+<p>\[ \mathop{write}(X)=\theta^{(T)},~~\theta^{(T+1)}=\theta^{(T)}- \eta^{(T)} \frac{1}{N}\sum_{i=1}^{N}\nabla_{\theta}\mathcal{W}(x_i ; \theta^{(T)}) . \]
+Here, $\mathop{write}$ is modelled by encoder and $\mathop{read}$ is modelled by decoder.</p>
+
+        </div>
+             
+	
+    	<span class="label label-default"><a href="/tags#paper_summary-ref" title="View posts tagged with &quot;paper_summary&quot;">paper_summary</a></span>
+    
+
+
+     </article>
+     <hr>
+  
+      <article>
+      <div class="heading"><a href="/post/fixing-the-nans-in-svdbackward-problem/">NaNs in SVD.backward()</a></div>
       <p class="meta"><a class="permalink" href="/post/fixing-the-nans-in-svdbackward-problem/">&#9679;</a> 08 Sep 2019</p>
       <div>
         <p>Typically, in the case of datasets such as MNIST, CIFAR-10; we have categorical labels. When the number of samples is less than the number of categories, this means that the kernel matrix of such dataset will be severly rank deficient; no matter whatever the function map is used. In RKMs, we can easily hedge that problem because we add many kernel matrices togather. Hence, the resulting matrix could be made well-conditioned, since the data in $\mathcal{X}$ is typically distinct.</p>
+
+<p>PyTorch’s grad through SVD algorithm on CUDA is unstable. The same procedure works pretty well on CPU but throws error when used on GPU. Find out the exact algorithm.</p>
+
 
         </div>
              
@@ -93,6 +133,7 @@
 
 <h2 id="links-with-augmented-lagrangianquadratic-penalty-method">Links with Augmented Lagrangian/Quadratic penalty method</h2>
 <p>The derivation of $\mathcal{J}_{stab}$ from $\mathcal{J}$ seems possible from the “perturbed problem in penalty method”.</p>
+
 
         </div>
              
@@ -135,67 +176,6 @@ optimisation problem, where $\epsilon$ specifies the strength of the applied con
 <script type="math/tex; mode=display">% <![CDATA[
 \underset{φ;θ}{\mathrm{max}}~
 \mathbb{E}_{x\sim D} \left[ \mathbb{E}_{q_{φ}(z\vert x)}[\log p_{θ}(x\vert z)] \right]  \quad \text{subject to}\quad D_{KL}(q_{φ}(z\vert x)\Vert p(z)) < \epsilon %]]></script>
-
-        </div>
-             
-	
-    	<span class="label label-default"><a href="/tags#paper_summary-ref" title="View posts tagged with &quot;paper_summary&quot;">paper_summary</a></span>
-    
-
-
-     </article>
-     <hr>
-  
-      <article>
-      <div class="heading"><a href="/post/latent-space-cartography-lie-et-al-2019/">Latent Space Cartography (Liu et. al, 2019)</a></div>
-      <p class="meta"><a class="permalink" href="/post/latent-space-cartography-lie-et-al-2019/">&#9679;</a> 03 Sep 2019</p>
-      <div>
-        <p><a href="https://idl.cs.washington.edu/files/2019-LatentSpaceCartography-EuroVis.pdf">Paper Link</a></p>
-
-<p>Employes latent-space visualization techniques (t-SNE, UMAP, and PCA) and contributes to methods eastbalishing semantic relationship between latent-space and the generated model. In particular, they contribute</p>
-<ol>
-  <li>
-    <p>a review of domain literature and a characterization of common latent-space interpretation goals and tasks;</p>
-  </li>
-  <li>
-    <p>a visual analysis system that supports these tasks, including novel projection strategies, visual and statistical methods to assess attribute vector uncertainty, and global attribute vector comparison methods; and</p>
-  </li>
-  <li>
-    <p>three case studies demonstrating new insights into diverse data types across multiple domains.</p>
-  </li>
-</ol>
-
-<p>In the literature, there exists 6 interpretation sub-tasks:</p>
-
-<ol>
-  <li>
-    <p><strong>View Reconstruction Examples:</strong> A majority of articles on generative models (31/54) present a list of example generation results. These examples serve as qualitative evidence that the models produce compelling, plausible, yet novel outputs unseen in the training data. They also show reconstruction fidelity versus generation diversity, as there is usually a trade-off between the two.</p>
-  </li>
-  <li>
-    <p><strong>View Interpolation Results:</strong> Linear interpolation in a continuous latent space is done by following a path between two points and displaying outputs at sampled locations on the path (usually in steps of equal distance). A number of articles (18/54) adopt this approach. Interpolation sequences naturally show the smoothness of the latent space, and they are important indicators of interpretability. For instance, authors may point out subtle changes in transitions that reflect deeper domain-specific principles</p>
-  </li>
-  <li>
-    <p><strong>Examine Nearest Neighbors:</strong> This task is employed by articles on both word embeddings (10/24) and generative models (6/54), but the emphasis is different. Word embedding articles use
-anecdotal nearest neighbors to qualitatively show what the algorithms manage to achieve. Articles on generative models use nearest neighbors from the training set as a comparison, demonstrating
-that the algorithms generate novel results indistinguishable from, or better than, the input.</p>
-  </li>
-  <li>
-    <p><strong>Perform Attribute Vector Arithmetic:</strong> An example of this task for word embeddings shows that the vector(king) - vector(man) + vector(woman) produces a vector very close to vector(queen).
-This simple algebraic operation demonstrates that pairs of data points sharing a particular relationship have approximately constant vector offsets. We observe this task in both generative (3/54)
-and word embedding (10/24) models.</p>
-  </li>
-  <li>
-    <p><strong>Compare Similarities:</strong> This task is popular for benchmarks
-of word embeddings (13/24), testing how well the cosine similarity
-between word vectors matches ratings from human annotators.</p>
-  </li>
-  <li>
-    <p><strong>Visualize Distribution:</strong> Researchers visualize latent spaces
-using various means described in §3. This task is common to both
-generative (20/54) and word embedding (7/24) settings.</p>
-  </li>
-</ol>
-
 
         </div>
              

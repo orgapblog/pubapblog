@@ -68,6 +68,67 @@
 <section id="main">
 	  
       <article>
+      <div class="heading"><a href="/post/latent-space-cartography-lie-et-al-2019/">Latent Space Cartography (Liu et. al, 2019)</a></div>
+      <p class="meta"><a class="permalink" href="/post/latent-space-cartography-lie-et-al-2019/">&#9679;</a> 03 Sep 2019</p>
+      <div>
+        <p><a href="https://idl.cs.washington.edu/files/2019-LatentSpaceCartography-EuroVis.pdf">Paper Link</a></p>
+
+<p>Employes latent-space visualization techniques (t-SNE, UMAP, and PCA) and contributes to methods eastbalishing semantic relationship between latent-space and the generated model. In particular, they contribute</p>
+<ol>
+  <li>
+    <p>a review of domain literature and a characterization of common latent-space interpretation goals and tasks;</p>
+  </li>
+  <li>
+    <p>a visual analysis system that supports these tasks, including novel projection strategies, visual and statistical methods to assess attribute vector uncertainty, and global attribute vector comparison methods; and</p>
+  </li>
+  <li>
+    <p>three case studies demonstrating new insights into diverse data types across multiple domains.</p>
+  </li>
+</ol>
+
+<p>In the literature, there exists 6 interpretation sub-tasks:</p>
+
+<ol>
+  <li>
+    <p><strong>View Reconstruction Examples:</strong> A majority of articles on generative models (31/54) present a list of example generation results. These examples serve as qualitative evidence that the models produce compelling, plausible, yet novel outputs unseen in the training data. They also show reconstruction fidelity versus generation diversity, as there is usually a trade-off between the two.</p>
+  </li>
+  <li>
+    <p><strong>View Interpolation Results:</strong> Linear interpolation in a continuous latent space is done by following a path between two points and displaying outputs at sampled locations on the path (usually in steps of equal distance). A number of articles (18/54) adopt this approach. Interpolation sequences naturally show the smoothness of the latent space, and they are important indicators of interpretability. For instance, authors may point out subtle changes in transitions that reflect deeper domain-specific principles</p>
+  </li>
+  <li>
+    <p><strong>Examine Nearest Neighbors:</strong> This task is employed by articles on both word embeddings (10/24) and generative models (6/54), but the emphasis is different. Word embedding articles use
+anecdotal nearest neighbors to qualitatively show what the algorithms manage to achieve. Articles on generative models use nearest neighbors from the training set as a comparison, demonstrating
+that the algorithms generate novel results indistinguishable from, or better than, the input.</p>
+  </li>
+  <li>
+    <p><strong>Perform Attribute Vector Arithmetic:</strong> An example of this task for word embeddings shows that the vector(king) - vector(man) + vector(woman) produces a vector very close to vector(queen).
+This simple algebraic operation demonstrates that pairs of data points sharing a particular relationship have approximately constant vector offsets. We observe this task in both generative (3/54)
+and word embedding (10/24) models.</p>
+  </li>
+  <li>
+    <p><strong>Compare Similarities:</strong> This task is popular for benchmarks
+of word embeddings (13/24), testing how well the cosine similarity
+between word vectors matches ratings from human annotators.</p>
+  </li>
+  <li>
+    <p><strong>Visualize Distribution:</strong> Researchers visualize latent spaces
+using various means described in §3. This task is common to both
+generative (20/54) and word embedding (7/24) settings.</p>
+  </li>
+</ol>
+
+
+        </div>
+             
+	
+    	<span class="label label-default"><a href="/tags#paper_summary-ref" title="View posts tagged with &quot;paper_summary&quot;">paper_summary</a></span>
+    
+
+
+     </article>
+     <hr>
+  
+      <article>
       <div class="heading"><a href="/post/energy-based-learning/">Energy-based learning</a></div>
       <p class="meta"><a class="permalink" href="/post/energy-based-learning/">&#9679;</a> 03 Sep 2019</p>
       <div>
@@ -152,134 +213,6 @@ Combine the ideas from both.</p>
              
 	
     	<span class="label label-default"><a href="/tags#distill-ref" title="View posts tagged with &quot;distill&quot;">distill</a></span>
-    
-
-
-     </article>
-     <hr>
-  
-      <article>
-      <div class="heading"><a href="/post/checksum/">Variational Inference of Normalizing Flows (Rezende & Shakir, 2015)</a></div>
-      <p class="meta"><a class="permalink" href="/post/checksum/">&#9679;</a> 27 Aug 2019</p>
-      <div>
-        <p><a href="http://proceedings.mlr.press/v37/rezende15.pdf">Original paper link</a></p>
-
-<h1 id="normalizing-flows">Normalizing Flows</h1>
-
-<p><img src="\photos\shakir_danilo_slide.png" alt="" style="width: 600px; height: auto;" /></p>
-
-<p><strong>Key idea</strong>: Assume a simple probability distribution, take a sample from it and then <strong><em>transform</em></strong> that sample. This is equivalent to change of variables in probability distributions and, if the transformation meets some mild conditions, can result in a very complex pdf of the transformed variable. The formalism of normalizing flows now gives us a systematic way of specifying the approximate posterior distributions $q(z\vert x)$ required for variational inference. (see <a href="/post/inf_prob_models/">Inference in probabilistic models</a>)</p>
-
-<p>Example: If $f$ is monotonically increasing or monotonically decreasing function, such that $y = f(x)$, $x \sim p_{X}$, then we have:
-\[ p_{Y}(y)= \frac{d}{dy}\mathbb{P}(Y\leq y)= \frac{d}{dy}\mathbb{P}(f(X)\leq y)=\frac{d}{dy}\mathbb{P}(X\leq f^{-1}(y))=p_{X}(f^{-1}(y))\frac{df^{-1}(y)}{dy}=p_{X}(x)\frac{df^{-1}(y)}{dy},\]
-\[ p_{Y}(y)= \frac{d}{dy}\mathbb{P}(Y\leq y)= \frac{d}{dy}\mathbb{P}(f(X)\leq y)=\frac{d}{dy}\mathbb{P}(X\geq f^{-1}(y))=-p_{X}(f^{-1}(y))\frac{df^{-1}(y)}{dy}=-p_{X}(x)\frac{df^{-1}(y)}{dy},\]
-respectively.</p>
-
-<p>Similarly for multivariate invertible mappings $f:\mathbb{R}^{m}\mapsto \mathbb{R}^{m}$ and $X\sim p_{X}$, $Y=f(X)$, we get:</p>
-
-<p>\[\boxed{ p_{Y}(y)=p_{X}(x)\left\lvert \operatorname{det}\frac{df^{-1}(y)}{dy}\right\rvert =p_{X}(x)\left\lvert \operatorname{det}\frac{df(x)}{dy}\right\rvert^{-1} },\qquad complexity \rightarrow O(m^{3})\]
-where the last equality exploits the <a href="https://en.wikipedia.org/wiki/Inverse_function_theorem">property of jacobian of inverse functions</a> (PS: invertibility of $f(\cdot)$ validates the use of this property) and $[ \mathrm{det}(A^{-1}) =\mathrm{det}(A)^{-1} ]$.</p>
-
-<p>NFs are typically used to parametrise the approximate posterior $q(z\vert x)$ but can also be applied for the likelihood function. We can apply a series of mappings  $f_{k},~ k= [ 1,\dots,K ]$ and obtain a normalizing flow:</p>
-
-<script type="math/tex; mode=display">\mathbf{z}_K = f_K \circ \dots \circ f_1 (\mathbf{z}_0), \quad \mathbf{z}_0 \sim q_0(\mathbf{z}_0),</script>
-
-<script type="math/tex; mode=display">\mathbf{z}_K \sim q_K(\mathbf{z}_K) = q_0(\mathbf{z}_0) \prod_{k=1}^K
-  \left|
-    \mathrm{det} \frac{
-      \partial f_k
-    }{
-      \partial \mathbf{z}_{k-1}\
-    }
-  \right| ^{-1}, \quad or</script>
-
-<script type="math/tex; mode=display">\ln q_K (\mathbf{z}_K) = \ln q_0(\mathbf{z}_0) - \sum_{k=1}^{K} \ln \mathrm{det} \left|
-     \frac{
-      \partial f_k
-    }{
-      \partial \mathbf{z}_{k-1}\
-    }
-  \right|.</script>
-
-<p>This series of transformations can transform a simple probability distribution (e.g. Gaussian) into a complicated multi-modal one. Note that after every mapping ($f_1, f_2, \dots $), the det-Jac has to be computed to ensure that the output is also a distribution. To be of practical use, however, we can consider only transformations whose determinants of Jacobians are easy to compute. The original paper considered two simple family of transformations, named planar and radial flows.</p>
-
-<hr />
-
-<h2 id="planar-flow">Planar Flow</h2>
-<p>\[ f(\mathbf{z}) = \mathbf{z} + \mathbf{u} h(\mathbf{w}^{\top} \mathbf{z} + b) \]
-with $\mathbf{U}, \mathbf{W}\in \mathbb{R}^{d}$ and $b\in \mathbb{R}$ and $h$ an element-wise non-linearity. Let $\psi (\mathbf{z}) = h’ (\mathbf{w}^T \mathbf{z} + b) \mathbf{w}$. Then the determinant can be easily computed as</p>
-
-<p>\[ \left| \mathrm{det} \frac{\partial f}{\partial \mathbf{z}} \right| =
-  \left| 1 + \mathbf{u}^{\top} \psi( \mathbf{z} ) \right| = \left| 1 + \mathbf{u}^{\top} h’ (\mathbf{w}^T \mathbf{z} + b) \mathbf{w} \right| .  \]
-Since $0\leq h’ \leq 1$ for $ h(x) = \tanh (x) $, we require $ \mathbf{u}^{\top}\mathbf{w} \geq -1$ for invertibility of such flows. We can think of planar flows as slicing the $\mathbf{z}$-space with straight lines (or hyperplanes), where each line contracts or expands the space around it, see figure 1 (in paper).</p>
-
-<hr />
-
-<h2 id="radial-flow">Radial Flow</h2>
-<p>\[  f(\mathbf{z}) = \mathbf{z} + \beta h(\alpha, r)(\mathbf{z} - \mathbf{z}_0),\]</p>
-
-<p>with <script type="math/tex">r = \Vert\mathbf{z} - \mathbf{z}_0 \Vert_2</script>, <script type="math/tex">h(\alpha, r) = \frac{1}{\alpha + r}</script> and parameters <script type="math/tex">\mathbf{z}_0 \in \mathbb{R}^d, \alpha \in \mathbb{R}_+</script> and <script type="math/tex">\beta \in \mathbb{R}</script>.</p>
-
-<p>Similarly to planar flows, radial flows introduce spheres in the $z$-space, which either contract or expand the space inside the sphere, see figure 1 (in paper).</p>
-
-<hr />
-<h3 id="algorithmic-steps">Algorithmic steps</h3>
-<p>Suppose the unknown target distribution is specified using energy functions $U(z)$, $p(z) = \frac{1}{\mathcal{Z}} \exp(-U(z))$, where $\mathcal{Z}$ is the unknown partition function (normalization constant); that is, $p(z) \propto \exp({-U(z)})$.</p>
-
-<p><strong>Steps:</strong></p>
-<ol>
-  <li>
-    <p>Generate random samples from initial distribution $z_{0} \sim q_0 (z) = \mathcal{N}(z; \mu, \sigma^2 I)$.
-Here $\mu$ and $\sigma$ can either be fixed (such as standard Normal distribution) or can be estimated as follows:
-Draw auxillary random variable $\epsilon$ from standard normal distribution $\epsilon \sim \mathcal{N}(0, I)$ and apply linear normalizing flow transformation $f(\epsilon) = \mu + \sigma \epsilon$, re-parameterizing $\sigma = e^{(\frac{1}{2}*\log(var))}$ to ensure $\sigma &gt; 0$, then jointly optimize {$\mu$, $var$} together with the other normalizing flow parameters (see below).</p>
-  </li>
-  <li>Transform the initial samples $z_0$ through $K$ <em>Normalizing Flow</em> transforms, from which we obtain the transformed approximate distribution $q_{K}(z)$,
-  $\log q_{K}(z) = \log q_0 (z) - \sum_{k=1}^K \log (\mathrm{det} |J_k|)$
-where $J_k$ is the Jacobian of the $k$-th (invertible) normalizing flow transform.
-E.g. for planar flows,
-  $\log q_{K}(z) = \log q_0 (z) - \sum_{k=1}^K \log |1 + u_k^{\top} \psi_k(z_{k-1})|$
-where each flow includes model parameters $\lambda = \{ w, u, b \}$.</li>
-  <li>Jointly optimize all model parameters by minimizing <em>KL-Divergence</em> between the approximate distribution $q_{K}(z)$
-and the true distribution $p(z)$.
-  <script type="math/tex">% <![CDATA[
-\begin{align*}
-           loss = KL[q_{K}(z)||p(z)] & = \mathbb{E}_{z_K \sim q_{K}(z)} \left[ \log q_K(z_K) - \log p(z_K) \right]\\
-                          &= \mathbb{E}_{z_K \sim q_{K}(z)} \left[ \left(\log q_0(z_0) - \sum_k \log (\mathrm{det} |J_k|)\right) - \left(-U(z_K) - \log(\mathcal{Z})\right) \right]\\
-                         &= \mathbb{E}_{z_0 \sim q_0(z)} \left[ \log q_0(z_0) - \sum_k \log \left(\mathrm{det} |J_k|\right) + U(f_1(f_2(\dots f_K(z_0)))) + \log(\mathcal{Z}) \right]
-  \end{align*} %]]></script><br />
-Here the partition function $\mathcal{Z}$ is independent of $z_0$ and model parameters, so we can ignore it for the optimization
-  $loss = \mathbb{E}_{z_0 \sim q_0(z)} \left[ \log q_0(z_0) - \sum_k \log (\mathrm{det} |J_k|) + U(z_K) \right]$</li>
-</ol>
-
-<p>The expectation could be approximated by Monte Carlo sampling, the mini-batch average here could be considered as the Monte Carlo Sampling Expectation.</p>
-
-<h3 id="ex-density-estimation-generative-modelling">Ex: Density estimation (Generative modelling)</h3>
-<p>$p_X:$ data distribution, $p_Y:$ prior over latent variable, $p_{f^{-1}(Y)}:$ push-forward density of $f^{-1}(Y)$, i.e the generative model</p>
-
-<script type="math/tex; mode=display">% <![CDATA[
-\begin{align*} 
- D_{KL}(p_X \Vert p_{f^{-1}(Y)}) & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{f^{-1}(Y)} (x) \right] \\ 
-                                 & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{X} (x) \right] \\
-                                 & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x))\left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right|\right]\\
-                                 & = \mathbb{E}_{x\sim p_{X}}\left[ \log p_X (x) - \log p_{Y} (f(x)) - \log \left| \mathrm{det} \frac{\partial f(x)}{\partial x} \right| \right]
-\end{align*} %]]></script>
-
-<hr />
-
-<h3 id="footnotes">Footnotes:</h3>
-<ol>
-  <li>
-    <p>See <a href="https://arxiv.org/abs/1511.01844">A note on the evaluation of generative models</a> for a thought-provoking discussion about how high log-likelihood is neither sufficient nor necessary to generate “plausible” images. Still, it’s better than nothing and in practice a useful diagnostic tool.</p>
-  </li>
-  <li>
-    <p>There’s a connection between Normalizing Flows and GANs via encoder-decoder GAN architectures that learn the inverse of the generator (ALI / BiGAN). Since there is a separate encoder trying to recover $u=G^{−1}(x)$ such that $x=G(u)$, the generator can be thought of as a flow for the simple uniform distribution. However, we don’t know how to compute the amount of volume expansion/contraction w.r.t. $x$, so we cannot recover density from GANs. However, it’s probably not entirely unreasonable to model the log-det-jacobian numerically or enforce some kind of linear-time Jacobian by construction.</p>
-  </li>
-</ol>
-
-        </div>
-             
-	
-    	<span class="label label-default"><a href="/tags#paper_summary-ref" title="View posts tagged with &quot;paper_summary&quot;">paper_summary</a></span>
     
 
 
