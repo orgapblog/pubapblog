@@ -9,7 +9,7 @@ permalink: /tutorials/
 This is a page that I will hopefully keep up to date with a list of tutorials from around the web that are useful on different topics. Wikipedia is often the first search engine result for any new topic, but it rarely provides a didactic explanation on the topic. Tutorials and lectures written by people for the sake of teaching the material are usually far more useful. Hopefully, these will provide that.
 
 ## Introduction to RKHS, and Kernel Algorithms 
->[__Arthur Greton's Tutorial__](../pdfs/Gretton_Introduction_to_RKHS.pdf){:target="_blank"}: Provides an intuitive and formal introduction to kernel methods.
+>[__Arthur Greton's Tutorial__](../pdfs/Gretton_Introduction_to_RKHS.pdf){:target="_blank"}: Provides an intuitive and formal introduction to kernel methods. For an exhaustive overview: [see here](http://members.cbio.mines-paristech.fr/~jvert/svn/kernelcourse/slides/master2017/master2017.pdf)
 
 
 ## Principal Component Analysis (PCA)
