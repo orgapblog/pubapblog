@@ -6,7 +6,7 @@ jsarr:
 categories: Javascript
 ---
 
-![!](\photos\TinyRickRIP.png){: style="max-width: 80px; height: auto;"}
+![](\photos\rkm.png)
 
 I am a first-year Ph.D. candidate in [Stadius center for dynamical systems, signal processing & data analytics](https://www.esat.kuleuven.be/stadius/) at KU Leuven, advised by Professor [Johan Suykens](https://www.esat.kuleuven.be/stadius/person.php?id=16). 
 
