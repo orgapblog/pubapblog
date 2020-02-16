@@ -8,9 +8,9 @@ categories: Javascript
 
 ![](\photos\rkm.png)
 
-I am a first-year Ph.D. candidate in [Stadius center for dynamical systems, signal processing & data analytics](https://www.esat.kuleuven.be/stadius/) at KU Leuven, advised by Professor [Johan Suykens](https://www.esat.kuleuven.be/stadius/person.php?id=16). 
+I am a second-year Ph.D. candidate in [Stadius center for dynamical systems, signal processing & data analytics](https://www.esat.kuleuven.be/stadius/) at KU Leuven, advised by Professor [Johan Suykens](https://www.esat.kuleuven.be/stadius/person.php?id=16). 
 
-I conduct research on basic machine learning at the intersection of kernel methods, deep learning and dynamical systems. My Ph.D. is generously funded by European Research Council and falls within the scope of [E-DUALITY](https://www.esat.kuleuven.be/stadius/E/) project.
+I conduct research on basic machine learning at the intersection of kernel methods, deep learning and dynamical systems. My scientific interests include unsupervised learning,  kernel methods, generative models, optimal transport and optimization. My Ph.D. is generously funded by European Research Council and falls within the scope of [E-DUALITY](https://www.esat.kuleuven.be/stadius/E/) project.
 
 This blog mostly contains research notes made during my Ph.D. journey. High-level ideas, facts, summaries, mind-maps and musings will populate this blog.
 
