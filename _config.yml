@@ -35,3 +35,5 @@ navigation:
   url: /distill/
 - text: Archives
   url: /tags/
+- text: Almanac
+  url: /almanac/personal_log/
