@@ -86,3 +86,15 @@ title: Almanac
 - meeting with octave
 - discussion on RKM
 
+# 21/02/2020
+- update internal reports and add pdf links #done
+- Stiefel investigations for disentanglement 3dshapes
+    - include batchnorm
+    - abalation studies (michael/arun's decoding scheme, with/without cov matrix in epochs). Abandoning for now
+    since don't know why it doesn't converge. Testing Dsprites
+    
+# 24/02/2020
+- created 2 optimizers and dsprites works well.
+ - Now do ablation studies:
+    - Q. Is KPCA in iterative procedure important or just doing it in the end suffices?
+    - Ablation study results added in google docs form
