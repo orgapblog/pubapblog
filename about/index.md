@@ -23,9 +23,6 @@ This blog mostly contains research notes made during my Ph.D. journey. High-leve
 <center> <div id="mynetwork"></div> </center>
 
 ---
-“[Wisdom] is earned through disgrace, through painful realization of the inadequacy of your personal world view.” — [Nat Hillard](https://stanforddailyarchive.com/cgi-bin/stanford?a=d&d=stanford20080118-01.2.19#)
-
-“We need a more lasting form of negative feedback than just paper rejections.” — [Jonathan Hardwick](https://blogs.msdn.microsoft.com/jonathanh/) on research
 
 ### Quick Links
 * [A Survival Guide to PhD](http://karpathy.github.io/2016/09/07/phd/) — Andrej Karpathy 
